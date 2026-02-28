@@ -1,0 +1,228 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 177deg, 63.16%, 6%;
+  --foreground: 0, 0%, 100%;
+  --primary: 198.63deg 88.66% 48.43%;
+
+  /* code */
+
+  --sh-class: #4c97f8;
+  --sh-identifier: white;
+  --sh-keyword: #f47067;
+  --sh-string: #0fa295;
+  --sh-property: #4e8fdf;
+  --sh-entity: #6eafad;
+  --sh-jsxliterals: #bf7db6;
+  --sh-sign: #8996a3;
+  --sh-comment: #a19595;
+}
+
+/* excalidraw font */
+
+@font-face {
+  font-family: "Excalifont";
+  src: url("https://excalidraw.nyc3.cdn.digitaloceanspaces.com/oss/fonts/Excalifont/Excalifont-Regular-a88b72a24fb54c9f94e3b5fdaa7481c9.woff2");
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+}
+
+.prose pre {
+  @apply overflow-x-auto rounded-lg bg-white/5 px-5 py-4 text-sm;
+}
+
+.prose code {
+  @apply rounded-lg px-1 py-0.5;
+}
+
+.prose pre code {
+  @apply p-0;
+  line-height: 1.75;
+}
+
+.prose code span {
+  @apply font-medium;
+}
+
+/* gradients */
+.line-gradient {
+  background: linear-gradient(
+    90deg,
+    hsla(0, 0%, 95%, 0) 0,
+    #f3f3f3 50%,
+    hsla(0, 0%, 95%, 0)
+  );
+}
+
+.background-gradient {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: radial-gradient(
+    rgb(234, 193, 80) 0.5px,
+    rgba(0, 0, 0, 0) 1px
+  );
+  background-size: 1.5rem 1.5rem;
+  mask-image: radial-gradient(
+    600px at 454px 457px,
+    rgb(0, 0, 0) 20%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-size: 100% 100%;
+}
+
+.flair {
+  position: fixed;
+  top: 0px;
+  left: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.4;
+  background: radial-gradient(100% 100% at 50% 0%, #00000000 0%, #0a0a0a 100%),
+    radial-gradient(90% 80% at 10% 20%, #081816 0%, #00000000 100%),
+    radial-gradient(200% 120% at 50% 0%, #5320f9 0%, #00000000 100%);
+  mask-image: radial-gradient(
+    600px at 263px 476px,
+    rgb(0, 0, 0) 20%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-size: 100% 100%;
+}
+
+.overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: auto;
+  bottom: auto;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(
+    0deg,
+    #0e1525,
+    rgba(14, 14, 15, 0.29) 26%,
+    rgba(14, 14, 15, 0) 41%
+  );
+}
+
+/* ===== Heading Anchors ===== */
+
+.prose h1,
+.prose h2,
+.prose h3 {
+  scroll-margin-top: 6rem;
+}
+
+.heading-anchor-group {
+  position: relative;
+}
+
+.heading-anchor {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  color: hsl(var(--primary));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  vertical-align: middle;
+}
+
+.heading-anchor-group:hover .heading-anchor {
+  opacity: 0.6;
+}
+
+.heading-anchor:hover {
+  opacity: 1 !important;
+}
+
+/* ===== Table of Contents Sidebar ===== */
+
+.toc-sidebar {
+  position: fixed;
+  top: 6rem;
+  right: 2rem;
+  width: 14rem;
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+  display: none;
+  scrollbar-width: none;
+}
+
+.toc-sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 1400px) {
+  .toc-sidebar {
+    display: block;
+  }
+}
+
+.toc-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.75rem;
+  opacity: 0.5;
+}
+
+.toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-left: 1px solid hsl(var(--foreground) / 0.1);
+}
+
+.toc-item {
+  display: block;
+  text-align: left;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  padding: 0.3rem 0 0.3rem 1rem;
+  color: hsl(var(--foreground) / 0.4);
+  border-left: 2px solid transparent;
+  margin-left: -1px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+  background: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+}
+
+.toc-item:hover {
+  color: hsl(var(--foreground) / 0.7);
+}
+
+.toc-item--active {
+  color: hsl(var(--primary));
+  border-left-color: hsl(var(--primary));
+}
+
+.toc-item--h2 {
+  padding-left: 1rem;
+}
+
+.toc-item--h3 {
+  padding-left: 1.75rem;
+  font-size: 0.75rem;
+}
