@@ -1,0 +1,19 @@
+---
+title: "Terminator cheatsheet"
+summary: "Quick reference guide for installing and using Terminator terminal emulator on Ubuntu"
+image: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=1200&h=630&fit=crop"
+author: "Benjamin Looi"
+publishedAt: "2021-06-10"
+---
+
+## Installing Terminator
+### Installing on Ubuntu
+```
+sudo apt-get install terminator
+```
+
+#### Setting Terminator as default terminal
+```
+gsettings set org.gnome.desktop.default-applications.terminal exec /usr/bin/terminator
+gsettings set org.gnome.desktop.default-applications.terminal exec-arg "-x"
+```

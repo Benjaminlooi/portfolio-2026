@@ -1,0 +1,94 @@
+---
+title: "WOLE: The UpSnap for Android"
+summary: "I turned an old Android phone into a Wake-on-LAN relay. WOLE is an Expo + React Native app that runs a tiny HTTP server as a foreground service, so you can wake your homelab machines from anywhere."
+image: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=1200&h=630&fit=crop"
+author: "Benjamin Looi"
+publishedAt: "2025-10-25"
+---
+
+# WOLE: The UpSnap for Android
+
+I had an old Android phone collecting dust in a drawer. I also had a homelab where I kept shutting down machines to save power, then needing to walk over and press the power button when I wanted to use them again. Wake-on-LAN exists, but I needed something on the network to actually send the magic packet — and I didn't want to buy a Raspberry Pi just for that.
+
+So I built WOLE. It turns any Android phone into a WOL relay by running a small HTTP server as a foreground service. You send it a POST request with a MAC address, it broadcasts the magic packet on the local network, and your machine wakes up.
+
+That's it. That's the whole idea.
+
+---
+
+## How it works
+
+WOLE is built with Expo and React Native. When you start the relay, it spins up an HTTP server using `react-native-background-actions` to keep it alive while the app is in the background. The server listens on a configurable port (default 8080) and exposes a `POST /wol` endpoint.
+
+To wake a machine, you hit that endpoint with the target's MAC address:
+
+```bash
+curl -X POST "http://<phone-ip>:8080/wol" \
+  -H "X-Auth-Token: your-secret" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data "mac=AA:BB:CC:DD:EE:FF"
+```
+
+You can optionally specify a broadcast IP and UDP port, but the defaults (`255.255.255.255:9`) work for most setups. Authentication is done via a shared secret token — set it in the app, include it in your requests, done.
+
+The phone needs to be on the same LAN as the devices you want to wake. If you're remote, connect the phone to your network through Tailscale, WireGuard, or ZeroTier, and you can reach it from anywhere.
+
+---
+
+## Why not just use UpSnap?
+
+[UpSnap](https://github.com/seriousm4x/UpSnap) is great. It's a proper web-based WOL dashboard that you run on a server. But that's the thing — you need a server running. If you're trying to wake your only server, you have the chicken-and-egg problem.
+
+An old phone doesn't have that problem. It sips power on its own, it's already on your Wi-Fi, and it doesn't need a separate machine to host it. Plug it in, install WOLE, and forget about it.
+
+---
+
+## What it actually does
+
+Beyond the basic WOL relay, WOLE has a few other things going on:
+
+- **Device management** — Save your machines with names and MAC addresses so you don't have to remember them. There's a full CRUD API at `/api/devices`.
+- **Ping checks** — `POST /api/ping` lets you check if a device is online. Useful for confirming a wake actually worked.
+- **Auto-start on boot** — Once you start the relay, it automatically restarts when the phone reboots. No need to open the app every time.
+- **Health endpoint** — `GET /health` returns `ok`. Good for monitoring with something like Uptime Kuma.
+- **In-app logs** — The app shows a log of incoming requests and WOL dispatches, so you can see what's happening without checking `adb logcat`.
+
+---
+
+## The setup
+
+1. Download the APK from the [releases page](https://github.com/Benjaminlooi/WOLE/releases).
+2. Install it on any Android 7+ device.
+3. Set a port and a shared secret token in the app.
+4. Hit the start button.
+
+If Android kills the service, go into the battery optimization settings (there's a shortcut in the app) and exclude WOLE. Android is aggressive about killing background services, so this step matters.
+
+For remote access, I use Tailscale. The phone gets a stable VPN IP, and I can reach the WOLE server from any of my devices without exposing anything to the internet.
+
+---
+
+## Building from source
+
+If you want to build it yourself:
+
+```bash
+npm install
+npx expo prebuild -p android
+```
+
+WOLE also has a web UI that gets bundled into the APK. Build that first:
+
+```bash
+# Build the web UI, then build the APK
+cd web && npm run build && cd ..
+cd android && ./gradlew assembleRelease
+```
+
+---
+
+## What's next
+
+WOLE does what I need it to do right now, but there's more I want to add — a better web dashboard, maybe scheduled wakes, and better security beyond the shared token. It's all on GitHub if you want to contribute or just poke around.
+
+[github.com/Benjaminlooi/WOLE](https://github.com/Benjaminlooi/WOLE)
