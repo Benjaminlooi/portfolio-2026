@@ -14,6 +14,7 @@ import AnimatedSignature from "@/components/animated/animated-signature";
 import AnimationContainer from "@/components/animated/animated-container";
 import BlogCard from "@/components/blog-card";
 import { TableOfContents } from "@/components/blog/table-of-content";
+import GiscusComments from "@/components/blog/GiscusComments";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -133,6 +134,8 @@ const Blog = async ({ params }: Props) => {
         Thanks for reading! 😁
         <AnimatedSignature />
       </div>
+
+      <GiscusComments />
 
       {/* Related Posts Section */}
       {relatedPosts.length > 0 && (
