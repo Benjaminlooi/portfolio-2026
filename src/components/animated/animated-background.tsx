@@ -1,9 +1,10 @@
 "use client";
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const AnimatedFlair = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleOnLoad = () => {
@@ -13,9 +14,10 @@ const AnimatedFlair = () => {
       });
     };
     const handleMouseMove = (event: MouseEvent) => {
-      setPosition({
-        x: event.clientX,
-        y: event.clientY,
+      if (rafRef.current) return;
+      rafRef.current = requestAnimationFrame(() => {
+        setPosition({ x: event.clientX, y: event.clientY });
+        rafRef.current = null;
       });
     };
 
@@ -28,6 +30,7 @@ const AnimatedFlair = () => {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("load", handleOnLoad);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
   return (

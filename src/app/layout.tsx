@@ -10,7 +10,7 @@ import { DEFAULT_METADATA, DEFAULT_OG_IMAGE } from "@/lib/constants";
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-poppins",
 });
 
@@ -78,10 +78,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>
+
       <body className={`${poppins.className} antialiased`}>
         {/* Structured Data for entire site */}
         <StructuredData schema={websiteSchema} />
