@@ -37,6 +37,7 @@ export const generateMetadata = async ({ params }: Props) => {
     {
       title: metadata.title || '',
       description: metadata.summary || metadata.description || '',
+      metaDescription: metadata.metaDescription,
       date: metadata.publishedAt || '',
       tags: metadata.tags || metadata.keywords || [],
       ogImage: metadata.image,

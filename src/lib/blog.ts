@@ -15,6 +15,7 @@ export type BlogMetadata = {
   title?: string;
   summary?: string;
   description?: string;
+  metaDescription?: string;
   image?: string;
   author?: string;
   publishedAt?: string;
