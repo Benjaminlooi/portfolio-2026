@@ -130,7 +130,7 @@ const Blog = async ({ params }: Props) => {
         </p>
       </div>
 
-      <div className="prose w-full max-w-full my-6 md:mb-10 dark:prose-invert">
+      <div className="prose w-full max-w-full my-6 md:mb-10 prose-invert">
         <MDXContent source={content} />
         Thanks for reading! 😁
         <AnimatedSignature />
