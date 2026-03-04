@@ -84,7 +84,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
           </Link>
           <time className="font-sans text-xs">{formatDate(project.date)}</time>
           <div className="hidden font-sans text-xs underline print:visible" />
-          <div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground dark:prose-invert">
+          <div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground prose-invert">
             <p className="line-clamp-2">{project.description}</p>
           </div>
         </div>
