@@ -25,7 +25,7 @@ const Hero = () => {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium">
           <SparklesIcon size={16} />
-          Available for new remote opportunities
+          Available for remote opportunities
         </div>
 
         <div className="py-2 lg:py-3">
@@ -38,6 +38,9 @@ const Hero = () => {
         <h3 className="text-base text-center lg:text-start lg:text-lg text-white/80">
           <span className="font-medium text-white">Fullstack developer </span>
           from Malaysia 🇲🇾
+        </h3>
+        <h3 className="text-base text-center lg:text-start lg:text-md text-white/80">
+          Curently in <span className="font-medium text-white">Cambodia 🇰🇭</span>
         </h3>
         <div className="flex items-center gap-2 py-4">
           <Link
