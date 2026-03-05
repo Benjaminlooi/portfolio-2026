@@ -1,0 +1,61 @@
+---
+title: "Baguette POS"
+description: "A modern point of sale system designed for restaurants, cafes, and food service businesses, featuring order management, inventory tracking, payment processing, and real-time analytics."
+date: "2025-01-01"
+type: "web"
+stack: ["next.js", "typescript", "tailwind"]
+slug: "baguette-pos"
+image: "/images/projects/baguette-pos.webp"
+featured: false
+link: "https://pos.sokha.tech/"
+github: ""
+---
+
+## Overview
+
+Baguette POS started because I watched a café owner in Phnom Penh scribble orders on sticky notes during a lunch rush, lose track of a table's bill, and then spend an hour after closing reconciling the day's cash. Existing POS systems were either too expensive, required proprietary hardware, or were built for Western markets with no support for dual-currency payments (USD and Cambodian Riel are used interchangeably in Cambodia).
+
+I designed and built the entire system end-to-end — the web-based POS application, the marketing site, and the backend. The goal was simple: a POS that a restaurant owner could set up in minutes on any tablet or laptop, with zero hardware lock-in.
+
+## Building for Speed Under Pressure
+
+The single biggest constraint was speed. During a lunch rush, cashiers need to punch in a multi-item order in seconds — they can't wait for page loads or laggy UI. I optimized the menu grid for large touch targets and made sure the cart updates instantly without re-rendering the entire component tree. I also added fuzzy search so staff can type a few letters and find what they need fast.
+
+![Baguette POS cashier interface with visual menu grid and cart sidebar](/images/projects/baguette-pos-cashier.webp)
+
+## Table Management
+
+For dine-in restaurants, keeping track of which table has what order is critical. I built a drag-and-drop floor plan where managers can arrange their layout to match the actual restaurant. Tables are color-coded by status and update in real-time across devices, so when a waiter checks in a table from their tablet, the cashier sees it immediately.
+
+![Visual table management with floor plan and status indicators](/images/projects/baguette-pos-tables.webp)
+
+## Solving the Dual-Currency Problem
+
+This was the most interesting technical challenge. In Cambodia, prices are often listed in USD but customers pay in a mix of USD and Riel. A $4.50 meal might be paid with a $5 bill, with change given in Riel at the day's exchange rate. I built a purpose-built payment calculator that handles both currencies simultaneously, with quick denomination buttons and automatic change calculation. The bill summary shows totals in both currencies with tax breakdowns (SST, Service Tax) factored in.
+
+![Bill dialog showing cart items, tax breakdown, and payment method selection](/images/projects/baguette-pos-billing.webp)
+
+![Cash payment interface with dual-currency input and automatic change calculation](/images/projects/baguette-pos-payment.webp)
+
+## Real-Time Availability
+
+One pain point I kept hearing from restaurant owners: customers order something, wait 10 minutes, and then get told it's sold out. I built an availability toggle that lets staff mark items as unavailable with flexible durations — just for today, until a specific date, or indefinitely. Changes propagate instantly so no one orders something that isn't available.
+
+![Food availability management with calendar-based unavailability scheduling](/images/projects/baguette-pos-availability.webp)
+
+## Payment History & Reporting
+
+Restaurant owners need to know how their day went without digging through spreadsheets. The payment history view lets them filter by date range, payment method, and search terms to quickly find any transaction. Each record shows the amount, method, terminal, and table — enough detail for end-of-day reconciliation without overwhelming the user.
+
+![Payment history with filters, date range, and payment method breakdown](/images/projects/baguette-pos-history.webp)
+
+## Tech Stack
+
+- **React + Vite** — Chose Vite for the fast HMR during development and optimized builds for production
+- **TypeScript** — End-to-end type safety, especially important for payment logic where bugs mean real money problems
+- **Tailwind CSS** — Responsive, touch-friendly UI that works across tablets and desktops
+- **Monorepo Architecture** — Shared packages between the marketing site and POS app for consistency
+
+## What I Learned
+
+Building for a market where dual currencies are the norm taught me that "obvious" UX assumptions don't always transfer. The payment flow went through several iterations based on watching actual cashiers use the system — what I thought was intuitive initially turned out to add friction. The final design with denomination buttons and automatic change calculation came directly from observing how cashiers handle cash in practice.
