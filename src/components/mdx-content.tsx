@@ -5,7 +5,27 @@ import rehypeSlug from "rehype-slug";
 import { HeadingWithAnchor } from "./blog/heading-anchor";
 
 // Dynamic imports using `next/dynamic`
+// Custom paragraph component that unwraps images from <p> tags.
+// MDX wraps ![alt](src) in <p>, but our custom img component renders <div>s,
+// which creates invalid HTML (<div> inside <p>) and causes hydration errors.
+const Paragraph = (props: React.HTMLAttributes<HTMLParagraphElement>) => {
+  const { children, ...rest } = props;
+  const childArray = Array.isArray(children) ? children : [children];
+  const hasBlockElement = childArray.some(
+    (child) =>
+      typeof child === "object" &&
+      child !== null &&
+      "type" in child &&
+      (typeof child.type === "function" || typeof child.type === "object")
+  );
+  if (hasBlockElement) {
+    return <div {...rest}>{children}</div>;
+  }
+  return <p {...rest}>{children}</p>;
+};
+
 const components = {
+  p: Paragraph,
   h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
     <HeadingWithAnchor as="h1" {...props} />
   ),
