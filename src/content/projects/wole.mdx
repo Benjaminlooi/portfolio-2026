@@ -1,0 +1,56 @@
+---
+title: "WOLE"
+description: "An Android foreground service that turns your phone into a Wake-on-LAN relay — exposing a lightweight HTTP endpoint reachable over LAN, Tailscale, or WireGuard to wake devices on your local network."
+date: "2026-02-01"
+type: "mobile"
+stack: ["react-native", "expo", "typescript", "vite"]
+slug: "wole"
+image: "/images/projects/wole.png"
+featured: false
+link: ""
+github: "https://github.com/Benjaminlooi/WOLE"
+---
+
+## Overview
+
+I needed a reliable way to wake my home server remotely. The problem: standard Wake-on-LAN only works if you have a device on the same LAN to send the magic packet. Most dedicated WOL tools require a Raspberry Pi or always-on machine — but I always have my phone on the same network.
+
+WOLE turns an Android phone into a persistent WOL relay. It runs as a foreground service, exposes a `POST /wol` HTTP endpoint, and broadcasts UDP magic packets on the local network. Pair it with Tailscale or WireGuard and you can wake any machine from anywhere — no port forwarding, no dedicated hardware.
+
+![WOLE app main screen with status orb and relay controls](/images/projects/wole.png)
+
+## The Foreground Service Problem
+
+The hardest part of this project wasn't the WOL protocol — that's just a UDP broadcast with a specific byte pattern. The real challenge was keeping the HTTP server alive on Android. Modern Android aggressively kills background processes, and every major version adds new restrictions.
+
+I built the relay on `react-native-background-actions`, which creates a foreground service with a persistent notification. On Android 13+ the app needs runtime `POST_NOTIFICATIONS` permission before it can even show the notification, and on Android 14 it needs `FOREGROUND_SERVICE_DATA_SYNC` specifically declared. Getting the service to survive device sleep, battery optimization, and user-initiated task kills required wake locks, proper `onTaskRemoved` handling, and prompting users to exempt the app from battery optimizations.
+
+The auto-start on boot feature uses a `BootCompletedReceiver` that re-launches the relay when the device restarts — so once configured, you can forget about it.
+
+## The Web Dashboard
+
+While the Android app handles configuration and status, the real interface for day-to-day use is a web dashboard served directly from the phone. It's a Vite + React app bundled into the APK's assets directory, so when the relay is running you just visit `http://<phone-ip>:<port>/` from any browser.
+
+The dashboard lets you save devices with their MAC addresses, give them friendly names, and wake them with a single click. It also polls device status via ICMP ping every 30 seconds, so you get real-time green/red indicators showing which machines are online. For a tool I built primarily for myself, having a proper UI made it significantly more pleasant to use than just curling endpoints.
+
+## Networking Model
+
+WOLE is flexible about how clients reach the phone:
+
+- **Same LAN** — Use the phone's Wi-Fi IP directly
+- **VPN** — Connect via Tailscale, WireGuard, or ZeroTier to reach the phone's VPN IP from anywhere
+- **Port forwarding** — Possible but not recommended; if you do, the shared secret token authentication becomes essential
+
+The phone must be on the same LAN as the devices you want to wake — WOL magic packets are UDP broadcasts that don't route across subnets. But the HTTP endpoint that *triggers* those packets can be accessed from anywhere you can reach the phone.
+
+## Tech Stack
+
+- **Expo + React Native** — Cross-platform foundation with native module support for the foreground service
+- **Tamagui** — UI framework for the Android app with dark theme and glassmorphism cards
+- **Vite + React** — Lightweight web dashboard bundled into the APK assets
+- **Native Java modules** — Custom `WolServerModule` handling the HTTP server, UDP broadcasts, and wake lock management
+- **GitHub Actions** — Automated APK builds and releases on every tagged version
+
+## What I Learned
+
+Android background processing is genuinely adversarial. Every manufacturer (Samsung, Xiaomi, Huawei) adds their own battery optimization on top of stock Android's already aggressive restrictions. Building a service that "just stays running" requires understanding foreground service types, wake lock semantics, boot receivers, and a dozen OEM-specific quirks. It gave me a much deeper appreciation for what apps like Tasker and Termux do behind the scenes to stay alive.
