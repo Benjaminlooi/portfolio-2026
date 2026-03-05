@@ -1,0 +1,79 @@
+---
+title: "Personal Portfolio (2026)"
+description: "A performant, SEO-optimized developer portfolio featuring mouse-tracking animated backgrounds, glassmorphism UI, MDX-powered blog with comments, and structured data — built with Next.js 15 and Motion."
+date: "2026-01-01"
+type: "web"
+stack: ["next.js", "typescript", "tailwind", "motion"]
+slug: "portfolio-2026"
+image: "/images/projects/portfolio-2026-hero.webp"
+featured: true
+link: "https://benjaminlooi.dev/"
+github: "https://github.com/Benjaminlooi/portfolio-2026"
+---
+
+## Overview
+
+My previous portfolio was built in 2021 with React and served me well, but after five years of growing as a developer, it no longer reflected where I was. The tech was outdated, the content was stale, and the design felt like a template. I wanted something that actually represented how I think about building software now — performance-first, SEO-driven, and with the kind of polish that makes someone want to stick around.
+
+I rebuilt everything from scratch with Next.js 15, TypeScript, and Tailwind CSS. The goal wasn't just "make a new portfolio" — it was to build something I'd actually be proud to show to a potential client or employer, and to use the project as a forcing function to properly learn Next.js App Router, server components, and modern SEO techniques.
+
+## The Animated Background
+
+The first thing people notice is the background that follows your cursor. It's a radial gradient mask that tracks mouse movement, creating a subtle spotlight effect over a dot-grid pattern. I deliberately kept it understated — the background should add atmosphere, not compete with the content.
+
+The implementation uses `requestAnimationFrame` throttling so the effect is smooth without eating CPU. On mobile, it's disabled entirely since there's no cursor to track, and mobile devices don't need the extra rendering overhead.
+
+![Portfolio homepage with hero section, animated background, and navigation](/images/projects/portfolio-2026-hero.webp)
+
+## Making the UI Feel Alive
+
+I wanted the site to feel responsive to interaction without being obnoxious. Every navigation link uses a magnetic hover effect — the link subtly pulls toward your cursor as you approach it. The nav bar itself hides on scroll-down and reappears on scroll-up, keeping content front and center while still being accessible.
+
+The skills section uses glassmorphism cards with semi-transparent backgrounds and backdrop blur. Each card staggers its entrance animation so the section builds up as you scroll into it. The hover states shift the border color toward the primary accent, giving a subtle glow effect.
+
+![Skills and technologies section with glassmorphism cards](/images/projects/portfolio-2026-skills.webp)
+
+## Content Architecture with MDX
+
+Both blog posts and project pages are written in MDX, which lets me mix Markdown content with React components. This was important because I wanted rich project pages with inline images and custom formatting, but I also wanted the writing experience to feel like writing — not like coding JSX.
+
+The blog includes Giscus comments powered by GitHub Discussions, so readers can leave feedback without me needing to manage a separate comment system or database.
+
+![Blog listing page with post cards](/images/projects/portfolio-2026-blog.webp)
+
+## SEO as a First-Class Feature
+
+SEO wasn't an afterthought — I built it into the architecture from day one. Every page has proper metadata (title, description, Open Graph tags, Twitter cards), and I generate structured JSON-LD data for Person, WebSite, and Article schemas. The site has an auto-generated `sitemap.xml`, `robots.txt`, and RSS feed at `/feed.xml`.
+
+Each blog post has custom meta descriptions and tags in its frontmatter, so search engines get specific, relevant metadata rather than generic defaults.
+
+## Project Showcase
+
+The projects section displays cards with cover images, tech stack badges, and links. Each project has its own detailed page (like this one) where I can tell the full story — not just "what I built" but why I made the decisions I did and what I learned.
+
+![Projects listing page with project cards](/images/projects/portfolio-2026-projects.webp)
+
+## Performance Optimization
+
+After the initial build, I ran Lighthouse audits and systematically addressed every issue. The key optimizations were:
+
+- **LCP fix** — Ensured the hero section's critical content loads without render-blocking resources
+- **Font optimization** — Limited Poppins to only the weights actually used (400, 500, 600, 700) instead of loading the full family
+- **Third-party script deferral** — PostHog analytics loads lazily so it doesn't block the initial render
+- **Event listener throttling** — Scroll and mouse handlers use `requestAnimationFrame` to prevent layout thrashing
+
+## Tech Stack
+
+- **Next.js 15** — App Router with server components for optimal performance and SEO
+- **TypeScript** — Full type safety across the codebase
+- **Tailwind CSS** — Utility-first styling with a custom dark theme
+- **Motion (Framer Motion)** — Entrance animations, magnetic effects, and the animated background
+- **MDX** — Rich content authoring for blog posts and project pages
+- **PostHog** — Privacy-friendly analytics for understanding visitor behavior
+- **Giscus** — GitHub Discussions-powered comments on blog posts
+
+## What I Learned
+
+The biggest takeaway was how much the Next.js App Router changes the mental model compared to Pages Router. Server components mean you have to think carefully about what needs to be client-side (animations, scroll listeners, analytics) versus what can be rendered on the server (content, metadata, structured data). Getting this boundary right made the site significantly faster.
+
+I also learned that SEO is mostly about doing a lot of small things correctly — structured data, proper heading hierarchy, meta descriptions, semantic HTML, performance scores — rather than any single magic trick.
