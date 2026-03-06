@@ -36,7 +36,7 @@ export const metadata: Metadata = {
         url: `https://benjaminlooi.dev${DEFAULT_OG_IMAGE}`,
         width: 1200,
         height: 630,
-        alt: "Benjamin Looi - Software Engineer & UX Enthusiast",
+        alt: "Benjamin Looi - Software Engineer & 10x Vibe Engineer",
       },
     ],
   },

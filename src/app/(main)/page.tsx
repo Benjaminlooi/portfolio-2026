@@ -10,7 +10,7 @@ import { StructuredData } from "@/components/seo/StructuredData";
 
 export const metadata: Metadata = generatePageMetadata(
   {
-    title: "Benjamin Looi - Software Engineer & UX Enthusiast",
+    title: "Benjamin Looi - Software Engineer & 10x Vibe Engineer",
     description: "Full-stack developer from Kuala Lumpur, Malaysia. Passionate about building user-centric web applications with React, TypeScript, Next.js, and modern web technologies.",
   },
   "/"

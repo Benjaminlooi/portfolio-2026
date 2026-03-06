@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const title = searchParams.get('title') || 'Benjamin Looi';
-    const description = searchParams.get('description') || 'Software Engineer & UX Enthusiast';
+    const description = searchParams.get('description') || 'Software Engineer & 10x Vibe Engineer';
 
     return new ImageResponse(
       (
