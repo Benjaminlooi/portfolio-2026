@@ -7,19 +7,21 @@ const AboutMe = () => {
         About me
       </h2>
 
-      <p className="w-full text-base font-normal leading-7 text-justify text-neutral-200">
-        Hi, I&apos;m Benjamin Looi! I&apos;m a passionate Full Stack Developer
-        with over 5 years of experience in building scalable and
-        high-performance web applications. Proficient in JavaScript, React,
-        Vue.js, Angular, Node.js, and Laravel, with a strong foundation in both
-        front-end and back-end development. Adept at designing intuitive,
-        responsive user interfaces while ensuring seamless integration with
-        backend systems and cloud-based infrastructure. Experienced in
-        optimizing performance, managing deployments with AWS and Vercel, and
-        leading development teams in agile environments. Passionate about
-        problem-solving, code quality, and staying ahead of the latest industry
-        trends.
-      </p>
+      <div className="w-full space-y-4 text-base font-normal leading-7 text-neutral-200">
+        <p>
+          I&apos;m a full-stack developer based in Southeast Asia with over 5
+          years of experience building web and mobile products. Most recently, I
+          designed and shipped a point-of-sale system for restaurants in
+          Cambodia — solving real problems like dual-currency payments and
+          offline-first ordering. I also built a bilingual tech consultancy
+          platform with full English/Khmer support.
+        </p>
+        <p>
+          I work primarily with TypeScript, React/Next.js, and Node.js. I care
+          most about building things that actually get used by real people — not
+          just demo projects.
+        </p>
+      </div>
     </AnimationContainer>
   );
 };

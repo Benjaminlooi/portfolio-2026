@@ -35,13 +35,15 @@ const Hero = () => {
 
           <p className="text-sm text-white/80">雷廷铮</p>
         </div>
-        <h3 className="text-base text-center lg:text-start lg:text-lg text-white/80">
-          <span className="font-medium text-white">Fullstack developer </span>
-          from Malaysia 🇲🇾
-        </h3>
-        <h3 className="text-base text-center lg:text-start lg:text-md text-white/80">
-          Curently in <span className="font-medium text-white">Cambodia 🇰🇭</span>
-        </h3>
+        <p className="text-base text-center lg:text-start lg:text-lg text-white/80 leading-relaxed">
+          <span className="font-medium text-white">Full-stack engineer</span>{" "}
+          (and self-proclaimed 10x vibe engineer) with 5+ years
+          shipping web and mobile products for real businesses
+          across Southeast Asia.
+        </p>
+        <p className="text-sm text-center lg:text-start text-white/60">
+          From Malaysia 🇲🇾 · Currently in <span className="font-medium text-white/80">Cambodia 🇰🇭</span>
+        </p>
         <div className="flex items-center gap-2 py-4">
           <Link
             href="/contact"
