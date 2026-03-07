@@ -110,7 +110,7 @@ export const SKILLS = [
     stacks: ["Node.js", "Express.js", "Mongoose"],
   },
   {
-    title: "Databases/BASS/CMS",
+    title: "Databases/BaaS/CMS",
     icon: "Database",
     stacks: [
       "MongoDB",
