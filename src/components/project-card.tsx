@@ -45,22 +45,26 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
           </Badge>
           <div className="absolute flex items-center gap-2 top-2 right-2 ">
             {/* <ProjectIcon type={project.type} /> */}
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noreferrer"
-              className="p-4 bg-black/10 rounded-full backdrop-blur hover:bg-black/30 transition-all"
-            >
-              <OpenIcon />
-            </a>
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noreferrer"
-              className="p-4 bg-black/10 rounded-full backdrop-blur hover:bg-black/30 transition-all"
-            >
-              <GithubIcon />
-            </a>
+            {project.link && (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noreferrer"
+                className="p-4 bg-black/10 rounded-full backdrop-blur hover:bg-black/30 transition-all"
+              >
+                <OpenIcon />
+              </a>
+            )}
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noreferrer"
+                className="p-4 bg-black/10 rounded-full backdrop-blur hover:bg-black/30 transition-all"
+              >
+                <GithubIcon />
+              </a>
+            )}
           </div>
           <Link href={`/projects/${project.slug}`}>
             <AnimatedImage
