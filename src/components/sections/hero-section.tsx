@@ -53,7 +53,7 @@ const Hero = () => {
             Contact Me
           </Link>
           <a
-            href="resume_2025.1.pdf"
+            href="resume_2026.pdf"
             download
             target="_blank"
             rel="noopener noreferrer"
