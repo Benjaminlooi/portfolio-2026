@@ -156,7 +156,7 @@ export const SKILLS = [
 
 
 // SEO Constants
-export const SITE_URL = 'https://benjaminlooi.dev';
+export const SITE_URL = 'https://www.benjaminlooi.dev';
 export const SITE_NAME = 'Benjamin Looi Portfolio';
 export const AUTHOR_NAME = 'Benjamin Looi';
 export const AUTHOR_EMAIL = 'benjamin@benjaminlooi.dev';

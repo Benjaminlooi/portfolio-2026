@@ -20,10 +20,10 @@ const Home = () => {
   // Build Person and WebSite schemas for home page
   const personSchema = buildPersonSchema({
     name: "Benjamin Looi",
-    url: "https://benjaminlooi.dev",
+    url: "https://www.benjaminlooi.dev",
     jobTitle: "Software Engineer",
     description: "Full-stack developer passionate about building user-centric web applications",
-    image: "https://benjaminlooi.dev/images/benjamin-looi.jpg",
+    image: "https://www.benjaminlooi.dev/images/benjamin-looi.jpg",
     sameAs: [
       "https://github.com/BenjaminLooi",
       "https://linkedin.com/in/benjaminlooi",
@@ -34,7 +34,7 @@ const Home = () => {
   const websiteSchema = buildWebSiteSchema({
     name: "Benjamin Looi Portfolio",
     description: "Portfolio and blog by Benjamin Looi, a software engineer specializing in web development",
-    url: "https://benjaminlooi.dev",
+    url: "https://www.benjaminlooi.dev",
   });
 
   return (

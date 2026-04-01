@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import type { PageMetadata, BlogPostFrontmatter } from '@/types/seo';
 
-const SITE_URL = 'https://benjaminlooi.dev';
+const SITE_URL = 'https://www.benjaminlooi.dev';
 const SITE_NAME = 'Benjamin Looi Portfolio';
 const AUTHOR_NAME = 'Benjamin Looi';
 const DEFAULT_OG_IMAGE = '/images/og-default.png';
