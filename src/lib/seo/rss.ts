@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
-const SITE_URL = 'https://benjaminlooi.dev';
+const SITE_URL = 'https://www.benjaminlooi.dev';
 const SITE_NAME = 'Benjamin Looi';
 const AUTHOR_NAME = 'Benjamin Looi';
 const AUTHOR_EMAIL = 'benjamin@benjaminlooi.dev';

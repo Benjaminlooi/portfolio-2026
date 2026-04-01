@@ -15,25 +15,25 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://benjaminlooi.dev"),
+  metadataBase: new URL("https://www.benjaminlooi.dev"),
   title: {
     default: DEFAULT_METADATA.title,
     template: `%s - Benjamin Looi`,
   },
   description: DEFAULT_METADATA.description,
   keywords: DEFAULT_METADATA.keywords,
-  authors: [{ name: "Benjamin Looi", url: "https://benjaminlooi.dev" }],
+  authors: [{ name: "Benjamin Looi", url: "https://www.benjaminlooi.dev" }],
   creator: "Benjamin Looi",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://benjaminlooi.dev",
+    url: "https://www.benjaminlooi.dev",
     title: DEFAULT_METADATA.title,
     description: DEFAULT_METADATA.description,
     siteName: "Benjamin Looi Portfolio",
     images: [
       {
-        url: `https://benjaminlooi.dev${DEFAULT_OG_IMAGE}`,
+        url: `https://www.benjaminlooi.dev${DEFAULT_OG_IMAGE}`,
         width: 1200,
         height: 630,
         alt: "Benjamin Looi - Software Engineer & 10x Vibe Engineer",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     title: DEFAULT_METADATA.title,
     description: DEFAULT_METADATA.description,
     creator: "@benjaminlooi",
-    images: [`https://benjaminlooi.dev${DEFAULT_OG_IMAGE}`],
+    images: [`https://www.benjaminlooi.dev${DEFAULT_OG_IMAGE}`],
   },
   robots: {
     index: true,
@@ -73,7 +73,7 @@ export default function RootLayout({
   const websiteSchema = buildWebSiteSchema({
     name: "Benjamin Looi Portfolio",
     description: DEFAULT_METADATA.description,
-    url: "https://benjaminlooi.dev",
+    url: "https://www.benjaminlooi.dev",
   });
 
   return (

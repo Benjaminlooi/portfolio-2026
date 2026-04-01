@@ -73,7 +73,7 @@ const Blog = async ({ params }: Props) => {
     description: metadata.summary || metadata.description || '',
     author: metadata.author || 'Benjamin Looi',
     datePublished: metadata.publishedAt || new Date().toISOString(),
-    url: `https://benjaminlooi.dev/blog/${slug}`,
+    url: `https://www.benjaminlooi.dev/blog/${slug}`,
     image: metadata.image,
   });
 

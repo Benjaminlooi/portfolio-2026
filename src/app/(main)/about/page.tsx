@@ -19,11 +19,11 @@ const About = () => {
   // Build Person schema for about page
   const personSchema = buildPersonSchema({
     name: "Benjamin Looi",
-    url: "https://benjaminlooi.dev",
+    url: "https://www.benjaminlooi.dev",
     jobTitle: "Software Engineer",
     description:
       "Full-stack developer with 5+ years building web and mobile products across Southeast Asia",
-    image: "https://benjaminlooi.dev/images/benjamin-looi.jpg",
+    image: "https://www.benjaminlooi.dev/images/benjamin-looi.jpg",
     sameAs: [
       "https://github.com/BenjaminLooi",
       "https://linkedin.com/in/benjaminlooi",

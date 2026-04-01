@@ -6,7 +6,7 @@ import type {
   WithContext,
 } from 'schema-dts';
 
-const SITE_URL = 'https://benjaminlooi.dev';
+const SITE_URL = 'https://www.benjaminlooi.dev';
 const SITE_NAME = 'Benjamin Looi Portfolio';
 const AUTHOR_NAME = 'Benjamin Looi';
 
