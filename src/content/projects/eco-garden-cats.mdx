@@ -1,0 +1,82 @@
+---
+title: "The Eco Garden Cat Project"
+description: "A bilingual community cat welfare platform with TNVR tracking, KHQR donations, a full transparency ledger, adoption inquiries, volunteer sign-ups, and an admin CMS — built for a real cat colony in Cambodia."
+date: "2026-03-01"
+type: "web"
+stack: ["next.js", "typescript", "tailwind", "supabase"]
+slug: "eco-garden-cats"
+image: "/images/projects/eco-garden-hero.png"
+featured: true
+link: "https://egc.sokha.tech/"
+github: "https://github.com/Benjaminlooi/eco-garden-community-cats"
+---
+
+## Overview
+
+There's a mixed-use residential compound in Kandal Province, Cambodia called Eco Garden where a growing colony of stray cats had been living without any organized care. Residents were feeding them inconsistently, none were sterilized, and sick cats had no way of getting medical attention. I built this platform to give the community a central hub for managing and funding the care of these cats.
+
+The project isn't a template or a demo — it's a live platform serving a real colony of cats. Every feature was driven by an actual need: people needed to donate, volunteers needed to sign up, the community needed to see where money was going, and the cats needed individual profiles so people could connect with them and sponsor their care.
+
+## Bilingual from Day One
+
+The site runs fully in English and Khmer using `next-intl`. This wasn't a nice-to-have — the community is a mix of expats and Cambodian residents, and excluding either group would cut the potential support base in half. Every string, label, and content block is translated, including form placeholders and error messages. The Khmer text uses Suwannaphum font with adjusted line heights to handle the taller script properly.
+
+![The Eco Garden Cat Project homepage with hero section showing the colony cats](/images/projects/eco-garden-hero.png)
+
+## The Cat Registry
+
+Each cat has a profile page with a photo gallery, personality description, medical history timeline, and status badges (sterilized, vaccinated, recovering). The "Meet the Colony" page has multi-axis filtering — visitors can filter by sterilization status, vaccination status, health, and adoption availability. Each filter combination updates instantly without a page reload.
+
+The cat profiles aren't static. Status updates come from a `cat_history` table that tracks events like vaccinations, spay/neuter surgeries, and vet visits. This means the current status badge is always derived from the latest history entry, not a manually-updated field that could go stale.
+
+![Meet the Cats page with filter options for sterilization, vaccination, health, and adoption status](/images/projects/eco-garden-cats.png)
+
+## KHQR Donation Flow
+
+Cambodia's payment landscape is different from most countries. Credit cards are rare; everyone pays via mobile banking apps that scan QR codes. I integrated KHQR (Cambodia's national QR payment standard) using the `ts-khqr` library so donors can select a tier ($5 for wet food, $15 for dry food, $25 for a vaccination, $50 for TNR surgery) or enter a custom amount, and get a scannable QR code with a countdown timer. After scanning and paying, donors confirm payment and the donation enters a pending verification queue in the admin panel.
+
+This flow was the most technically interesting part — generating KHQR-compliant QR codes server-side, displaying them with an expiry countdown, and handling the confirmation workflow since KHQR doesn't have real-time payment webhooks.
+
+![Donation page with tiered giving options and KHQR payment integration](/images/projects/eco-garden-donate.png)
+
+## Radical Transparency
+
+Trust is the biggest challenge with any donation-funded project. The Transparency page is a full public ledger showing every donation received and every expense incurred, with receipt links for vet bills and food purchases. The summary cards show total donations, total expenses, and current balance — nothing hidden. This wasn't a feature request from anyone; I built it because I knew donors wouldn't give unless they could verify where their money went.
+
+![Transparency ledger showing total donations, expenses, and every transaction with receipt links](/images/projects/eco-garden-transparency.png)
+
+## Colony Statistics
+
+The homepage pulls real-time stats from the database — total cats in the colony, cats helped, total donations received, and sterilization count. These aren't hardcoded vanity numbers; they're computed from actual records. When a new cat is added or a donation is verified, the stats update automatically.
+
+![Homepage stats showing cats in colony, cats helped, donations received, and sterilizations](/images/projects/eco-garden-stats.png)
+
+## Adoption & Fostering
+
+Some colony cats are socialized enough to be adopted or fostered. I added an adoption pipeline: admins can flag cats as available, those cats get a special badge on their profile, and visitors can submit adoption inquiry forms that get emailed to the team via Resend. The homepage features a "Looking for a Home" section that highlights adoptable cats to increase visibility.
+
+## Admin CMS
+
+The entire site is managed through a protected admin panel with sections for managing cats (add/edit/delete with photo uploads to Supabase Storage), the financial ledger (log income and expenses), blog posts (Markdown-supported content editor), donation verification (approve/reject pending donations), and campaign goals (fundraising progress bars). Authentication uses Supabase Auth with row-level security so only authenticated admins can modify data.
+
+![Admin portal](/images/projects/eco-garden-admin.png)
+
+## Volunteer Recruitment
+
+The Get Involved page lists volunteer roles (feeding shifts, vet transport, fostering, community outreach) with time commitments, a sign-up form, and an FAQ section. Form submissions trigger email notifications to the team so they can follow up within 48 hours.
+
+## Tech Stack
+
+- **Next.js 16** — App Router with server components for SEO-friendly pages and server actions for mutations
+- **TypeScript** — End-to-end type safety, especially important for the financial ledger and donation logic
+- **Tailwind CSS v4** — Utility-first styling with CSS custom properties for the earthy, nature-inspired color palette
+- **Supabase** — PostgreSQL database, Auth, Storage (cat photos), and Row Level Security policies
+- **next-intl** — Full i18n for English and Khmer with locale-aware routing
+- **ts-khqr** — Cambodia's national QR payment standard for mobile donations
+- **Resend** — Transactional emails for volunteer sign-ups and adoption inquiries
+
+## What I Learned
+
+Building for a real community with real stakes — actual cats that need feeding, actual donations that need tracking — changes how you think about every feature. There's no room for "I'll fix that later" when someone might donate through a broken flow. The transparency ledger in particular taught me that trust features aren't optional in donation platforms; they're the product. Nobody donates to a black box.
+
+The bilingual implementation also reinforced that i18n is never "just add translations." Khmer script requires different typography rules, some UI layouts break when text length changes dramatically, and even seemingly simple things like date formatting need locale awareness.
