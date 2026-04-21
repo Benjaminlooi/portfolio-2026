@@ -5,6 +5,7 @@ import matter from 'gray-matter';
 
 const SITE_URL = 'https://www.benjaminlooi.dev';
 const BLOG_DIR = path.join(process.cwd(), 'src/content/blogs');
+const PROJECT_DIR = path.join(process.cwd(), 'src/content/projects');
 
 /**
  * Calculate priority for a URL based on its type and properties
@@ -30,12 +31,10 @@ export function calculatePriority(
   if (pathname.startsWith('/blog/')) {
     let priority = 0.6;
 
-    // Featured posts get higher priority
     if (metadata?.featured) {
       priority += 0.1;
     }
 
-    // Recent posts get slightly higher priority
     if (metadata?.date) {
       const daysSincePublished =
         (Date.now() - metadata.date.getTime()) / (1000 * 60 * 60 * 24);
@@ -46,10 +45,22 @@ export function calculatePriority(
       }
     }
 
-    return Math.min(priority, 0.8); // Cap at 0.8 for blog posts
+    return Math.min(priority, 0.8);
   }
 
-  // Default priority for other pages
+  // Projects base priority
+  if (pathname.startsWith('/projects/')) {
+    let priority = 0.7;
+    if (metadata?.date) {
+      const daysSincePublished =
+        (Date.now() - metadata.date.getTime()) / (1000 * 60 * 60 * 24);
+      if (daysSincePublished < 90) {
+        priority += 0.1;
+      }
+    }
+    return Math.min(priority, 0.9);
+  }
+
   return 0.5;
 }
 
@@ -63,14 +74,11 @@ export function getChangeFrequency(
   pathname: string,
   metadata?: { date?: Date }
 ): 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never' {
-  // Homepage and blog index change frequently
-  if (pathname === '/' || pathname === '/blog') {
+  if (pathname === '/' || pathname === '/blog' || pathname === '/projects') {
     return 'weekly';
   }
 
-  // Blog posts change occasionally
   if (pathname.startsWith('/blog/')) {
-    // Very old posts rarely change
     if (metadata?.date) {
       const yearsSincePublished =
         (Date.now() - metadata.date.getTime()) / (1000 * 60 * 60 * 24 * 365);
@@ -81,7 +89,10 @@ export function getChangeFrequency(
     return 'monthly';
   }
 
-  // Static pages change occasionally
+  if (pathname.startsWith('/projects/')) {
+    return 'monthly';
+  }
+
   return 'monthly';
 }
 
@@ -92,11 +103,10 @@ export function getChangeFrequency(
 export async function generateSitemap(): Promise<MetadataRoute.Sitemap> {
   const sitemap: MetadataRoute.Sitemap = [];
 
-  // Add static pages
   const staticPages = [
     { path: '/', priority: 1.0, changeFrequency: 'weekly' as const },
     { path: '/about', priority: 0.9, changeFrequency: 'monthly' as const },
-    { path: '/projects', priority: 0.9, changeFrequency: 'monthly' as const },
+    { path: '/projects', priority: 0.9, changeFrequency: 'weekly' as const },
     { path: '/blog', priority: 0.9, changeFrequency: 'weekly' as const },
     { path: '/contact', priority: 0.9, changeFrequency: 'monthly' as const },
   ];
@@ -146,6 +156,41 @@ export async function generateSitemap(): Promise<MetadataRoute.Sitemap> {
     }
   } catch (error) {
     console.error('Error reading blog directory:', error);
+  }
+
+  // Add projects
+  try {
+    if (fs.existsSync(PROJECT_DIR)) {
+      const files = fs.readdirSync(PROJECT_DIR);
+      const mdxFiles = files.filter((file) => file.endsWith('.mdx'));
+
+      mdxFiles.forEach((file) => {
+        try {
+          const filePath = path.join(PROJECT_DIR, file);
+          const fileContent = fs.readFileSync(filePath, 'utf8');
+          const { data } = matter(fileContent);
+
+          const slug = file.replace(/\.mdx$/, '');
+          const pathname = `/projects/${slug}`;
+
+          const publishDate = data.date ? new Date(data.date) : undefined;
+          const lastModified = data.lastModified
+            ? new Date(data.lastModified)
+            : publishDate || new Date();
+
+          sitemap.push({
+            url: `${SITE_URL}${pathname}`,
+            lastModified,
+            changeFrequency: getChangeFrequency(pathname, { date: publishDate }),
+            priority: calculatePriority(pathname, { date: publishDate }),
+          });
+        } catch (error) {
+          console.error(`Error processing project ${file}:`, error);
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Error reading projects directory:', error);
   }
 
   return sitemap;

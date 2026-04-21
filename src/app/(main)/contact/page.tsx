@@ -6,10 +6,19 @@ import { SOCIAL_LINKS } from "@/lib/constants";
 import ContactForm from "@/components/forms/contact-form";
 
 import AnimationContainer from "@/components/animated/animated-container";
+import { buildBreadcrumbListSchema } from "@/lib/seo/structured-data";
+import { StructuredData } from "@/components/seo/StructuredData";
 
 const Contact = () => {
+  const breadcrumbSchema = buildBreadcrumbListSchema([
+    { name: "Home", url: "https://www.benjaminlooi.dev" },
+    { name: "Contact", url: "https://www.benjaminlooi.dev/contact" }
+  ]);
+
   return (
-    <div className="flex flex-col md:mt-20 items-center justify-center md:flex-row gap-8 mg:gap-6">
+    <>
+      <StructuredData schema={breadcrumbSchema} />
+      <div className="flex flex-col md:mt-20 items-center justify-center md:flex-row gap-8 mg:gap-6">
       <div className="space-y-4 text-center md:text-left">
         <MyPhoto className="w-32 lg:w-52 mx-auto md:mx-0" />
 
@@ -75,6 +84,7 @@ const Contact = () => {
         <ContactForm />
       </AnimationContainer>
     </div>
+    </>
   );
 };
 export default Contact;

@@ -3,38 +3,59 @@ import { notFound } from "next/navigation";
 import MDXContent from "@/components/mdx-content";
 import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
+import type { Metadata } from "next";
 
 import { formatDate } from "@/lib/utils";
 // import Image from "next/image";
 import AnimatedImage from "@/components/animated/animated-image";
+import { buildBreadcrumbListSchema } from "@/lib/seo/structured-data";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { WithContext, CreativeWork } from "schema-dts";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export const generateMetadata = async ({ params }: Props) => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
 
   if (!project) {
     return {
-      title: "Project",
+      title: "Project Not Found",
     };
   }
 
   const { metadata } = project;
   const { title, description, image } = metadata;
+  const canonicalUrl = `https://www.benjaminlooi.dev/projects/${slug}`;
+  const imageUrl = image.startsWith('http') ? image : `https://www.benjaminlooi.dev${image}`;
 
   return {
-    title,
+    title: `${title} - Benjamin Looi`,
     description,
     openGraph: {
-      images: [image],
-      title,
+      title: `${title} - Benjamin Looi`,
       description,
+      url: canonicalUrl,
+      type: "article",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        }
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} - Benjamin Looi`,
+      description,
+      images: [imageUrl],
     },
     alternates: {
-      canonical: `/projects/${slug}`,
+      canonical: canonicalUrl,
     },
   };
 };
@@ -56,10 +77,32 @@ const Project = async ({ params }: Props) => {
   }
 
   const { metadata, content } = project;
-  const { title, image, date } = metadata;
+  const { title, image, date, description, type } = metadata;
+  const canonicalUrl = `https://www.benjaminlooi.dev/projects/${slug}`;
+
+  const breadcrumbSchema = buildBreadcrumbListSchema([
+    { name: "Home", url: "https://www.benjaminlooi.dev" },
+    { name: "Projects", url: "https://www.benjaminlooi.dev/projects" },
+    { name: title, url: canonicalUrl }
+  ]);
+
+  const creativeWorkSchema: WithContext<CreativeWork> = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: title,
+    description: description,
+    author: {
+      '@type': 'Person',
+      name: 'Benjamin Looi',
+    },
+    datePublished: date,
+    image: image ? (image.startsWith('http') ? image : `https://www.benjaminlooi.dev${image}`) : undefined,
+    url: canonicalUrl,
+  };
 
   return (
     <div className="w-full">
+      <StructuredData schema={[breadcrumbSchema, creativeWorkSchema]} />
       <Link
         href="/projects"
         className="mb-8 inline-flex items-center gap-2 text-sm font-light text-muted-foreground transition-colors hover:text-foreground"

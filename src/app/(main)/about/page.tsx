@@ -3,7 +3,7 @@ import SkillsSection from "@/components/sections/skill-section";
 import AnimationContainer from "@/components/animated/animated-container";
 import { Metadata } from "next";
 import { generatePageMetadata } from "@/lib/seo/metadata";
-import { buildPersonSchema } from "@/lib/seo/structured-data";
+import { buildPersonSchema, buildBreadcrumbListSchema } from "@/lib/seo/structured-data";
 import { StructuredData } from "@/components/seo/StructuredData";
 
 export const metadata: Metadata = generatePageMetadata(
@@ -31,10 +31,15 @@ const About = () => {
     ],
   });
 
+  const breadcrumbSchema = buildBreadcrumbListSchema([
+    { name: "Home", url: "https://www.benjaminlooi.dev" },
+    { name: "About", url: "https://www.benjaminlooi.dev/about" }
+  ]);
+
   return (
     <div className="space-y-6 lg:space-y-12">
       {/* Structured Data */}
-      <StructuredData schema={personSchema} />
+      <StructuredData schema={[personSchema, breadcrumbSchema]} />
 
       <div className="flex gap-6 flex-col md:flex-row items-center">
         <MyPhoto />

@@ -4,6 +4,8 @@ import ProjectCard from "@/components/project-card";
 import { getProjects } from "@/lib/project";
 import { Metadata } from "next";
 import { generatePageMetadata } from "@/lib/seo/metadata";
+import { buildBreadcrumbListSchema } from "@/lib/seo/structured-data";
+import { StructuredData } from "@/components/seo/StructuredData";
 
 export const metadata: Metadata = generatePageMetadata(
   {
@@ -15,9 +17,15 @@ export const metadata: Metadata = generatePageMetadata(
 
 const Projects = async () => {
   const projects = await getProjects();
+  
+  const breadcrumbSchema = buildBreadcrumbListSchema([
+    { name: "Home", url: "https://www.benjaminlooi.dev" },
+    { name: "Projects", url: "https://www.benjaminlooi.dev/projects" }
+  ]);
 
   return (
     <div>
+      <StructuredData schema={breadcrumbSchema} />
       <AnimatedTitle title="Projects" />
       <AnimationContainer>
         <p className="w-full text-base font-normal leading-7 text-justify text-neutral-200">
