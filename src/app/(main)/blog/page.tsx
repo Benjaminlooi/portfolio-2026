@@ -3,6 +3,8 @@ import { getBlogs } from "@/lib/blog";
 import { Metadata } from "next";
 import { generatePageMetadata } from "@/lib/seo/metadata";
 import { BlogSearch } from "@/components/blog/BlogSearch";
+import { buildBreadcrumbListSchema } from "@/lib/seo/structured-data";
+import { StructuredData } from "@/components/seo/StructuredData";
 
 export const metadata: Metadata = generatePageMetadata(
   {
@@ -15,8 +17,14 @@ export const metadata: Metadata = generatePageMetadata(
 const Blog = async () => {
   const blogs = await getBlogs();
   
+  const breadcrumbSchema = buildBreadcrumbListSchema([
+    { name: "Home", url: "https://www.benjaminlooi.dev" },
+    { name: "Blog", url: "https://www.benjaminlooi.dev/blog" }
+  ]);
+  
   return (
     <div>
+      <StructuredData schema={breadcrumbSchema} />
       <AnimatedTitle title="Blogs" />
       <p className="w-full text-base font-normal leading-7 text-justify text-neutral-200 mb-8">
         Welcome to my blog, a place where creativity and technology come to

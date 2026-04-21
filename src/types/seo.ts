@@ -48,7 +48,8 @@ export type StructuredDataSchema =
   | WithContext<Person>
   | WithContext<BlogPosting>
   | WithContext<WebSite>
-  | WithContext<BreadcrumbList>;
+  | WithContext<BreadcrumbList>
+  | WithContext<import('schema-dts').CreativeWork>;
 
 /**
  * XML Sitemap entry
