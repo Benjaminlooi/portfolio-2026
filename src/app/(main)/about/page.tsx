@@ -3,7 +3,7 @@ import SkillsSection from "@/components/sections/skill-section";
 import AnimationContainer from "@/components/animated/animated-container";
 import { Metadata } from "next";
 import { generatePageMetadata } from "@/lib/seo/metadata";
-import { buildPersonSchema, buildBreadcrumbListSchema } from "@/lib/seo/structured-data";
+import { buildPersonSchema, buildBreadcrumbListSchema, buildFAQPageSchema } from "@/lib/seo/structured-data";
 import { StructuredData } from "@/components/seo/StructuredData";
 
 export const metadata: Metadata = generatePageMetadata(
@@ -14,6 +14,21 @@ export const metadata: Metadata = generatePageMetadata(
   },
   "/about"
 );
+
+const faqData = [
+  {
+    question: "What is your primary tech stack?",
+    answer: "My primary tech stack centers around TypeScript, React, Next.js, and Node.js. I also frequently use Tailwind CSS for styling and PostgreSQL or MongoDB for databases depending on the project's requirements.",
+  },
+  {
+    question: "Are you open to freelance or contract work?",
+    answer: "Yes, I am currently open to remote opportunities, including freelance projects, contract roles, and full-time positions where I can bring hands-on, full-stack experience to a team.",
+  },
+  {
+    question: "Where are you based?",
+    answer: "I am originally from Malaysia, but I am currently based in Cambodia. I have extensive experience working asynchronously with remote teams across different time zones.",
+  },
+];
 
 const About = () => {
   // Build Person schema for about page
@@ -36,10 +51,12 @@ const About = () => {
     { name: "About", url: "https://www.benjaminlooi.dev/about" }
   ]);
 
+  const faqSchema = buildFAQPageSchema(faqData);
+
   return (
     <div className="space-y-6 lg:space-y-12">
       {/* Structured Data */}
-      <StructuredData schema={[personSchema, breadcrumbSchema]} />
+      <StructuredData schema={[personSchema, breadcrumbSchema, faqSchema]} />
 
       <div className="flex gap-6 flex-col md:flex-row items-center">
         <MyPhoto />
@@ -80,6 +97,21 @@ const About = () => {
           </div>
         </AnimationContainer>
       </div>
+
+      <AnimationContainer className="w-full py-12 lg:py-16">
+        <h2 className="mb-8 text-2xl font-bold tracking-tight text-center md:text-left text-white lg:text-start">
+          Frequently Asked Questions
+        </h2>
+        <div className="space-y-6">
+          {faqData.map((faq, index) => (
+            <div key={index} className="space-y-2">
+              <h3 className="text-lg font-medium text-white">{faq.question}</h3>
+              <p className="text-base text-neutral-300 leading-relaxed">{faq.answer}</p>
+            </div>
+          ))}
+        </div>
+      </AnimationContainer>
+
       <SkillsSection />
     </div>
   );

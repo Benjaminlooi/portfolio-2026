@@ -3,6 +3,8 @@ import type {
   BlogPosting,
   WebSite,
   BreadcrumbList,
+  FAQPage,
+  SoftwareApplication,
   WithContext,
 } from 'schema-dts';
 
@@ -145,6 +147,69 @@ export function buildBreadcrumbListSchema(
       item: crumb.url,
     })),
   };
+
+  return schema;
+}
+
+/**
+ * Build an FAQPage schema
+ * @param faqs - Array of questions and answers
+ * @returns JSON-LD FAQPage schema
+ */
+export function buildFAQPageSchema(
+  faqs: Array<{ question: string; answer: string }>
+): WithContext<FAQPage> {
+  const schema: WithContext<FAQPage> = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  };
+
+  return schema;
+}
+
+/**
+ * Build a SoftwareApplication schema for projects
+ * @param appData - Application information
+ * @returns JSON-LD SoftwareApplication schema
+ */
+export function buildSoftwareApplicationSchema(appData: {
+  name: string;
+  description: string;
+  url: string;
+  applicationCategory?: string;
+  operatingSystem?: string;
+  image?: string;
+  author?: string;
+}): WithContext<SoftwareApplication> {
+  const schema: WithContext<SoftwareApplication> = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: appData.name,
+    description: appData.description,
+    url: appData.url,
+    applicationCategory: appData.applicationCategory || 'WebApplication',
+    operatingSystem: appData.operatingSystem || 'Any',
+  };
+
+  if (appData.image) {
+    schema.image = appData.image;
+  }
+
+  if (appData.author) {
+    schema.author = {
+      '@type': 'Person',
+      name: appData.author,
+      url: SITE_URL,
+    };
+  }
 
   return schema;
 }

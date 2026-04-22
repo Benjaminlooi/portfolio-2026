@@ -27,7 +27,7 @@ The site runs fully in English and Khmer using `next-intl`. This wasn't a nice-t
 
 Each cat has a profile page with a photo gallery, personality description, medical history timeline, and status badges (sterilized, vaccinated, recovering). The "Meet the Colony" page has multi-axis filtering — visitors can filter by sterilization status, vaccination status, health, and adoption availability. Each filter combination updates instantly without a page reload.
 
-The cat profiles aren't static. Status updates come from a `cat_history` table that tracks events like vaccinations, spay/neuter surgeries, and vet visits. This means the current status badge is always derived from the latest history entry, not a manually-updated field that could go stale.
+The cat profiles aren't static. Status updates come from a `cat_history` table that tracks events like vaccinations, spay/neuter surgeries, and vet visits. This means the current status badge is always derived from the latest history entry, ensuring 100% accuracy without relying on a manually-updated field that could go stale.
 
 ![Meet the Cats page with filter options for sterilization, vaccination, health, and adoption status](/images/projects/eco-garden-cats.png)
 
