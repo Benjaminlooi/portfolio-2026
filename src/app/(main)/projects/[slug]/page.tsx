@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 import { formatDate } from "@/lib/utils";
 // import Image from "next/image";
 import AnimatedImage from "@/components/animated/animated-image";
-import { buildBreadcrumbListSchema } from "@/lib/seo/structured-data";
+import { buildBreadcrumbListSchema, buildSoftwareApplicationSchema } from "@/lib/seo/structured-data";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { WithContext, CreativeWork } from "schema-dts";
 
@@ -100,9 +100,23 @@ const Project = async ({ params }: Props) => {
     url: canonicalUrl,
   };
 
+  const schemas: any[] = [breadcrumbSchema, creativeWorkSchema];
+
+  // If the project type is 'web', it's a software application
+  if (type === 'web' || type === 'mobile' || type === 'extension') {
+    const softwareAppSchema = buildSoftwareApplicationSchema({
+      name: title as string,
+      description: description as string,
+      url: canonicalUrl,
+      image: image ? (image.startsWith('http') ? image : `https://www.benjaminlooi.dev${image}`) : undefined,
+      author: 'Benjamin Looi',
+    });
+    schemas.push(softwareAppSchema);
+  }
+
   return (
     <div className="w-full">
-      <StructuredData schema={[breadcrumbSchema, creativeWorkSchema]} />
+      <StructuredData schema={schemas} />
       <Link
         href="/projects"
         className="mb-8 inline-flex items-center gap-2 text-sm font-light text-muted-foreground transition-colors hover:text-foreground"
@@ -138,4 +152,5 @@ const Project = async ({ params }: Props) => {
     </div>
   );
 };
+
 export default Project;
