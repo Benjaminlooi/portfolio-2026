@@ -62,7 +62,7 @@ export const SKILLS = [
   {
     title: "Languages",
     icon: "Code2",
-    stacks: ["HTML", "CSS", "JavaScript", "TypeScript", "Python"],
+    stacks: ["HTML", "CSS", "JavaScript", "TypeScript", "Python", "PHP"],
   },
   {
     title: "Frontend Frameworks",
@@ -140,11 +140,8 @@ export const SKILLS = [
     title: "Other Tools",
     icon: "Wrench",
     stacks: [
-      "VS Code",
       "Git",
-      "GitHub",
       "Eslint/Prettier",
-      "Figma",
       "Postman",
       "Jira",
       "Puppeteer (end-to-end tests)",
@@ -154,31 +151,30 @@ export const SKILLS = [
   },
 ];
 
-
 // SEO Constants
-export const SITE_URL = 'https://www.benjaminlooi.dev';
-export const SITE_NAME = 'Benjamin Looi Portfolio';
-export const AUTHOR_NAME = 'Benjamin Looi';
-export const AUTHOR_EMAIL = 'benjamin@benjaminlooi.dev';
-export const DEFAULT_OG_IMAGE = '/images/og-default.png';
+export const SITE_URL = "https://www.benjaminlooi.dev";
+export const SITE_NAME = "Benjamin Looi Portfolio";
+export const AUTHOR_NAME = "Benjamin Looi";
+export const AUTHOR_EMAIL = "benjamin@benjaminlooi.dev";
+export const DEFAULT_OG_IMAGE = "/images/og-default.png";
 
 export const SOCIAL_HANDLES = {
-  twitter: '@benjaminlooi',
-  linkedin: 'benjaminlooi',
-  github: 'benjaminlooi',
+  twitter: "@benjaminlooi",
+  linkedin: "benjaminlooi",
+  github: "benjaminlooi",
 };
 
 export const DEFAULT_METADATA = {
-  title: 'Benjamin Looi - Full Stack Developer Portfolio',
+  title: "Benjamin Looi - Full Stack Developer Portfolio",
   description:
-    'Explore my portfolio showcasing expertise in web development, UI/UX design, and modern JavaScript frameworks including React, Next.js, and TypeScript. View my projects and blog posts.',
+    "Explore my portfolio showcasing expertise in web development, UI/UX design, and modern JavaScript frameworks including React, Next.js, and TypeScript. View my projects and blog posts.",
   keywords: [
-    'web development',
-    'full stack developer',
-    'React',
-    'Next.js',
-    'TypeScript',
-    'UI/UX design',
-    'portfolio',
+    "web development",
+    "full stack developer",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "UI/UX design",
+    "portfolio",
   ],
 };
