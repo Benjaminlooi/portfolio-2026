@@ -149,6 +149,18 @@ export const SKILLS = [
       "Storybook",
     ],
   },
+  {
+    title: "Security & Networking",
+    icon: "Shield",
+    stacks: [
+      "Burp Suite",
+      "Nmap",
+      "OWASP Top 10",
+      "SQL Injection Testing",
+      "Network Reconnaissance",
+      "WiFi Security",
+    ],
+  },
 ];
 
 // SEO Constants
@@ -174,7 +186,10 @@ export const DEFAULT_METADATA = {
     "React",
     "Next.js",
     "TypeScript",
+    "Node.js",
     "UI/UX design",
     "portfolio",
+    "cybersecurity",
+    "penetration testing",
   ],
 };

@@ -28,28 +28,22 @@ const Contact = () => {
           </h1>
 
           <p className="text-sm text-gray-600 dark:text-gray-300">
-            Feel free to{" "}
+            I&apos;m open to freelance, contract, or full-time remote roles.
+            I&apos;m also open to
+            relocation if the opportunity is right.{" "}
             <a
               href="mailto:hello@benjaminlooi.dev"
               className="font-medium text-blue-500 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline decoration-2 underline-offset-2 transition-colors duration-200"
             >
-              mail me
+              Email me directly
             </a>
-            ,{" "}
+            {" "}or{" "}
             <a
               href="https://cal.com/benjaminlooi"
               target="_blank"
               className="font-medium text-blue-500 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline decoration-2 underline-offset-2 transition-colors duration-200"
             >
-              schedule a meeting
-            </a>{" "}
-            or reach out to me on my social media.
-            <a
-              href="https://discord.com/users/"
-              target="_blank"
-              className="font-medium text-blue-500 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline decoration-2 underline-offset-2 transition-colors duration-200"
-            >
-              Discord
+              book a call
             </a>
             .
           </p>

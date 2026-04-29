@@ -14,9 +14,9 @@ const BlogSection = async () => {
       </h2>
 
       <p className="w-full text-base font-normal leading-7 text-justify text-neutral-200">
-        Welcome to my blog, a place where creativity and technology come to
-        life. Here, I share my journey through coding, problem-solving, and the
-        stories behind the projects I create.
+        I write about the technical problems I run into and how I solve
+        them — from Android background service quirks to building bilingual
+        apps in Khmer.
       </p>
       <div className="space-y-6 md:space-y-12 py-6 lg:py-10 sm:grid-cols-2">
         {blogs.map((blog) => (
