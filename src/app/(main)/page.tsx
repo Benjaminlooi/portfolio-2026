@@ -10,8 +10,8 @@ import { StructuredData } from "@/components/seo/StructuredData";
 
 export const metadata: Metadata = generatePageMetadata(
   {
-    title: "Benjamin Looi - Software Engineer & 10x Vibe Engineer",
-    description: "Full-stack developer from Kuala Lumpur, Malaysia. Passionate about building user-centric web applications with React, TypeScript, Next.js, and modern web technologies.",
+    title: "Benjamin Looi - Software Engineer",
+    description: "Software engineer with 5+ years building enterprise SaaS products across the full stack. Deep expertise in React, TypeScript, and Next.js, with hands-on backend and DevOps experience. Currently based in Cambodia, open to remote opportunities.",
   },
   "/"
 );
@@ -22,7 +22,7 @@ const Home = () => {
     name: "Benjamin Looi",
     url: "https://www.benjaminlooi.dev",
     jobTitle: "Software Engineer",
-    description: "Full-stack developer passionate about building user-centric web applications",
+    description: "Software engineer with 5+ years building enterprise SaaS products across the full stack",
     image: "https://www.benjaminlooi.dev/images/benjamin-looi.jpg",
     sameAs: [
       "https://github.com/BenjaminLooi",

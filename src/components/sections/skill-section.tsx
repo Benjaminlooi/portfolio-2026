@@ -13,6 +13,7 @@ import {
   Database,
   Cloud,
   Wrench,
+  Shield,
   LucideIcon,
 } from "lucide-react";
 
@@ -28,6 +29,7 @@ const iconMap: Record<string, LucideIcon> = {
   Database,
   Cloud,
   Wrench,
+  Shield,
 };
 
 const SkillsSection = () => {
@@ -38,8 +40,8 @@ const SkillsSection = () => {
           Skills & Technologies
         </h2>
         <p className="mt-3 text-base text-neutral-400 max-w-2xl">
-          I specialize in building seamless, user-friendly applications using
-          modern web technologies. Here&apos;s my toolkit:
+          Technologies I&apos;ve used professionally — in enterprise products,
+          independent projects, and everything in between.
         </p>
       </div>
 

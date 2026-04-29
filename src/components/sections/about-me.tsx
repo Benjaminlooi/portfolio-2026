@@ -9,17 +9,18 @@ const AboutMe = () => {
 
       <div className="w-full space-y-4 text-base font-normal leading-7 text-neutral-200">
         <p>
-          I&apos;m a full-stack developer based in Southeast Asia with over 5
-          years of experience building web and mobile products. Most recently, I
-          designed and shipped a point-of-sale system for restaurants in
-          Cambodia — solving real problems like dual-currency payments and
-          offline-first ordering. I also built a bilingual tech consultancy
-          platform with full English/Khmer support.
+          I&apos;ve spent the past 5+ years as a software engineer at
+          tech companies in Malaysia, building enterprise HR and POS
+          systems — from React and Vue frontends to Node.js and Laravel
+          backends. At my last role, I led a major frontend migration to a
+          Nuxt.js monorepo, built complex features like shift management
+          systems, and mentored junior developers.
         </p>
         <p>
-          I work primarily with TypeScript, React/Next.js, and Node.js. I care
-          most about building things that actually get used by real people — not
-          just demo projects.
+          I recently moved to Cambodia and have been building independently
+          — a dual-currency POS system for the local restaurant market and
+          a community cat welfare platform with KHQR donations and bilingual
+          support. I work primarily with TypeScript, React, and Next.js.
         </p>
       </div>
     </AnimationContainer>
