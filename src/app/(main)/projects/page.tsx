@@ -1,7 +1,9 @@
 import AnimationContainer from "@/components/animated/animated-container";
 import AnimatedTitle from "@/components/animated/animated-title";
 import ProjectCard from "@/components/project-card";
+import MinorProjectList from "@/components/minor-project-list";
 import { getProjects } from "@/lib/project";
+import { MINOR_PROJECTS } from "@/lib/constants";
 import { Metadata } from "next";
 import { generatePageMetadata } from "@/lib/seo/metadata";
 import { buildBreadcrumbListSchema } from "@/lib/seo/structured-data";
@@ -38,6 +40,15 @@ const Projects = async () => {
           ))}
         </div>
       </AnimationContainer>
+
+      <div className="mt-10 lg:mt-16">
+        <AnimatedTitle title="Other Projects" />
+        <AnimationContainer>
+          <div className="mt-6">
+            <MinorProjectList projects={MINOR_PROJECTS} />
+          </div>
+        </AnimationContainer>
+      </div>
     </div>
   );
 };
