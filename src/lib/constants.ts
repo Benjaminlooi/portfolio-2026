@@ -203,16 +203,24 @@ export interface MinorProject {
 }
 
 export const MINOR_PROJECTS: MinorProject[] = [
+  // {
+  //   title: "Example Mini Tool",
+  //   description: "A tiny script to do a specific thing.",
+  //   github: "https://github.com/benjaminlooi/example",
+  //   stack: ["TypeScript", "Node.js"]
+  // },
+  // {
+  //   title: "Old Portfolio",
+  //   description: "My previous personal website built in 2021.",
+  //   link: "https://old.benjaminlooi.dev",
+  //   stack: ["Gatsby", "React"]
+  // }
   {
-    title: "Example Mini Tool",
-    description: "A tiny script to do a specific thing.",
-    github: "https://github.com/benjaminlooi/example",
-    stack: ["TypeScript", "Node.js"]
+    title: "Personal portfolio (2021)",
+    description:
+      "A fully responsive, modern portfolio website built to showcase my skills, experience, and projects.",
+    github: "https://github.com/Benjaminlooi/Portfolio-2021/",
+    link: "https://2021.benjaminlooi.dev",
+    stack: ["react", "typescript", "tailwind"],
   },
-  {
-    title: "Old Portfolio",
-    description: "My previous personal website built in 2021.",
-    link: "https://old.benjaminlooi.dev",
-    stack: ["Gatsby", "React"]
-  }
 ];
