@@ -193,3 +193,26 @@ export const DEFAULT_METADATA = {
     "penetration testing",
   ],
 };
+
+export interface MinorProject {
+  title: string;
+  description: string;
+  link?: string;
+  github?: string;
+  stack?: string[];
+}
+
+export const MINOR_PROJECTS: MinorProject[] = [
+  {
+    title: "Example Mini Tool",
+    description: "A tiny script to do a specific thing.",
+    github: "https://github.com/benjaminlooi/example",
+    stack: ["TypeScript", "Node.js"]
+  },
+  {
+    title: "Old Portfolio",
+    description: "My previous personal website built in 2021.",
+    link: "https://old.benjaminlooi.dev",
+    stack: ["Gatsby", "React"]
+  }
+];
