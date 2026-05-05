@@ -9,18 +9,14 @@ const AboutMe = () => {
 
       <div className="w-full space-y-4 text-base font-normal leading-7 text-neutral-200">
         <p>
-          I&apos;ve spent the past 5+ years as a software engineer at
-          tech companies in Malaysia, building enterprise HR and POS
-          systems — from React and Vue frontends to Node.js and Laravel
-          backends. At my last role, I led a major frontend migration to a
-          Nuxt.js monorepo, built complex features like shift management
-          systems, and mentored junior developers.
+          I&apos;m a software engineer with 5+ years of experience building enterprise HR and POS systems. I spent my early career in Malaysia working across React, Vue, Node.js, and Laravel, where I recently led a major frontend migration to a Nuxt.js monorepo and built out complex shift management engines.
         </p>
         <p>
-          I recently moved to Cambodia and have been building independently
-          — a dual-currency POS system for the local restaurant market and
-          a community cat welfare platform with KHQR donations and bilingual
-          support. I work primarily with TypeScript, React, and Next.js.
+          I recently relocated to Cambodia and have been building independently to solve local problems. I'm currently developing a dual-currency POS system for the local restaurant market, alongside a bilingual community cat welfare platform integrated with KHQR donations.
+        </p>
+
+        <p>
+          My current day-to-day stack is primarily TypeScript, React, and Next.js.
         </p>
       </div>
     </AnimationContainer>
