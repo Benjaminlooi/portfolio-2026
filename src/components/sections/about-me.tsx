@@ -12,7 +12,7 @@ const AboutMe = () => {
           I&apos;m a software engineer with 5+ years of experience building enterprise HR and POS systems. I spent my early career in Malaysia working across React, Vue, Node.js, and Laravel, where I recently led a major frontend migration to a Nuxt.js monorepo and built out complex shift management engines.
         </p>
         <p>
-          I recently relocated to Cambodia and have been building independently to solve local problems. I'm currently developing a dual-currency POS system for the local restaurant market, alongside a bilingual community cat welfare platform integrated with KHQR donations.
+          I recently relocated to Cambodia and have been building independently to solve local problems. I&apos;m currently developing a dual-currency POS system for the local restaurant market, alongside a bilingual community cat welfare platform integrated with KHQR donations.
         </p>
 
         <p>

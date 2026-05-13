@@ -106,6 +106,7 @@ const Blog = async ({ params }: Props) => {
             layoutId={`blog-image-${slug}`}
             width={1000}
             height={680}
+            sizes="(min-width: 768px) 42rem, 100vw"
             loading="lazy"
             decoding="async"
           />

@@ -5,7 +5,7 @@ import ProjectsSection from "@/components/sections/project-sections";
 import SkillsSection from "@/components/sections/skill-section";
 import { Metadata } from "next";
 import { generatePageMetadata } from "@/lib/seo/metadata";
-import { buildPersonSchema, buildWebSiteSchema } from "@/lib/seo/structured-data";
+import { buildPersonSchema } from "@/lib/seo/structured-data";
 import { StructuredData } from "@/components/seo/StructuredData";
 
 export const metadata: Metadata = generatePageMetadata(
@@ -31,16 +31,10 @@ const Home = () => {
     ],
   });
 
-  const websiteSchema = buildWebSiteSchema({
-    name: "Benjamin Looi Portfolio",
-    description: "Portfolio and blog by Benjamin Looi, a software engineer specializing in web development",
-    url: "https://www.benjaminlooi.dev",
-  });
-
   return (
     <div>
       {/* Structured Data */}
-      <StructuredData schema={[personSchema, websiteSchema]} />
+      <StructuredData schema={personSchema} />
       
       <Hero />
       <AboutMe />

@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import Fuse from "fuse.js";
+import type { z } from "zod";
 import { BlogPostFrontmatterSchema } from "./seo/validation";
 import { getProjectMetadata, type ProjectMetadata } from "./project";
 
@@ -268,8 +269,8 @@ export function getRelatedBlogsForProject(
  */
 export function validateFrontmatter(frontmatter: unknown): {
   success: boolean;
-  data?: any;
-  error?: any;
+  data?: z.infer<typeof BlogPostFrontmatterSchema>;
+  error?: z.ZodError | unknown;
 } {
   try {
     const result = BlogPostFrontmatterSchema.safeParse(frontmatter);

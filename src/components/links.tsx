@@ -7,11 +7,7 @@ import { BsLinkedin as LinkedinIcon } from "react-icons/bs";
 import { BsGithub as GithubIcon } from "react-icons/bs";
 import { CalDotComIcon } from "./ui/icons";
 
-import {
-  BsTwitterX as TwitterXIcon,
-  BsDiscord as DiscordIcon,
-} from "react-icons/bs";
-import { BsInstagram as InstagramIcon } from "react-icons/bs";
+import { BsTwitterX as TwitterXIcon } from "react-icons/bs";
 import { GlobeIcon, MailIcon } from "lucide-react";
 
 import { SocialLink } from "@/components/social-link";
@@ -64,7 +60,7 @@ const Links = () => (
       className="text-center mb-7 md:mb-10"
     >
       <motion.img
-        src="/images/benjamin-looi.png"
+        src="/images/benjamin-looi.jpg"
         alt="Benjamin Looi"
         className="w-28 h-28 md:w-36 md:h-36 aspect-square rounded-full mx-auto mb-4 border-2 border-white shadow-lg"
         initial={{ scale: 0 }}

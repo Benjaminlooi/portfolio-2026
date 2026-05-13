@@ -6,6 +6,12 @@ const SITE_NAME = 'Benjamin Looi Portfolio';
 const AUTHOR_NAME = 'Benjamin Looi';
 const DEFAULT_OG_IMAGE = '/images/og-default.png';
 
+export function absoluteUrl(pathOrUrl?: string): string | undefined {
+  if (!pathOrUrl) return undefined;
+  if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
+  return `${SITE_URL}${pathOrUrl.startsWith('/') ? pathOrUrl : `/${pathOrUrl}`}`;
+}
+
 /**
  * Generate Next.js Metadata from page data
  * @param pageData - Page title and description
@@ -60,7 +66,7 @@ export function generateBlogMetadata(
 ): Metadata {
   const canonicalUrl = frontmatter.canonical || `${SITE_URL}${path}`;
   const description = frontmatter.metaDescription || frontmatter.description;
-  const ogImage = frontmatter.ogImage || `${SITE_URL}${DEFAULT_OG_IMAGE}`;
+  const ogImage = absoluteUrl(frontmatter.ogImage) || `${SITE_URL}${DEFAULT_OG_IMAGE}`;
 
   const metadata: Metadata = {
     title: frontmatter.title,
@@ -122,29 +128,33 @@ export function generateBlogMetadata(
  * @returns PageMetadata object
  */
 export function generateMetadata(
-  frontmatter: Partial<BlogPostFrontmatter> & { title: string },
+  frontmatter: Partial<BlogPostFrontmatter> & {
+    title: string;
+    metaDescription?: string;
+    date?: string;
+  },
   path: string
 ): PageMetadata {
   const canonicalUrl = frontmatter.canonical || `${SITE_URL}${path}`;
   const description =
-    (frontmatter as any).metaDescription ||
+    frontmatter.metaDescription ||
     frontmatter.description ||
     'Portfolio and blog by Benjamin Looi';
-  const ogImage = frontmatter.ogImage || `${SITE_URL}${DEFAULT_OG_IMAGE}`;
+  const ogImage = absoluteUrl(frontmatter.ogImage) || `${SITE_URL}${DEFAULT_OG_IMAGE}`;
 
   const metadata: PageMetadata = {
     title: frontmatter.title,
     description,
     canonicalUrl,
     ogImage,
-    ogType: (frontmatter as any).date ? 'article' : 'website',
+    ogType: frontmatter.date ? 'article' : 'website',
     twitterCard: 'summary_large_image',
     author: AUTHOR_NAME,
   };
 
   // Add publication/modification times for articles
-  if ((frontmatter as any).date) {
-    metadata.publishedTime = (frontmatter as any).date;
+  if (frontmatter.date) {
+    metadata.publishedTime = frontmatter.date;
     if (frontmatter.lastModified) {
       metadata.modifiedTime = frontmatter.lastModified;
     }

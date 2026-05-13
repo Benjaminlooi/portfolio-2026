@@ -89,6 +89,22 @@ const nextConfig = {
       },
     ];
   },
+
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'blog.benjaminlooi.dev',
+          },
+        ],
+        destination: 'https://www.benjaminlooi.dev/blog',
+        permanent: true,
+      },
+    ];
+  },
   
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   webpack: (config: any) => {

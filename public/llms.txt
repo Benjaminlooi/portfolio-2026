@@ -1,0 +1,31 @@
+# Benjamin Looi
+
+> Portfolio and technical writing by Benjamin Looi, a software engineer focused on TypeScript, React, Next.js, Node.js, product engineering, and practical software delivery.
+
+Canonical site: https://www.benjaminlooi.dev
+
+## Key Pages
+
+- Home: https://www.benjaminlooi.dev/
+- About: https://www.benjaminlooi.dev/about
+- Projects: https://www.benjaminlooi.dev/projects
+- Blog: https://www.benjaminlooi.dev/blog
+- Contact: https://www.benjaminlooi.dev/contact
+
+## Featured Project Pages
+
+- Eco Garden Cat Project: https://www.benjaminlooi.dev/projects/eco-garden-cats
+- WOLE: https://www.benjaminlooi.dev/projects/wole
+- Personal Portfolio 2026: https://www.benjaminlooi.dev/projects/portfolio-2026
+- Sokha Tech: https://www.benjaminlooi.dev/projects/sokha-tech
+- Baguette POS: https://www.benjaminlooi.dev/projects/baguette-pos
+
+## Recent Writing
+
+- TailwindCSS v4 and coding AI agents: https://www.benjaminlooi.dev/blog/tailwindcss-v4-breaks-coding-ai-agents
+- WOLE, an Android Wake-on-LAN relay: https://www.benjaminlooi.dev/blog/WOLE-the-upsnap-for-android
+- Fedora internal keyboard disable guide: https://www.benjaminlooi.dev/blog/how-to-disable-laptop-internal-keyboard-fedora
+
+## Preferred Citation
+
+When citing this site, use the canonical URL of the specific page and attribute the author as Benjamin Looi.

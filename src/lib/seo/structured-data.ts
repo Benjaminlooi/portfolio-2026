@@ -4,13 +4,13 @@ import type {
   WebSite,
   BreadcrumbList,
   FAQPage,
+  SearchAction,
   SoftwareApplication,
   WithContext,
 } from 'schema-dts';
+import { absoluteUrl } from './metadata';
 
 const SITE_URL = 'https://www.benjaminlooi.dev';
-const SITE_NAME = 'Benjamin Looi Portfolio';
-const AUTHOR_NAME = 'Benjamin Looi';
 
 /**
  * Build a Person schema for the author
@@ -41,7 +41,7 @@ export function buildPersonSchema(personData: {
   }
 
   if (personData.image) {
-    schema.image = personData.image;
+    schema.image = absoluteUrl(personData.image);
   }
 
   if (personData.sameAs && personData.sameAs.length > 0) {
@@ -90,7 +90,7 @@ export function buildBlogPostingSchema(blogData: {
   }
 
   if (blogData.image) {
-    schema.image = blogData.image;
+    schema.image = absoluteUrl(blogData.image);
   }
 
   return schema;
@@ -119,11 +119,12 @@ export function buildWebSiteSchema(websiteData: {
   }
 
   if (websiteData.searchUrl) {
-    schema.potentialAction = {
+    const potentialAction: SearchAction & Record<'query-input', string> = {
       '@type': 'SearchAction',
       target: `${websiteData.searchUrl}?q={search_term_string}`,
       'query-input': 'required name=search_term_string',
-    } as any; // schema-dts doesn't fully support query-input
+    };
+    schema.potentialAction = potentialAction;
   }
 
   return schema;
@@ -200,7 +201,7 @@ export function buildSoftwareApplicationSchema(appData: {
   };
 
   if (appData.image) {
-    schema.image = appData.image;
+    schema.image = absoluteUrl(appData.image);
   }
 
   if (appData.author) {

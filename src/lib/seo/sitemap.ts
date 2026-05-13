@@ -7,6 +7,39 @@ const SITE_URL = 'https://www.benjaminlooi.dev';
 const BLOG_DIR = path.join(process.cwd(), 'src/content/blogs');
 const PROJECT_DIR = path.join(process.cwd(), 'src/content/projects');
 
+const STATIC_PAGES = [
+  {
+    path: '/',
+    priority: 1.0,
+    changeFrequency: 'weekly' as const,
+    lastModified: '2026-03-05',
+  },
+  {
+    path: '/about',
+    priority: 0.9,
+    changeFrequency: 'monthly' as const,
+    lastModified: '2026-03-05',
+  },
+  {
+    path: '/projects',
+    priority: 0.9,
+    changeFrequency: 'weekly' as const,
+    lastModified: '2026-03-05',
+  },
+  {
+    path: '/blog',
+    priority: 0.9,
+    changeFrequency: 'weekly' as const,
+    lastModified: '2026-05-05',
+  },
+  {
+    path: '/contact',
+    priority: 0.9,
+    changeFrequency: 'monthly' as const,
+    lastModified: '2026-03-05',
+  },
+];
+
 /**
  * Calculate priority for a URL based on its type and properties
  * @param pathname - URL pathname
@@ -103,18 +136,10 @@ export function getChangeFrequency(
 export async function generateSitemap(): Promise<MetadataRoute.Sitemap> {
   const sitemap: MetadataRoute.Sitemap = [];
 
-  const staticPages = [
-    { path: '/', priority: 1.0, changeFrequency: 'weekly' as const },
-    { path: '/about', priority: 0.9, changeFrequency: 'monthly' as const },
-    { path: '/projects', priority: 0.9, changeFrequency: 'weekly' as const },
-    { path: '/blog', priority: 0.9, changeFrequency: 'weekly' as const },
-    { path: '/contact', priority: 0.9, changeFrequency: 'monthly' as const },
-  ];
-
-  staticPages.forEach((page) => {
+  STATIC_PAGES.forEach((page) => {
     sitemap.push({
       url: `${SITE_URL}${page.path}`,
-      lastModified: new Date(),
+      lastModified: new Date(page.lastModified),
       changeFrequency: page.changeFrequency,
       priority: page.priority,
     });
@@ -135,7 +160,11 @@ export async function generateSitemap(): Promise<MetadataRoute.Sitemap> {
           const slug = file.replace(/\.mdx$/, '');
           const pathname = `/blog/${slug}`;
 
-          const publishDate = data.date ? new Date(data.date) : undefined;
+          const publishDate = data.publishedAt
+            ? new Date(data.publishedAt)
+            : data.date
+              ? new Date(data.date)
+              : undefined;
           const lastModified = data.lastModified
             ? new Date(data.lastModified)
             : publishDate || new Date();

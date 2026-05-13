@@ -33,9 +33,11 @@ export function TableOfContents() {
 
   useEffect(() => {
     const collected = getHeadings();
-    setHeadings(collected);
+    const frame = window.requestAnimationFrame(() => setHeadings(collected));
 
-    if (collected.length === 0) return;
+    if (collected.length === 0) {
+      return () => window.cancelAnimationFrame(frame);
+    }
 
     // Track all heading visibility, determine the topmost visible one
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
@@ -69,6 +71,7 @@ export function TableOfContents() {
     }
 
     return () => {
+      window.cancelAnimationFrame(frame);
       observerRef.current?.disconnect();
     };
   }, [getHeadings]);

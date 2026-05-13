@@ -3,6 +3,8 @@ import type {
   BlogPosting,
   WebSite,
   BreadcrumbList,
+  FAQPage,
+  SoftwareApplication,
   WithContext,
 } from 'schema-dts';
 
@@ -49,6 +51,8 @@ export type StructuredDataSchema =
   | WithContext<BlogPosting>
   | WithContext<WebSite>
   | WithContext<BreadcrumbList>
+  | WithContext<FAQPage>
+  | WithContext<SoftwareApplication>
   | WithContext<import('schema-dts').CreativeWork>;
 
 /**

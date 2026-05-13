@@ -14,6 +14,7 @@ import ProjectCard from "@/components/project-card";
 import { buildBreadcrumbListSchema, buildSoftwareApplicationSchema } from "@/lib/seo/structured-data";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { WithContext, CreativeWork } from "schema-dts";
+import type { StructuredDataSchema } from "@/types/seo";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -105,7 +106,7 @@ const Project = async ({ params }: Props) => {
     url: canonicalUrl,
   };
 
-  const schemas: any[] = [breadcrumbSchema, creativeWorkSchema];
+  const schemas: StructuredDataSchema[] = [breadcrumbSchema, creativeWorkSchema];
 
   // If the project type is 'web', it's a software application
   if (type === 'web' || type === 'mobile' || type === 'extension') {
@@ -139,6 +140,7 @@ const Project = async ({ params }: Props) => {
           layoutId={`project-image-${slug}`}
           width={1000}
           height={680}
+          sizes="(min-width: 768px) 64rem, 100vw"
           loading="lazy"
           decoding="async"
         />

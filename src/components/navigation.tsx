@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "motion/react";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { LINKS } from "@/lib/constants";
@@ -21,29 +21,29 @@ const Navigation = () => {
   const isBlogActive = pathname?.startsWith("/blog");
 
   const [isVisible, setIsVisible] = useState(true);
-  const [prevScrollY, setPrevScrollY] = useState(0);
-
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY;
-
-    if (currentScrollY > prevScrollY && currentScrollY > 500) {
-      setTimeout(() => {
-        setIsVisible(false);
-      }, 200);
-    } else {
-      setIsVisible(true);
-    }
-
-    setPrevScrollY(currentScrollY);
-  };
+  const prevScrollY = useRef(0);
 
   useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > prevScrollY.current && currentScrollY > 500) {
+        setTimeout(() => {
+          setIsVisible(false);
+        }, 200);
+      } else {
+        setIsVisible(true);
+      }
+
+      prevScrollY.current = currentScrollY;
+    };
+
     window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [prevScrollY]);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

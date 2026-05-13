@@ -21,6 +21,7 @@ const BlogCard: React.FC<Props> = ({ blog }) => {
             className="absolute inset-0 h-full w-full rounded-2xl ] object-cover"
             width={960}
             height={480}
+            sizes="(min-width: 768px) 16rem, 100vw"
             layout
             layoutId={`blog-image-${blog.slug}`}
             loading="lazy"
