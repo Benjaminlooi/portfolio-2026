@@ -1,4 +1,4 @@
-import { getBlogBySlug, getBlogs, getRelatedPosts } from "@/lib/blog";
+import { getBlogBySlug, getBlogs, getRelatedPosts, getRelatedProjectsForBlog } from "@/lib/blog";
 import { notFound } from "next/navigation";
 import MDXContent from "@/components/mdx-content";
 import Link from "next/link";
@@ -13,6 +13,7 @@ import AnimatedImage from "@/components/animated/animated-image";
 import AnimatedSignature from "@/components/animated/animated-signature";
 import AnimationContainer from "@/components/animated/animated-container";
 import BlogCard from "@/components/blog-card";
+import ProjectCard from "@/components/project-card";
 import { TableOfContents } from "@/components/blog/table-of-content";
 import GiscusComments from "@/components/blog/GiscusComments";
 
@@ -66,6 +67,7 @@ const Blog = async ({ params }: Props) => {
 
   // Get related posts
   const relatedPosts = getRelatedPosts(slug, 3);
+  const relatedProjects = getRelatedProjectsForBlog(slug, 2);
 
   // Build structured data for blog post
   const blogPostSchema = buildBlogPostingSchema({
@@ -145,6 +147,17 @@ const Blog = async ({ params }: Props) => {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {relatedPosts.map((relatedPost) => (
               <BlogCard key={relatedPost.slug} blog={relatedPost} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {relatedProjects.length > 0 && (
+        <div className="mt-12 pt-8 border-t">
+          <h2 className="text-2xl font-bold mb-6">Related Projects</h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            {relatedProjects.map((relatedProject) => (
+              <ProjectCard key={relatedProject.slug} project={relatedProject} />
             ))}
           </div>
         </div>

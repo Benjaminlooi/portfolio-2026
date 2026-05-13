@@ -87,3 +87,61 @@ export function getProjectMetadata(filepath: string): ProjectMetadata {
     type: data.type ?? "",
   };
 }
+
+function normalizeTerm(term: string): string {
+  return term.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+function termsOverlap(a: string, b: string): boolean {
+  const normalizedA = normalizeTerm(a);
+  const normalizedB = normalizeTerm(b);
+
+  if (!normalizedA || !normalizedB) return false;
+  if (normalizedA === normalizedB) return true;
+  if (normalizedA.length < 3 || normalizedB.length < 3) return false;
+
+  return (
+    normalizedA.includes(normalizedB) ||
+    normalizedB.includes(normalizedA)
+  );
+}
+
+function scoreProjectSimilarity(
+  currentProject: ProjectMetadata,
+  candidateProject: ProjectMetadata
+): number {
+  const sharedStack = candidateProject.stack.filter((stack) =>
+    currentProject.stack.some((currentStack) => termsOverlap(stack, currentStack))
+  ).length;
+
+  const sameType = currentProject.type === candidateProject.type ? 1 : 0;
+
+  return sharedStack * 3 + sameType;
+}
+
+export function getRelatedProjects(
+  currentSlug: string,
+  limit: number = 3
+): ProjectMetadata[] {
+  const allProjects = fs
+    .readdirSync(rootDirectory)
+    .filter((file) => file.endsWith(".mdx"))
+    .map((file) => getProjectMetadata(file));
+
+  const currentProject = allProjects.find((project) => project.slug === currentSlug);
+  if (!currentProject) return [];
+
+  return allProjects
+    .filter((project) => project.slug !== currentSlug)
+    .map((project) => ({
+      project,
+      score: scoreProjectSimilarity(currentProject, project),
+    }))
+    .filter((item) => item.score > 0)
+    .sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      return new Date(b.project.date).getTime() - new Date(a.project.date).getTime();
+    })
+    .slice(0, limit)
+    .map((item) => item.project);
+}

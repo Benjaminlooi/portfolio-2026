@@ -15,7 +15,7 @@ github: "https://github.com/Benjaminlooi/WOLE"
 
 I needed a reliable way to wake my home server remotely. The problem: standard Wake-on-LAN only works if you have a device on the same LAN to send the magic packet. Most dedicated WOL tools require a Raspberry Pi or always-on machine — but I always have my phone on the same network.
 
-WOLE turns an Android phone into a persistent WOL relay. It runs as a foreground service, exposes a `POST /wol` HTTP endpoint, and broadcasts UDP magic packets on the local network. Pair it with Tailscale or WireGuard and you can wake any machine from anywhere — no port forwarding, no dedicated hardware.
+WOLE turns an Android phone into a persistent WOL relay. It runs as a foreground service, exposes a `POST /wol` HTTP endpoint, and broadcasts UDP magic packets on the local network. Pair it with Tailscale or WireGuard and you can wake any machine from anywhere — no port forwarding, no dedicated hardware. I wrote more about the product idea in [WOLE: The UpSnap for Android](/blog/WOLE-the-upsnap-for-android).
 
 ![WOLE app main screen with status orb and relay controls](/images/projects/wole.png)
 

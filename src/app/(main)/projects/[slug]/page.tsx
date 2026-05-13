@@ -1,4 +1,5 @@
-import { getProjectBySlug, getProjects } from "@/lib/project";
+import { getProjectBySlug, getProjects, getRelatedProjects } from "@/lib/project";
+import { getRelatedBlogsForProject } from "@/lib/blog";
 import { notFound } from "next/navigation";
 import MDXContent from "@/components/mdx-content";
 import Link from "next/link";
@@ -8,6 +9,8 @@ import type { Metadata } from "next";
 import { formatDate } from "@/lib/utils";
 // import Image from "next/image";
 import AnimatedImage from "@/components/animated/animated-image";
+import BlogCard from "@/components/blog-card";
+import ProjectCard from "@/components/project-card";
 import { buildBreadcrumbListSchema, buildSoftwareApplicationSchema } from "@/lib/seo/structured-data";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { WithContext, CreativeWork } from "schema-dts";
@@ -79,6 +82,8 @@ const Project = async ({ params }: Props) => {
   const { metadata, content } = project;
   const { title, image, date, description, type } = metadata;
   const canonicalUrl = `https://www.benjaminlooi.dev/projects/${slug}`;
+  const relatedProjects = getRelatedProjects(slug, 2);
+  const relatedBlogs = getRelatedBlogsForProject(metadata, 3);
 
   const breadcrumbSchema = buildBreadcrumbListSchema([
     { name: "Home", url: "https://www.benjaminlooi.dev" },
@@ -149,6 +154,28 @@ const Project = async ({ params }: Props) => {
       <div className="prose w-full max-w-full my-6 md:mb-10 prose-invert">
         <MDXContent source={content} />
       </div>
+
+      {relatedProjects.length > 0 && (
+        <section className="mt-12 pt-8 border-t">
+          <h2 className="text-2xl font-bold mb-6">Related Projects</h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            {relatedProjects.map((relatedProject) => (
+              <ProjectCard key={relatedProject.slug} project={relatedProject} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {relatedBlogs.length > 0 && (
+        <section className="mt-12 pt-8 border-t">
+          <h2 className="text-2xl font-bold mb-6">Related Writing</h2>
+          <div className="grid gap-6">
+            {relatedBlogs.map((relatedBlog) => (
+              <BlogCard key={relatedBlog.slug} blog={relatedBlog} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 };

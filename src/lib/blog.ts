@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import Fuse from "fuse.js";
 import { BlogPostFrontmatterSchema } from "./seo/validation";
+import { getProjectMetadata, type ProjectMetadata } from "./project";
 
 const rootDirectory = path.join(process.cwd(), "src/content/blogs");
 
@@ -151,6 +152,113 @@ export function getRelatedPosts(
     .sort((a, b) => b.score - a.score);
 
   return postsWithScore.slice(0, limit).map((item) => item.post);
+}
+
+function normalizeTerm(term: string): string {
+  return term.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+function termsOverlap(a: string, b: string): boolean {
+  const normalizedA = normalizeTerm(a);
+  const normalizedB = normalizeTerm(b);
+
+  if (!normalizedA || !normalizedB) return false;
+  if (normalizedA === normalizedB) return true;
+  if (normalizedA.length < 3 || normalizedB.length < 3) return false;
+
+  return (
+    normalizedA.includes(normalizedB) ||
+    normalizedB.includes(normalizedA)
+  );
+}
+
+export function getRelatedProjectsForBlog(
+  currentSlug: string,
+  limit: number = 3
+): ProjectMetadata[] {
+  const allPosts = fs
+    .readdirSync(rootDirectory)
+    .filter((file) => file.endsWith(".mdx"))
+    .map((file) => getBlogMetadata(file));
+
+  const currentPost = allPosts.find((post) => post.slug === currentSlug);
+  if (!currentPost) return [];
+
+  const projectDirectory = path.join(process.cwd(), "src/content/projects");
+  const postTerms = [
+    currentPost.slug,
+    currentPost.title ?? "",
+    ...(currentPost.tags ?? []),
+    ...(currentPost.keywords ?? []),
+  ];
+
+  return fs
+    .readdirSync(projectDirectory)
+    .filter((file) => file.endsWith(".mdx"))
+    .map((file) => getProjectMetadata(file))
+    .map((project) => {
+      const projectTerms = [
+        project.slug,
+        project.title,
+        project.type,
+        project.description,
+        ...project.stack,
+      ];
+      const score = postTerms.filter((postTerm) =>
+        projectTerms.some((projectTerm) => termsOverlap(postTerm, projectTerm))
+      ).length;
+
+      return { project, score };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      return new Date(b.project.date).getTime() - new Date(a.project.date).getTime();
+    })
+    .slice(0, limit)
+    .map((item) => item.project);
+}
+
+export function getRelatedBlogsForProject(
+  project: ProjectMetadata,
+  limit: number = 3
+): BlogMetadata[] {
+  const projectTerms = [
+    project.slug,
+    project.title,
+    project.type,
+    project.description,
+    ...project.stack,
+  ];
+
+  return fs
+    .readdirSync(rootDirectory)
+    .filter((file) => file.endsWith(".mdx"))
+    .map((file) => getBlogMetadata(file))
+    .map((blog) => {
+      const blogTerms = [
+        blog.slug,
+        blog.title ?? "",
+        blog.summary ?? "",
+        ...(blog.tags ?? []),
+        ...(blog.keywords ?? []),
+      ];
+      const score = blogTerms.filter((blogTerm) =>
+        projectTerms.some((projectTerm) => termsOverlap(blogTerm, projectTerm))
+      ).length;
+
+      return { blog, score };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      return (
+        new Date(b.blog.publishedAt ?? "").getTime() -
+        new Date(a.blog.publishedAt ?? "").getTime()
+      );
+    })
+    .slice(0, limit)
+    .map((item) => item.blog);
 }
 
 /**

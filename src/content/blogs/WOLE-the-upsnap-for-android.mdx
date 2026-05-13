@@ -12,7 +12,7 @@ tags: ["android", "wake-on-lan", "react-native", "expo", "homelab", "networking"
 
 I had an old Android phone collecting dust in a drawer. I also had a homelab where I kept shutting down machines to save power, then needing to walk over and press the power button when I wanted to use them again. Wake-on-LAN exists, but I needed something on the network to actually send the magic packet — and I didn't want to buy a Raspberry Pi just for that.
 
-So I built WOLE. It turns any Android phone into a WOL relay by running a small HTTP server as a foreground service. You send it a POST request with a MAC address, it broadcasts the magic packet on the local network, and your machine wakes up.
+So I built [WOLE](/projects/wole). It turns any Android phone into a WOL relay by running a small HTTP server as a foreground service. You send it a POST request with a MAC address, it broadcasts the magic packet on the local network, and your machine wakes up.
 
 That's it. That's the whole idea.
 
