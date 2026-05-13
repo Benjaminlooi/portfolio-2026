@@ -1,6 +1,6 @@
 # Benjamin Looi Portfolio
 
-![Portfolio](./src/app/opengraph-image.png)
+![Portfolio](./public/images/og-default.png)
 
 Welcome to my portfolio repository! This project showcases my work, skills, and projects using modern technologies to create a highly performant, mobile-responsive, and beautifully designed portfolio site.
 
@@ -11,19 +11,24 @@ Welcome to my portfolio repository! This project showcases my work, skills, and 
 - **Performant**: Built with optimized code to ensure fast load times and smooth performance.
 - **Mobile Responsive**: Fully responsive design for seamless user experience across devices.
 - **Beautiful UI**: Crafted with attention to detail and aesthetics using Radix UI and Tailwind CSS.
-- **Static Builds**: Generates static pages for improved performance and deployment ease.
-- **Highly SEO Optimized**: Structured and designed to achieve excellent search engine rankings.
+- **Side Projects Directory**: A clean, scannable list of minor projects and tools.
+- **Blog Search & Filtering**: Fast, client-side search for technical articles.
+- **Comments System**: Integrated Giscus (GitHub Discussions) for community interaction.
+- **Smart Content Linking**: Automatically relates blog posts and projects using a similarity-scoring engine.
+- **Highly SEO Optimized**: Structured Data (JSON-LD), automatic Sitemap, and RSS feed generation.
 
 ---
 
 ## Tech Stack
 
-- **[Next 15](https://nextjs.org/)**: Framework for server-rendered React applications.
+- **[Next 16](https://nextjs.org/)**: Framework for server-rendered React applications.
+- **[React 19](https://react.dev/)**: The latest version of React with improved performance and features.
 - **[TypeScript](https://www.typescriptlang.org/)**: Typed JavaScript for enhanced developer experience and code quality.
 - **[Tailwind CSS](https://tailwindcss.com/)**: Utility-first CSS framework for styling.
 - **[Radix UI](https://www.radix-ui.com/)**: Accessible and unstyled UI primitives.
 - **[Motion](https://www.motion.dev/)**: Library for animations and interactive UI.
 - **[Remote MDX](https://mdxjs.com/)**: For rendering Markdown and JSX in the same file.
+- **[Giscus](https://giscus.app/)**: A comments system powered by GitHub Discussions.
 - **[PostHog](https://posthog.com/)**: Analytics platform for understanding user behavior.
 
 ---
@@ -42,9 +47,9 @@ Ensure you have the following installed:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/benjaminlooi/benjaminlooi-portfolio-2025
+   git clone https://github.com/benjaminlooi/portfolio-2026
 
-   cd benjaminlooi-portfolio-2025
+   cd portfolio-2026
    ```
 
 2. Install dependencies:
@@ -84,6 +89,7 @@ Contributions are appreciated! Feel free to open issues for suggestions or feedb
 - **Tailwind CSS** for utility-first styling.
 - **Radix UI** for accessible and customizable components.
 - **Motion** for smooth animations.
+- **Giscus** for the comments system.
 - **PostHog** for insightful analytics.
 
 ## Connect with Me
