@@ -1,39 +1,39 @@
 import Link from "next/link";
+import { getProjects } from "@/lib/project";
+import { cn } from "@/lib/utils";
 import AnimationContainer from "../animated/animated-container";
 import ProjectCard from "../project-card";
 import { buttonVariants } from "../ui/button";
-import { cn } from "@/lib/utils";
-import { getProjects } from "@/lib/project";
 
 const ProjectsSection = async () => {
-  const projects = await getProjects(6);
-  return (
-    <AnimationContainer className="w-full py-12 lg:py-16">
-      <h2 className="mb-8 text-2xl font-bold tracking-tight text-center text-white lg:text-start">
-        Projects
-      </h2>
+	const projects = await getProjects(6);
+	return (
+		<AnimationContainer className="w-full py-12 lg:py-16">
+			<h2 className="mb-8 text-2xl font-bold tracking-tight text-center text-white lg:text-start">
+				Projects
+			</h2>
 
-      <p className="w-full text-base font-normal leading-7 text-justify text-neutral-200">
-        Production applications I&apos;ve designed and shipped — each one
-        solving a specific problem for a specific audience.
-      </p>
-      <div className="grid grid-cols-1 gap-3 py-6 lg:py-10 sm:grid-cols-2">
-        {projects.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
-        ))}
-      </div>
-      <div className="flex justify-center w-full">
-        <Link
-          href="/projects"
-          className={cn(
-            buttonVariants({ size: "lg" }),
-            "mx-auto rounded-full text-center"
-          )}
-        >
-          More Projects
-        </Link>
-      </div>
-    </AnimationContainer>
-  );
+			<p className="w-full text-base font-normal leading-7 text-justify text-neutral-200">
+				Production applications I&apos;ve designed and shipped — each one
+				solving a specific problem for a specific audience.
+			</p>
+			<div className="grid grid-cols-1 gap-3 py-6 lg:py-10 sm:grid-cols-2">
+				{projects.map((project) => (
+					<ProjectCard key={project.slug} project={project} />
+				))}
+			</div>
+			<div className="flex justify-center w-full">
+				<Link
+					href="/projects"
+					className={cn(
+						buttonVariants({ size: "lg" }),
+						"mx-auto rounded-full text-center",
+					)}
+				>
+					More Projects
+				</Link>
+			</div>
+		</AnimationContainer>
+	);
 };
 export default ProjectsSection;

@@ -1,4 +1,4 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 import { generateSitemap } from "@/lib/seo/sitemap";
 
 /**
@@ -7,5 +7,5 @@ import { generateSitemap } from "@/lib/seo/sitemap";
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  return await generateSitemap();
+	return await generateSitemap();
 }

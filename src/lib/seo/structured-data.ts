@@ -1,16 +1,16 @@
 import type {
-  Person,
-  BlogPosting,
-  WebSite,
-  BreadcrumbList,
-  FAQPage,
-  SearchAction,
-  SoftwareApplication,
-  WithContext,
-} from 'schema-dts';
-import { absoluteUrl } from './metadata';
+	BlogPosting,
+	BreadcrumbList,
+	FAQPage,
+	Person,
+	SearchAction,
+	SoftwareApplication,
+	WebSite,
+	WithContext,
+} from "schema-dts";
+import { absoluteUrl } from "./metadata";
 
-const SITE_URL = 'https://www.benjaminlooi.dev';
+const SITE_URL = "https://www.benjaminlooi.dev";
 
 /**
  * Build a Person schema for the author
@@ -18,37 +18,37 @@ const SITE_URL = 'https://www.benjaminlooi.dev';
  * @returns JSON-LD Person schema
  */
 export function buildPersonSchema(personData: {
-  name: string;
-  url: string;
-  jobTitle?: string;
-  description?: string;
-  image?: string;
-  sameAs?: string[];
+	name: string;
+	url: string;
+	jobTitle?: string;
+	description?: string;
+	image?: string;
+	sameAs?: string[];
 }): WithContext<Person> {
-  const schema: WithContext<Person> = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: personData.name,
-    url: personData.url,
-  };
+	const schema: WithContext<Person> = {
+		"@context": "https://schema.org",
+		"@type": "Person",
+		name: personData.name,
+		url: personData.url,
+	};
 
-  if (personData.jobTitle) {
-    schema.jobTitle = personData.jobTitle;
-  }
+	if (personData.jobTitle) {
+		schema.jobTitle = personData.jobTitle;
+	}
 
-  if (personData.description) {
-    schema.description = personData.description;
-  }
+	if (personData.description) {
+		schema.description = personData.description;
+	}
 
-  if (personData.image) {
-    schema.image = absoluteUrl(personData.image);
-  }
+	if (personData.image) {
+		schema.image = absoluteUrl(personData.image);
+	}
 
-  if (personData.sameAs && personData.sameAs.length > 0) {
-    schema.sameAs = personData.sameAs;
-  }
+	if (personData.sameAs && personData.sameAs.length > 0) {
+		schema.sameAs = personData.sameAs;
+	}
 
-  return schema;
+	return schema;
 }
 
 /**
@@ -57,43 +57,43 @@ export function buildPersonSchema(personData: {
  * @returns JSON-LD BlogPosting schema
  */
 export function buildBlogPostingSchema(blogData: {
-  headline: string;
-  description?: string;
-  author: string;
-  datePublished: string;
-  dateModified?: string;
-  url: string;
-  image?: string;
+	headline: string;
+	description?: string;
+	author: string;
+	datePublished: string;
+	dateModified?: string;
+	url: string;
+	image?: string;
 }): WithContext<BlogPosting> {
-  const schema: WithContext<BlogPosting> = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: blogData.headline,
-    author: {
-      '@type': 'Person',
-      name: blogData.author,
-      url: SITE_URL,
-    },
-    datePublished: blogData.datePublished,
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': blogData.url,
-    },
-  };
+	const schema: WithContext<BlogPosting> = {
+		"@context": "https://schema.org",
+		"@type": "BlogPosting",
+		headline: blogData.headline,
+		author: {
+			"@type": "Person",
+			name: blogData.author,
+			url: SITE_URL,
+		},
+		datePublished: blogData.datePublished,
+		mainEntityOfPage: {
+			"@type": "WebPage",
+			"@id": blogData.url,
+		},
+	};
 
-  if (blogData.description) {
-    schema.description = blogData.description;
-  }
+	if (blogData.description) {
+		schema.description = blogData.description;
+	}
 
-  if (blogData.dateModified) {
-    schema.dateModified = blogData.dateModified;
-  }
+	if (blogData.dateModified) {
+		schema.dateModified = blogData.dateModified;
+	}
 
-  if (blogData.image) {
-    schema.image = absoluteUrl(blogData.image);
-  }
+	if (blogData.image) {
+		schema.image = absoluteUrl(blogData.image);
+	}
 
-  return schema;
+	return schema;
 }
 
 /**
@@ -102,32 +102,32 @@ export function buildBlogPostingSchema(blogData: {
  * @returns JSON-LD WebSite schema
  */
 export function buildWebSiteSchema(websiteData: {
-  name: string;
-  url: string;
-  description?: string;
-  searchUrl?: string;
+	name: string;
+	url: string;
+	description?: string;
+	searchUrl?: string;
 }): WithContext<WebSite> {
-  const schema: WithContext<WebSite> = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: websiteData.name,
-    url: websiteData.url,
-  };
+	const schema: WithContext<WebSite> = {
+		"@context": "https://schema.org",
+		"@type": "WebSite",
+		name: websiteData.name,
+		url: websiteData.url,
+	};
 
-  if (websiteData.description) {
-    schema.description = websiteData.description;
-  }
+	if (websiteData.description) {
+		schema.description = websiteData.description;
+	}
 
-  if (websiteData.searchUrl) {
-    const potentialAction: SearchAction & Record<'query-input', string> = {
-      '@type': 'SearchAction',
-      target: `${websiteData.searchUrl}?q={search_term_string}`,
-      'query-input': 'required name=search_term_string',
-    };
-    schema.potentialAction = potentialAction;
-  }
+	if (websiteData.searchUrl) {
+		const potentialAction: SearchAction & Record<"query-input", string> = {
+			"@type": "SearchAction",
+			target: `${websiteData.searchUrl}?q={search_term_string}`,
+			"query-input": "required name=search_term_string",
+		};
+		schema.potentialAction = potentialAction;
+	}
 
-  return schema;
+	return schema;
 }
 
 /**
@@ -136,20 +136,20 @@ export function buildWebSiteSchema(websiteData: {
  * @returns JSON-LD BreadcrumbList schema
  */
 export function buildBreadcrumbListSchema(
-  breadcrumbs: Array<{ name: string; url: string }>
+	breadcrumbs: Array<{ name: string; url: string }>,
 ): WithContext<BreadcrumbList> {
-  const schema: WithContext<BreadcrumbList> = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: breadcrumbs.map((crumb, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      name: crumb.name,
-      item: crumb.url,
-    })),
-  };
+	const schema: WithContext<BreadcrumbList> = {
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		itemListElement: breadcrumbs.map((crumb, index) => ({
+			"@type": "ListItem",
+			position: index + 1,
+			name: crumb.name,
+			item: crumb.url,
+		})),
+	};
 
-  return schema;
+	return schema;
 }
 
 /**
@@ -158,22 +158,22 @@ export function buildBreadcrumbListSchema(
  * @returns JSON-LD FAQPage schema
  */
 export function buildFAQPageSchema(
-  faqs: Array<{ question: string; answer: string }>
+	faqs: Array<{ question: string; answer: string }>,
 ): WithContext<FAQPage> {
-  const schema: WithContext<FAQPage> = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.map((faq) => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: faq.answer,
-      },
-    })),
-  };
+	const schema: WithContext<FAQPage> = {
+		"@context": "https://schema.org",
+		"@type": "FAQPage",
+		mainEntity: faqs.map((faq) => ({
+			"@type": "Question",
+			name: faq.question,
+			acceptedAnswer: {
+				"@type": "Answer",
+				text: faq.answer,
+			},
+		})),
+	};
 
-  return schema;
+	return schema;
 }
 
 /**
@@ -182,35 +182,35 @@ export function buildFAQPageSchema(
  * @returns JSON-LD SoftwareApplication schema
  */
 export function buildSoftwareApplicationSchema(appData: {
-  name: string;
-  description: string;
-  url: string;
-  applicationCategory?: string;
-  operatingSystem?: string;
-  image?: string;
-  author?: string;
+	name: string;
+	description: string;
+	url: string;
+	applicationCategory?: string;
+	operatingSystem?: string;
+	image?: string;
+	author?: string;
 }): WithContext<SoftwareApplication> {
-  const schema: WithContext<SoftwareApplication> = {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: appData.name,
-    description: appData.description,
-    url: appData.url,
-    applicationCategory: appData.applicationCategory || 'WebApplication',
-    operatingSystem: appData.operatingSystem || 'Any',
-  };
+	const schema: WithContext<SoftwareApplication> = {
+		"@context": "https://schema.org",
+		"@type": "SoftwareApplication",
+		name: appData.name,
+		description: appData.description,
+		url: appData.url,
+		applicationCategory: appData.applicationCategory || "WebApplication",
+		operatingSystem: appData.operatingSystem || "Any",
+	};
 
-  if (appData.image) {
-    schema.image = absoluteUrl(appData.image);
-  }
+	if (appData.image) {
+		schema.image = absoluteUrl(appData.image);
+	}
 
-  if (appData.author) {
-    schema.author = {
-      '@type': 'Person',
-      name: appData.author,
-      url: SITE_URL,
-    };
-  }
+	if (appData.author) {
+		schema.author = {
+			"@type": "Person",
+			name: appData.author,
+			url: SITE_URL,
+		};
+	}
 
-  return schema;
+	return schema;
 }
