@@ -1,0 +1,28 @@
+---
+title: "Open Resume"
+description: "A modern, fast, and highly customizable resume builder application featuring AI integration, server-side rendering, and edge deployment."
+date: "2026-05-14"
+type: "web"
+stack: ["react", "typescript", "tailwind", "zustand"]
+slug: "open-resume"
+image: "/images/projects/open-resume.png"
+featured: false
+link: ""
+github: "https://github.com/Benjaminlooi/resume-builder"
+---
+
+## Overview
+
+Open Resume is a modern and highly customizable resume builder application. Built with cutting edge web technologies, it features file based routing, server side rendering, and AI integration, and is optimized for deployment on Cloudflare Workers. The project utilizes TanStack Start with React 19 for a fast, seamless user experience.
+
+## AI Powered Resume Coaching
+
+To help users craft better resumes, I integrated an interactive AI expert workflow using the Vercel AI SDK. The AI acts as a coach, enforcing a draft first workflow via custom system prompts. I implemented an AI markdown rendering system using Marked and DOMPurify to securely and accurately display AI responses, complete with chat bubbles and interactive suggestion buttons.
+
+## State Management Architecture
+
+A significant technical milestone in this project was the migration of the application state management architecture from TanStack Store to Zustand. This involved rewriting multiple core stores, including the resume data store, resume index store, and application settings store. The new Zustand implementation provides fast, persistent local storage state and integrates seamlessly with Redux DevTools for improved debugging.
+
+## Edge Deployment
+
+The application is fully configured for edge deployment on Cloudflare Workers. By leveraging Wrangler and Vite, the build process generates optimal assets for Cloudflare, ensuring incredibly fast load times and global distribution. Custom domain support was also added to the Wrangler configuration for a professional production setup.
