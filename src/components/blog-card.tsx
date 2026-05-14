@@ -18,7 +18,7 @@ const BlogCard: React.FC<Props> = ({ blog }) => {
 					<AnimatedImage
 						src={blog.image as string}
 						alt={blog.title as string}
-						className="absolute inset-0 h-full w-full rounded-2xl ] object-cover"
+						className="absolute inset-0 h-full w-full rounded-2xl ] object-cover object-top"
 						width={960}
 						height={480}
 						sizes="(min-width: 768px) 16rem, 100vw"

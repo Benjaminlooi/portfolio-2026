@@ -45,7 +45,7 @@ const AnimatedImage: React.FC<Props> = ({
 				sizes={sizes}
 				priority={priority}
 				decoding={decoding}
-				className="object-cover h-full w-full"
+				className="object-cover object-top h-full w-full"
 			/>
 		</motion.div>
 	);
