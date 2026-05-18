@@ -5,7 +5,17 @@ import ContactForm from "@/components/forms/contact-form";
 import MyPhoto from "@/components/my-photo";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { SOCIAL_LINKS } from "@/lib/constants";
+import {
+	type ProfilePlatform,
+	trackProfileLinkClick,
+} from "@/lib/posthog-analytics";
 import { buildBreadcrumbListSchema } from "@/lib/seo/structured-data";
+
+const profilePlatformByTitle: Record<string, ProfilePlatform> = {
+	"Cal.com": "cal",
+	LinkedIn: "linkedin",
+	GitHub: "github",
+};
 
 const Contact = () => {
 	const breadcrumbSchema = buildBreadcrumbListSchema([
@@ -31,6 +41,13 @@ const Contact = () => {
 							<a
 								href="mailto:hello@benjaminlooi.dev"
 								className="font-medium text-blue-500 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline decoration-2 underline-offset-2 transition-colors duration-200"
+								onClick={() =>
+									trackProfileLinkClick({
+										platform: "email",
+										url: "mailto:hello@benjaminlooi.dev",
+										location: "contact_page_intro",
+									})
+								}
 							>
 								Email me directly
 							</a>{" "}
@@ -40,6 +57,13 @@ const Contact = () => {
 								target="_blank"
 								className="font-medium text-blue-500 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline decoration-2 underline-offset-2 transition-colors duration-200"
 								rel="noopener"
+								onClick={() =>
+									trackProfileLinkClick({
+										platform: "cal",
+										url: "https://cal.com/benjaminlooi",
+										location: "contact_page_intro",
+									})
+								}
 							>
 								book a call
 							</a>
@@ -49,7 +73,7 @@ const Contact = () => {
 						<ul className="flex items-center justify-center md:justify-normal gap-2 md:gap-4">
 							{SOCIAL_LINKS.map((link, index) => (
 								<motion.li
-									key={index}
+									key={link.href}
 									initial={{ opacity: 0, scale: 0 }}
 									animate={{ opacity: 1, scale: 1 }}
 									transition={{
@@ -65,6 +89,14 @@ const Contact = () => {
 										className="block text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 transform hover:scale-110 transition-all duration-200"
 										aria-label={`Connect on ${link.title}`}
 										rel="noopener"
+										onClick={() =>
+											trackProfileLinkClick({
+												platform:
+													profilePlatformByTitle[link.title] ?? "website",
+												url: link.href,
+												location: "contact_page_socials",
+											})
+										}
 									>
 										<link.icon className="w-5 h-5 object-contain aspect-square" />
 									</a>

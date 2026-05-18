@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { LINKS } from "@/lib/constants";
+import { trackProfileLinkClick } from "@/lib/posthog-analytics";
 import { cn } from "@/lib/utils";
 import Logo from "./logo";
 import MobileNavigation from "./mobile-navigation";
@@ -97,7 +98,7 @@ const Navigation = () => {
 						<ul className="flex items-center justify-center gap-x-4 w-[28rem] h-full">
 							{LINKS?.map((link, index) => (
 								<motion.li
-									key={index}
+									key={link.href}
 									initial={{ opacity: 0, scale: 0 }}
 									animate={{ opacity: 1, scale: 1 }}
 									transition={{
@@ -168,6 +169,13 @@ const Navigation = () => {
 							target="_blank"
 							className="inline-flex items-center gap-2 border border-white/10 bg-white/10 backdrop-blur-sm hover:bg-primary hover:text-white text-xs px-3.5 py-1.5 md:px-4 md:py-2 rounded-full font-medium md:text-sm transition-all duration-300"
 							rel="noopener"
+							onClick={() =>
+								trackProfileLinkClick({
+									platform: "cal",
+									url: "https://cal.com/benjaminlooi",
+									location: "navigation",
+								})
+							}
 						>
 							<span>Let&apos;s talk</span>
 							<Image

@@ -2,6 +2,7 @@
 
 import { GlobeIcon, MailIcon } from "lucide-react";
 import { motion } from "motion/react";
+import type { ElementType } from "react";
 // icons
 // import { FiCodepen as CodepenIcon } from "react-icons/fi";
 import {
@@ -10,44 +11,57 @@ import {
 	BsTwitterX as TwitterXIcon,
 } from "react-icons/bs";
 import { SocialLink } from "@/components/social-link";
+import type { ProfilePlatform } from "@/lib/posthog-analytics";
 import { CalDotComIcon } from "./ui/icons";
 
-export const links = [
+export const links: Array<{
+	href: string;
+	icon: ElementType;
+	label: string;
+	newTab: boolean;
+	platform: ProfilePlatform;
+}> = [
 	{
 		href: "https://cal.com/benjaminlooi",
 		icon: CalDotComIcon,
 		label: "Book a meeting on cal.com",
 		newTab: true,
+		platform: "cal",
 	},
 	{
 		href: "https://github.com/benjaminlooi",
 		label: "Follow on GitHub",
 		icon: GithubIcon,
 		newTab: true,
+		platform: "github",
 	},
 	{
 		href: "https://x.com/benjaminlooi",
 		icon: TwitterXIcon,
 		label: "Follow on Twitter (𝕏)",
 		newTab: true,
+		platform: "x",
 	},
 	{
 		href: "https://linkedin.com/in/benjaminlooi/",
 		icon: LinkedinIcon,
 		label: "Connect on LinkedIn",
 		newTab: true,
+		platform: "linkedin",
 	},
 	{
 		href: "mailto:hello@benjaminlooi.dev",
 		icon: MailIcon,
 		label: "Send an Email",
 		newTab: true,
+		platform: "email",
 	},
 	{
 		href: "/",
 		icon: GlobeIcon,
 		label: "Go back to Portfolio",
 		newTab: false,
+		platform: "website",
 	},
 ];
 
@@ -99,6 +113,7 @@ const Links = () => (
 					label={link.label}
 					index={index}
 					newTab={link.newTab}
+					platform={link.platform}
 				/>
 			))}
 		</motion.div>

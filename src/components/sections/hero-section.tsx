@@ -2,7 +2,7 @@
 
 import { SparklesIcon } from "lucide-react";
 import Link from "next/link";
-import { trackCTAClick } from "@/lib/posthog-analytics";
+import { trackCTAClick, trackResumeDownload } from "@/lib/posthog-analytics";
 import { cn } from "@/lib/utils";
 import AnimationContainer from "../animated/animated-container";
 // import { RiSpeakLine as SpeakIcon } from "react-icons/ri";
@@ -16,6 +16,10 @@ const Hero = () => {
 
 	const handleResumeClick = () => {
 		trackCTAClick("download_resume", "hero_section");
+		trackResumeDownload({
+			location: "hero_section",
+			url: "/resume_2026.pdf",
+		});
 	};
 
 	return (

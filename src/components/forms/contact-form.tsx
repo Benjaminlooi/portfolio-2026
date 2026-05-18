@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2Icon, SendIcon } from "lucide-react";
+import { useRef } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -9,7 +10,11 @@ import { sendContact } from "@/actions/sendContact";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { identifyUser, trackContactFormSubmit } from "@/lib/posthog-analytics";
+import {
+	identifyUser,
+	trackContactFormStarted,
+	trackContactFormSubmit,
+} from "@/lib/posthog-analytics";
 import AnimationContainer from "../animated/animated-container";
 
 export const ContactFormSchema = z.object({
@@ -27,6 +32,7 @@ export const ContactFormSchema = z.object({
 type Inputs = z.infer<typeof ContactFormSchema>;
 
 const ContactForm = () => {
+	const hasTrackedStart = useRef(false);
 	const {
 		register,
 		handleSubmit,
@@ -68,10 +74,23 @@ const ContactForm = () => {
 		reset();
 	};
 
+	const handleFormFocus = () => {
+		if (hasTrackedStart.current) {
+			return;
+		}
+
+		hasTrackedStart.current = true;
+		trackContactFormStarted();
+	};
+
 	return (
 		<div className="bg-white/5 backdrop-blur w-full rounded-2xl shadow-xl p-4 md:p-6">
 			<h2 className="text-2xl font-bold mb-6">Get in Touch</h2>
-			<form onSubmit={handleSubmit(processForm)} className="space-y-4">
+			<form
+				onFocus={handleFormFocus}
+				onSubmit={handleSubmit(processForm)}
+				className="space-y-4"
+			>
 				{/* Name */}
 				<AnimationContainer invert>
 					<Input

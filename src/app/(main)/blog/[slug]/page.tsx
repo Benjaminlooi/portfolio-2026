@@ -9,6 +9,7 @@ import { TableOfContents } from "@/components/blog/table-of-content";
 import BlogCard from "@/components/blog-card";
 import MDXContent from "@/components/mdx-content";
 import ProjectCard from "@/components/project-card";
+import { BlogPostViewTracker } from "@/components/providers/blog-post-view-tracker";
 import { StructuredData } from "@/components/seo/StructuredData";
 import {
 	getBlogBySlug,
@@ -88,6 +89,11 @@ const Blog = async ({ params }: Props) => {
 			<div className="w-full max-w-2xl mx-auto">
 				{/* Structured Data for SEO */}
 				<StructuredData schema={blogPostSchema} />
+				<BlogPostViewTracker
+					slug={slug}
+					title={metadata.title || ""}
+					tags={metadata.tags || metadata.keywords || []}
+				/>
 
 				<AnimationContainer invert>
 					<Link

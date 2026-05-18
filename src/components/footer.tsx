@@ -4,9 +4,18 @@ import Link from "next/link";
 // import { AiOutlineCopyrightCircle as CopyIcon } from "react-icons/ai";
 
 import { SOCIAL_LINKS } from "@/lib/constants";
-import { trackSocialClick } from "@/lib/posthog-analytics";
+import {
+	type ProfilePlatform,
+	trackProfileLinkClick,
+	trackSocialClick,
+} from "@/lib/posthog-analytics";
 import AnimationContainer from "./animated/animated-container";
 import Logo from "./logo";
+
+const profilePlatformByTitle: Record<string, ProfilePlatform> = {
+	LinkedIn: "linkedin",
+	GitHub: "github",
+};
 
 const Footer = () => {
 	// const date = new Date();
@@ -21,15 +30,23 @@ const Footer = () => {
 						</Link>
 					</div>
 					<div className="flex gap-6 items-center text-xl">
-						{SOCIAL_LINKS?.slice(1)?.map((social, index) => (
+						{SOCIAL_LINKS?.slice(1)?.map((social) => (
 							<a
-								key={index}
+								key={social.href}
 								href={social?.href}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="text-white md:h-12  md:w-12  h-10 w-10 text-sm md:text-base aspect-square flex items-center justify-center hover:border-sky-500 rounded-full border md:border-2 transition-all hover:text-sky-500 hover:scale-110"
 								title={`Follow me on ${social?.title}`}
-								onClick={() => trackSocialClick(social?.title, social?.href)}
+								onClick={() => {
+									trackSocialClick(social?.title, social?.href);
+									trackProfileLinkClick({
+										platform:
+											profilePlatformByTitle[social?.title] ?? "website",
+										url: social?.href,
+										location: "footer_socials",
+									});
+								}}
 							>
 								<social.icon />
 							</a>
@@ -42,12 +59,17 @@ const Footer = () => {
 							rel="noreferrer"
 							target="_blank"
 							className="font-semibold text-sky-500"
-							onClick={() =>
+							onClick={() => {
 								trackSocialClick(
 									"LinkedIn",
 									"https://www.linkedin.com/in/benjaminlooi/",
-								)
-							}
+								);
+								trackProfileLinkClick({
+									platform: "linkedin",
+									url: "https://www.linkedin.com/in/benjaminlooi/",
+									location: "footer_credit",
+								});
+							}}
 						>
 							Benjamin Looi
 						</a>

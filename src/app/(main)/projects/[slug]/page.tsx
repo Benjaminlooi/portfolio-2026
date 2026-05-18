@@ -9,6 +9,7 @@ import BlogCard from "@/components/blog-card";
 import MDXContent from "@/components/mdx-content";
 import ProjectActions from "@/components/project-actions";
 import ProjectCard from "@/components/project-card";
+import { ProjectViewTracker } from "@/components/providers/project-view-tracker";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { getRelatedBlogsForProject } from "@/lib/blog";
 import {
@@ -145,6 +146,11 @@ const Project = async ({ params }: Props) => {
 	return (
 		<div className="w-full">
 			<StructuredData schema={schemas} />
+			<ProjectViewTracker
+				slug={slug}
+				title={title as string}
+				type={type as string | undefined}
+			/>
 			<Link
 				href="/projects"
 				className="mb-8 inline-flex items-center gap-2 text-sm font-light text-muted-foreground transition-colors hover:text-foreground"
@@ -173,7 +179,12 @@ const Project = async ({ params }: Props) => {
 				<p className="mt-3 text-xs text-muted-foreground">
 					{formatDate(date ?? "")}
 				</p>
-				<ProjectActions projectUrl={link} githubUrl={github} />
+				<ProjectActions
+					projectUrl={link}
+					githubUrl={github}
+					slug={slug}
+					title={title as string}
+				/>
 			</div>
 
 			<div className="prose w-full max-w-full my-6 md:mb-10 prose-invert">
