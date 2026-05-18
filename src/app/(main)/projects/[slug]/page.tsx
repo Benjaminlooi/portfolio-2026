@@ -7,6 +7,7 @@ import type { CreativeWork, WithContext } from "schema-dts";
 import AnimatedImage from "@/components/animated/animated-image";
 import BlogCard from "@/components/blog-card";
 import MDXContent from "@/components/mdx-content";
+import ProjectActions from "@/components/project-actions";
 import ProjectCard from "@/components/project-card";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { getRelatedBlogsForProject } from "@/lib/blog";
@@ -91,7 +92,7 @@ const Project = async ({ params }: Props) => {
 	}
 
 	const { metadata, content } = project;
-	const { title, image, date, description, type } = metadata;
+	const { title, image, date, description, type, link, github } = metadata;
 	const canonicalUrl = `https://www.benjaminlooi.dev/projects/${slug}`;
 	const relatedProjects = getRelatedProjects(slug, 2);
 	const relatedBlogs = getRelatedBlogsForProject(metadata, 3);
@@ -172,6 +173,7 @@ const Project = async ({ params }: Props) => {
 				<p className="mt-3 text-xs text-muted-foreground">
 					{formatDate(date ?? "")}
 				</p>
+				<ProjectActions projectUrl={link} githubUrl={github} />
 			</div>
 
 			<div className="prose w-full max-w-full my-6 md:mb-10 prose-invert">
