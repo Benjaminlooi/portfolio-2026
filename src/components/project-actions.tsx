@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { FaGithub as GithubIcon } from "react-icons/fa6";
 import { MdOpenInNew as OpenIcon } from "react-icons/md";
 import { Button } from "@/components/ui/button";

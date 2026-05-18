@@ -1,5 +1,5 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
+import React from "react";
 import ProjectActions from "@/components/project-actions";
 
 describe("ProjectActions", () => {
@@ -11,10 +11,9 @@ describe("ProjectActions", () => {
 			/>,
 		);
 
-		expect(screen.getByRole("link", { name: /visit project/i })).toHaveAttribute(
-			"href",
-			"https://example.com",
-		);
+		expect(
+			screen.getByRole("link", { name: /visit project/i }),
+		).toHaveAttribute("href", "https://example.com");
 		expect(screen.getByRole("link", { name: /github/i })).toHaveAttribute(
 			"href",
 			"https://github.com/Benjaminlooi/example",
