@@ -1,6 +1,6 @@
 ---
 title: "How to Install MongoDB on Ubuntu 21.04"
-summary: "A comprehensive guide to installing MongoDB on Ubuntu 21.04 with administrative user setup"
+summary: "Install MongoDB 4.4 on Ubuntu 21.04 and create an administrative database user."
 metaDescription: "Step-by-step guide to installing MongoDB 4.4 on Ubuntu 21.04, configuring the service, and creating an administrative database user with full commands."
 image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=1200&h=630&fit=crop"
 author: "Benjamin Looi"
@@ -10,7 +10,7 @@ tags: ["mongodb", "ubuntu", "linux", "database", "installation", "server"]
 
 > Content below is from [crowncloud](https://wiki.crowncloud.net/?How_to_Install_MongoDB_on_Ubuntu_21_04), I am posting it here for my own reference.
 
-MongoDB is an open-source document database used in many modern web applications. and MongoDB is a document-oriented NoSQL database used for high volume data storage. Instead of using tables and rows as in the traditional relational databases,
+MongoDB is an open-source document database. Unlike relational databases that store data in tables and rows, MongoDB stores records as documents.
 
 - [Install the dependencies](#install-the-dependencies)
 - [Download and add the MongoDB GPG key with the following command](#download-and-add-the-mongodb-gpg-key-with-the-following-command)
@@ -91,7 +91,7 @@ root@vps:~# systemctl status mongod
 Apr 30 02:31:19 vps.server.com systemd[1]: Started MongoDB Database Server.
 ```
 
-To verify whether the installation has completed successfully by running the following command.
+Verify the installation with this command.
 ```
 mongo --eval 'db.runCommand({ connectionStatus: 1 })'
 ```
@@ -128,7 +128,7 @@ Implicit session: session { "id" : UUID("f784c9cf-7b0a-4178-ba21-ceb1f52ff3d6") 
 MongoDB server version: 4.4.5
 Welcome to the MongoDB shell.
 For interactive help, type "help".
-For more comprehensive documentation, see
+For documentation, see
         https://docs.mongodb.com/
 Questions? Try the MongoDB Developer Community Forums
         https://community.mongodb.com

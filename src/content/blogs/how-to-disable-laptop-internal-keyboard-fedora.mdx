@@ -1,6 +1,6 @@
 ---
 title: "How to disable laptop internal keyboard on Fedora 41"
-summary: "My laptop keyboard is really bad and over the years, the heat has made the keys harder to type on and some key clips has also broke. So I thought of slapping my PC mechanical keyboard on my laptop but whenever I tried laying the keyboard on top of my laptop, my poor laptop keyboard kept jumping in—typing random letters and messing up my flow. I have tested this on Fedora 41 and 42 running on wayland."
+summary: "Disable a laptop's built-in keyboard on Fedora 41 or 42 with a udev rule, so an external keyboard can sit on top without triggering random keypresses."
 metaDescription: "Step-by-step guide to disable your laptop's built-in keyboard on Fedora 41/42 using udev rules so you can use an external keyboard on top of it."
 image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=1200&h=630&fit=crop"
 author: "Benjamin Looi"
@@ -8,7 +8,7 @@ publishedAt: "2025-04-27"
 tags: ["fedora", "linux", "keyboard", "udev", "wayland", "hardware"]
 ---
 
-My laptop keyboard is really bad and over the years, the heat has made the keys harder to type on and some key clips has also broke. So I thought of slapping my PC mechanical keyboard on my laptop but whenever I tried laying the keyboard on top of my laptop, my poor laptop keyboard kept jumping in—typing random letters and messing up my flow. I have tested this on Fedora 41 and 42 running on wayland.
+My laptop keyboard has degraded over the years. Heat made the keys harder to press, and some key clips broke. I wanted to place my mechanical keyboard on top of the laptop, but the built-in keyboard kept firing random keypresses. I tested this fix on Fedora 41 and 42 running Wayland.
 
 ## What You'll Need
 
@@ -30,11 +30,11 @@ Device:           AT Translated Set 2 keyboard
 Kernel:           /dev/input/event3
 ```
 
-That "AT Translated Set 2 keyboard" is your laptop's built-in board. Jot down the exact name and the `eventX` number—you'll need both in the next steps.
+That "AT Translated Set 2 keyboard" is your laptop's built-in keyboard. Note the exact name and the `eventX` number. You will need both in the next steps.
 
 ## Step 2: Double-Check with `udevadm`
 
-Just to be sure, confirm its properties:
+Confirm its properties:
 
 ```bash
 udevadm info /dev/input/event3
@@ -63,7 +63,7 @@ Paste in this one-liner (adjust the name exactly if yours differs):
 ACTION=="add|change", ATTRS{name}=="AT Translated Set 2 keyboard", ENV{ID_INPUT_KEYBOARD}=="1", ENV{LIBINPUT_IGNORE_DEVICE}="1"
 ```
 
-– This tells libinput to completely ignore that device
+This tells libinput to ignore that device.
 
 ## Step 4: Reload Rules & Test
 
@@ -78,7 +78,7 @@ If it doesn't work, try rebooting
 
 ## Re-enable Your Laptop Keyboard
 
-When you want it back, simply:
+When you want it back:
 
 ```bash
 sudo rm /etc/udev/rules.d/99-disable-internal-keyboard.rules
@@ -88,4 +88,4 @@ sudo udevadm trigger
 
 ## Final Thoughts
 
-Now I can sit on my bed, slap my beloved external keyboard right on top, and type away.
+Now I can place my external keyboard on top of the laptop and type without random input from the built-in keyboard.

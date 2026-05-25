@@ -1,6 +1,6 @@
 ---
 title: "Personal Portfolio (2026)"
-description: "A performant, SEO-optimized developer portfolio featuring mouse-tracking animated backgrounds, glassmorphism UI, MDX-powered blog with comments, and structured data — built with Next.js 15 and Motion."
+description: "A developer portfolio with cursor-driven motion, MDX project pages, blog comments, structured data, and a fast Next.js 15 build."
 date: "2026-01-01"
 type: "web"
 stack: ["next.js", "typescript", "tailwind", "motion"]
@@ -13,13 +13,13 @@ github: "https://github.com/Benjaminlooi/portfolio-2026"
 
 ## Overview
 
-My previous portfolio was built in 2021 with React and served me well, but after five years of growing as a developer, it no longer reflected where I was. The tech was outdated, the content was stale, and the design felt like a template. I wanted something that actually represented how I think about building software now — performance-first, SEO-driven, and with the kind of polish that makes someone want to stick around.
+My previous portfolio was built in 2021 with React. It served me well, but after five years it no longer matched how I build. The tech was outdated, the content was stale, and the design felt like a template. I wanted the new site to show the way I think now: fast pages, clear writing, proper SEO, and enough polish that a recruiter or client would keep reading.
 
-I rebuilt everything from scratch with Next.js 15, TypeScript, and Tailwind CSS. The goal wasn't just "make a new portfolio" — it was to build something I'd actually be proud to show to a potential client or employer, and to use the project as a forcing function to properly learn Next.js App Router, server components, and modern SEO techniques.
+I rebuilt everything with Next.js 15, TypeScript, and Tailwind CSS. The project also gave me a reason to learn the App Router, server components, and technical SEO by shipping them in a real site instead of reading docs in isolation.
 
 ## The Animated Background
 
-The first thing people notice is the background that follows your cursor. It's a radial gradient mask that tracks mouse movement, creating a subtle spotlight effect over a dot-grid pattern. I deliberately kept it understated — the background should add atmosphere, not compete with the content.
+The background follows your cursor with a radial gradient mask over a dot-grid pattern. I kept the effect quiet so it adds depth without fighting the text.
 
 The implementation uses `requestAnimationFrame` throttling so the effect is smooth without eating CPU. On mobile, it's disabled entirely since there's no cursor to track, and mobile devices don't need the extra rendering overhead.
 
@@ -27,7 +27,7 @@ The implementation uses `requestAnimationFrame` throttling so the effect is smoo
 
 ## Making the UI Feel Alive
 
-I wanted the site to feel responsive to interaction without being obnoxious. Every navigation link uses a magnetic hover effect — the link subtly pulls toward your cursor as you approach it. The nav bar itself hides on scroll-down and reappears on scroll-up, keeping content front and center while still being accessible.
+I wanted the site to respond to interaction without feeling like a demo reel. Each navigation link uses a magnetic hover effect that pulls toward the cursor. The nav bar hides while you scroll down and returns when you scroll up, so the content keeps the focus.
 
 The skills section uses glassmorphism cards with semi-transparent backgrounds and backdrop blur. Each card staggers its entrance animation so the section builds up as you scroll into it. The hover states shift the border color toward the primary accent, giving a subtle glow effect.
 
@@ -35,7 +35,7 @@ The skills section uses glassmorphism cards with semi-transparent backgrounds an
 
 ## Content Architecture with MDX
 
-Both blog posts and project pages are written in MDX, which lets me mix Markdown content with React components. This was important because I wanted rich project pages with inline images and custom formatting, but I also wanted the writing experience to feel like writing — not like coding JSX.
+Blog posts and project pages use MDX, so I can mix Markdown with React components. Project pages get inline images and custom formatting, while the writing still feels like writing instead of JSX maintenance.
 
 The blog includes Giscus comments powered by GitHub Discussions, so readers can leave feedback without me needing to manage a separate comment system or database.
 
@@ -43,37 +43,37 @@ The blog includes Giscus comments powered by GitHub Discussions, so readers can 
 
 ## SEO as a First-Class Feature
 
-SEO wasn't an afterthought — I built it into the architecture from day one. Every page has proper metadata (title, description, Open Graph tags, Twitter cards), and I generate structured JSON-LD data for Person, WebSite, and Article schemas. The site has an auto-generated `sitemap.xml`, `robots.txt`, and RSS feed at `/feed.xml`.
+I built SEO into the site architecture from day one. Each page has metadata for titles, descriptions, Open Graph, and Twitter cards. The app also generates JSON-LD for Person, WebSite, and Article schemas, plus `sitemap.xml`, `robots.txt`, and an RSS feed at `/feed.xml`.
 
 Each blog post has custom meta descriptions and tags in its frontmatter, so search engines get specific, relevant metadata rather than generic defaults. The blog also gives me a place to publish technical notes like [my TailwindCSS v4 agent setup breakdown](/blog/tailwindcss-v4-breaks-coding-ai-agents), which supports topical relevance beyond the project pages themselves.
 
 ## Project Showcase
 
-The projects section displays cards with cover images, tech stack badges, and links. Each project has its own detailed page (like this one) where I can tell the full story — not just "what I built" but why I made the decisions I did and what I learned.
+The projects section shows cover images, tech stack badges, and links. Each project gets a detailed page where I can explain why I made specific decisions and what changed during the build.
 
 ![Projects listing page with project cards](/images/projects/portfolio-2026-projects.webp)
 
 ## Performance Optimization
 
-After the initial build, I ran Lighthouse audits and systematically addressed every issue, ultimately achieving a 98/100 performance score and reducing Largest Contentful Paint (LCP) to under 1.2 seconds. The key optimizations were:
+After the initial build, I ran Lighthouse audits and fixed the slow paths. The site reached a 98/100 performance score, and Largest Contentful Paint dropped below 1.2 seconds. The main fixes were:
 
-- **LCP fix** — Ensured the hero section's critical content loads without render-blocking resources
-- **Font optimization** — Limited Poppins to only the weights actually used (400, 500, 600, 700) instead of loading the full family
-- **Third-party script deferral** — PostHog analytics loads lazily so it doesn't block the initial render
-- **Event listener throttling** — Scroll and mouse handlers use `requestAnimationFrame` to prevent layout thrashing
+- **LCP fix**: Ensured the hero section's critical content loads without render-blocking resources
+- **Font optimization**: Limited Poppins to only the weights actually used (400, 500, 600, 700) instead of loading the full family
+- **Third-party script deferral**: PostHog analytics loads lazily so it doesn't block the initial render
+- **Event listener throttling**: Scroll and mouse handlers use `requestAnimationFrame` to prevent layout thrashing
 
 ## Tech Stack
 
-- **Next.js 15** — App Router with server components for optimal performance and SEO
-- **TypeScript** — Full type safety across the codebase
-- **Tailwind CSS** — Utility-first styling with a custom dark theme
-- **Motion (Framer Motion)** — Entrance animations, magnetic effects, and the animated background
-- **MDX** — Rich content authoring for blog posts and project pages
-- **PostHog** — Privacy-friendly analytics for understanding visitor behavior
-- **Giscus** — GitHub Discussions-powered comments on blog posts
+- **Next.js 15**: App Router with server components for fast rendering and SEO
+- **TypeScript**: Full type safety across the codebase
+- **Tailwind CSS**: Utility-first styling with a custom dark theme
+- **Motion (Framer Motion)**: Entrance animations, magnetic effects, and the animated background
+- **MDX**: Rich content authoring for blog posts and project pages
+- **PostHog**: Privacy-friendly analytics for understanding visitor behavior
+- **Giscus**: GitHub Discussions-powered comments on blog posts
 
 ## What I Learned
 
-The biggest takeaway was how much the Next.js App Router changes the mental model compared to Pages Router. Server components mean you have to think carefully about what needs to be client-side (animations, scroll listeners, analytics) versus what can be rendered on the server (content, metadata, structured data). Getting this boundary right made the site significantly faster.
+The App Router changed how I split client and server work. Animations, scroll listeners, and analytics belong on the client. Content, metadata, and structured data belong on the server. Getting that boundary right made the site faster.
 
-I also learned that SEO is mostly about doing a lot of small things correctly — structured data, proper heading hierarchy, meta descriptions, semantic HTML, performance scores — rather than any single magic trick.
+I also learned that SEO mostly comes down to boring consistency: structured data, heading hierarchy, meta descriptions, semantic HTML, and performance scores.

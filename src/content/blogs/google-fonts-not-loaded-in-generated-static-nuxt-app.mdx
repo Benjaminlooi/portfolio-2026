@@ -8,7 +8,7 @@ publishedAt: "2021-05-16"
 tags: ["nuxt", "google-fonts", "netlify", "css", "static-site", "web-development"]
 ---
 
-So, I've found out that my static Nuxt websites deployed on Netlify are actually not using the fonts that I've specified. But the fonts are working during development.
+My static Nuxt sites on Netlify were not using the Google Fonts I specified, even though the fonts worked during development.
 
 ```css
 /* assets/css/main.scss */
@@ -29,7 +29,7 @@ css: [
 // ...
 ```
 
-Moving the @import css into a Top level vue component doesn't solve the issue as well.
+Moving the `@import` CSS into a top-level Vue component did not fix it.
 
 ```vue
 // pages/index.vue
@@ -46,7 +46,7 @@ Tailwindcss is purging the @import css
 
 ##### Solution?
 
-So I tried disabling TailwindCss purging
+I tried disabling Tailwind CSS purging.
 
 ```js
 // tailwind.config.js
@@ -58,11 +58,11 @@ module.exports = {
 }
 ```
 
-But it didn't work, the font is still not usable on the generated static site.
+The font still did not load on the generated static site.
 
 #### Final Solution
 
-include the font as a stylesheet link in the head html instead of using @import css.
+Include the font as a stylesheet link in the HTML head instead of using `@import` CSS.
 
 ```js
 // nuxt.config.js

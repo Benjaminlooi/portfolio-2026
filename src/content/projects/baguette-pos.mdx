@@ -1,6 +1,6 @@
 ---
 title: "Baguette POS"
-description: "A modern point of sale system designed for restaurants, cafes, and food service businesses, featuring order management, inventory tracking, payment processing, and real-time analytics."
+description: "A restaurant POS for Cambodia with fast order entry, table management, dual-currency payments, availability controls, and reporting."
 date: "2025-01-01"
 type: "web"
 stack: ["next.js", "typescript", "tailwind"]
@@ -15,11 +15,11 @@ github: ""
 
 Baguette POS started because I watched a café owner in Phnom Penh scribble orders on sticky notes during a lunch rush, lose track of a table's bill, and then spend an hour after closing reconciling the day's cash. Existing POS systems were either too expensive, required proprietary hardware, or were built for Western markets with no support for dual-currency payments (USD and Cambodian Riel are used interchangeably in Cambodia).
 
-I designed and built the entire system end-to-end — the web-based POS application, the marketing site, and the backend. The goal was simple: a POS that a restaurant owner could set up in minutes on any tablet or laptop, with zero hardware lock-in. The product fits into the broader local-business work I describe in the [Sokha Tech case study](/projects/sokha-tech).
+I designed and built the POS app, marketing site, and backend. The goal was simple: a restaurant owner should be able to set it up on any tablet or laptop in minutes, without buying proprietary hardware. The product fits into the broader local-business work I describe in the [Sokha Tech case study](/projects/sokha-tech).
 
 ## Building for Speed Under Pressure
 
-The single biggest constraint was speed. During a lunch rush, cashiers need to punch in a multi-item order in seconds — they can't wait for page loads or laggy UI. I optimized the menu grid for large touch targets and made sure the cart updates instantly, reducing interaction latency by ~40% by avoiding full component tree re-renders. I also added fuzzy search so staff can type a few letters and find what they need fast.
+The main constraint was speed. During a lunch rush, cashiers need to punch in a multi-item order in seconds. I optimized the menu grid for large touch targets and made the cart update without full component tree re-renders, reducing interaction latency by about 40%. I also added fuzzy search so staff can type a few letters and find an item quickly.
 
 ![Baguette POS cashier interface with visual menu grid and cart sidebar](/images/projects/baguette-pos-cashier.webp)
 
@@ -39,23 +39,23 @@ This was the most interesting technical challenge. In Cambodia, prices are often
 
 ## Real-Time Availability
 
-One pain point I kept hearing from restaurant owners: customers order something, wait 10 minutes, and then get told it's sold out. I built an availability toggle that lets staff mark items as unavailable with flexible durations — just for today, until a specific date, or indefinitely. Changes propagate instantly so no one orders something that isn't available.
+Restaurant owners kept mentioning the same problem: customers order something, wait 10 minutes, and then get told it sold out. I built an availability toggle that lets staff mark items as unavailable for today, until a specific date, or indefinitely. Changes sync right away so customers do not order items the kitchen cannot serve.
 
 ![Food availability management with calendar-based unavailability scheduling](/images/projects/baguette-pos-availability.webp)
 
 ## Payment History & Reporting
 
-Restaurant owners need to know how their day went without digging through spreadsheets. The payment history view lets them filter by date range, payment method, and search terms to quickly find any transaction. Each record shows the amount, method, terminal, and table — enough detail for end-of-day reconciliation without overwhelming the user.
+Restaurant owners need to know how their day went without digging through spreadsheets. The payment history view lets them filter by date range, payment method, and search terms to quickly find any transaction. Each record shows the amount, method, terminal, and table: enough detail for end-of-day reconciliation without overwhelming the user.
 
 ![Payment history with filters, date range, and payment method breakdown](/images/projects/baguette-pos-history.webp)
 
 ## Tech Stack
 
-- **React + Vite** — Chose Vite for the fast HMR during development and optimized builds for production
-- **TypeScript** — End-to-end type safety, especially important for payment logic where bugs mean real money problems
-- **Tailwind CSS** — Responsive, touch-friendly UI that works across tablets and desktops
-- **Monorepo Architecture** — Shared packages between the marketing site and POS app for consistency
+- **React + Vite**: Chose Vite for the fast HMR during development and optimized builds for production
+- **TypeScript**: End-to-end type safety for payment logic, where bugs mean real money problems
+- **Tailwind CSS**: Responsive, touch-friendly UI that works across tablets and desktops
+- **Monorepo Architecture**: Shared packages between the marketing site and POS app for consistency
 
 ## What I Learned
 
-Building for a market where dual currencies are the norm taught me that "obvious" UX assumptions don't always transfer. The payment flow went through several iterations based on watching actual cashiers use the system — what I thought was intuitive initially turned out to add friction. The final design with denomination buttons and automatic change calculation came directly from observing how cashiers handle cash in practice.
+Building for a dual-currency market taught me that "obvious" UX assumptions do not always transfer. The payment flow changed several times after I watched cashiers use the system. My first version looked intuitive on paper but added friction in practice. The final design, with denomination buttons and automatic change calculation, came from watching cashiers handle cash.

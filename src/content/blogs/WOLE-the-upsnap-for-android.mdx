@@ -10,11 +10,11 @@ tags: ["android", "wake-on-lan", "react-native", "expo", "homelab", "networking"
 
 ## WOLE: The UpSnap for Android
 
-I had an old Android phone collecting dust in a drawer. I also had a homelab where I kept shutting down machines to save power, then needing to walk over and press the power button when I wanted to use them again. Wake-on-LAN exists, but I needed something on the network to actually send the magic packet — and I didn't want to buy a Raspberry Pi just for that.
+I had an old Android phone sitting in a drawer. I also had a homelab where I kept shutting down machines to save power, then walking over to press the power button when I needed them again. Wake-on-LAN exists, but it needs a device on the network to send the magic packet. I did not want to buy a Raspberry Pi for that.
 
 So I built [WOLE](/projects/wole). It turns any Android phone into a WOL relay by running a small HTTP server as a foreground service. You send it a POST request with a MAC address, it broadcasts the magic packet on the local network, and your machine wakes up.
 
-That's it. That's the whole idea.
+That is the whole idea.
 
 ---
 
@@ -31,7 +31,7 @@ curl -X POST "http://<phone-ip>:8080/wol" \
   --data "mac=AA:BB:CC:DD:EE:FF"
 ```
 
-You can optionally specify a broadcast IP and UDP port, but the defaults (`255.255.255.255:9`) work for most setups. Authentication is done via a shared secret token — set it in the app, include it in your requests, done.
+You can specify a broadcast IP and UDP port, but the defaults (`255.255.255.255:9`) work for most setups. Authentication uses a shared secret token: set it in the app, then include it in your requests.
 
 The phone needs to be on the same LAN as the devices you want to wake. If you're remote, connect the phone to your network through Tailscale, WireGuard, or ZeroTier, and you can reach it from anywhere.
 
@@ -39,7 +39,7 @@ The phone needs to be on the same LAN as the devices you want to wake. If you're
 
 ## Why not just use UpSnap?
 
-[UpSnap](https://github.com/seriousm4x/UpSnap) is great. It's a proper web-based WOL dashboard that you run on a server. But that's the thing — you need a server running. If you're trying to wake your only server, you have the chicken-and-egg problem.
+[UpSnap](https://github.com/seriousm4x/UpSnap) is a proper web-based WOL dashboard that you run on a server. The catch is that you need a server running. If you are trying to wake your only server, you have the chicken-and-egg problem.
 
 An old phone doesn't have that problem. It sips power on its own, it's already on your Wi-Fi, and it doesn't need a separate machine to host it. Plug it in, install WOLE, and forget about it.
 
@@ -47,13 +47,13 @@ An old phone doesn't have that problem. It sips power on its own, it's already o
 
 ## What it actually does
 
-Beyond the basic WOL relay, WOLE has a few other things going on:
+Beyond the WOL relay, WOLE includes:
 
-- **Device management** — Save your machines with names and MAC addresses so you don't have to remember them. There's a full CRUD API at `/api/devices`.
-- **Ping checks** — `POST /api/ping` lets you check if a device is online. Useful for confirming a wake actually worked.
-- **Auto-start on boot** — Once you start the relay, it automatically restarts when the phone reboots. No need to open the app every time.
-- **Health endpoint** — `GET /health` returns `ok`. Good for monitoring with something like Uptime Kuma.
-- **In-app logs** — The app shows a log of incoming requests and WOL dispatches, so you can see what's happening without checking `adb logcat`.
+- **Device management**: Save machines with names and MAC addresses so you do not have to remember them. There is a full CRUD API at `/api/devices`.
+- **Ping checks**: `POST /api/ping` checks whether a device is online. Useful for confirming that a wake worked.
+- **Auto-start on boot**: Once you start the relay, it automatically restarts when the phone reboots. No need to open the app every time.
+- **Health endpoint**: `GET /health` returns `ok`. Good for monitoring with something like Uptime Kuma.
+- **In-app logs**: The app shows a log of incoming requests and WOL dispatches, so you can see what's happening without checking `adb logcat`.
 
 ---
 
@@ -91,6 +91,6 @@ cd android && ./gradlew assembleRelease
 
 ## What's next
 
-WOLE does what I need it to do right now, but there's more I want to add — a better web dashboard, maybe scheduled wakes, and better security beyond the shared token. It's all on GitHub if you want to contribute or just poke around.
+WOLE does what I need right now. Next I want a better web dashboard, scheduled wakes, and stronger security beyond the shared token. The code is on GitHub if you want to contribute or poke around.
 
 [github.com/Benjaminlooi/WOLE](https://github.com/Benjaminlooi/WOLE)

@@ -1,6 +1,6 @@
 ---
 title: "UX: Disable or hide button?"
-summary: "Cognitive load and visual appeal are important to think about too but not at the expense of confusing or frustrating your users."
+summary: "Hide controls when users cannot use them. Disable controls when users need to understand that an action exists but is not available yet."
 metaDescription: "UX guidelines for when to disable vs hide buttons in your interface. Covers permission-based hiding, context-based disabling, and real-world examples."
 image: "/images/blogs/ux-disable-or-hide-button/gmail-screenshot.png"
 author: "Benjamin Looi"
@@ -10,26 +10,26 @@ tags: ["ux", "ui-design", "buttons", "user-experience", "web-design", "accessibi
 
 ## UX: Disable or hide button?
 
-> "Cognitive load and visual appeal are important to think about too but not at the expense of confusing or frustrating your users."
+Hide controls when users cannot use them. Disable controls when users need to understand that an action exists but is not available yet.
 
 ### Some arguments for using a disabled state:
 
-- Even if not in use, the user has a chance to learn that the action is possible. You may even have a tooltip explaining the criteria for use.
+- Users can learn that the action exists, even if they cannot use it yet. Add a tooltip that explains the requirement.
 - The user can learn where controls and buttons live within the interface.
 
 ### Some arguments for hiding the button:
 
-- Clarity. Only showing what is needed for the task at hand. Attention is focused.
-- It allows you to change the controls, using the same space for different means.
+- The screen stays focused on the current task.
+- You can reuse the same space for controls that matter in the current context.
 
 ### The questions you should ask yourself are
 
 - "What does the user need to know at this point?"
 - "What does the user need to do at this point?"
 
-> ### While simplicity is a great goal, you should never simplify more than necessary. Therefore if the user needs to know about the existence of the button, or you need to build the context, you might need to consider it.
+> ### Simplicity helps until it hides useful context. If users need to know an action exists, keep the control visible and explain why it is disabled.
 
-### Common answers you would get on the internet are:
+### Common guidance
 
 1. When an element is not permitted to be used by a given user due to a lack of permissions to use it, it should be hidden from the interface.
 2. When an element is permitted for a user:
@@ -42,7 +42,7 @@ tags: ["ux", "ui-design", "buttons", "user-experience", "web-design", "accessibi
 #### Gmail:
 
 ![Gmail screenshot of disabled button](/images/blogs/ux-disable-or-hide-button/gmail-screenshot.png)
-Archive button is disabled for spam emails, but is allowed elsewhere.
+Gmail disables the Archive button for spam emails, but allows it elsewhere.
 
 ### Reference:
 

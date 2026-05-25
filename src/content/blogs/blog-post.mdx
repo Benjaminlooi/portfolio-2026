@@ -8,19 +8,19 @@ publishedAt: "2026-05-05"
 tags: ["PHP", "Legacy Systems", "Security", "Engineering Culture", "Tech Debt"]
 ---
 
-Some friends told me their company was hiring. The pay sounded decent, the stack wasn't glamorous but it was steady work, and — most importantly — I'd get to see my friends every day at the office. I went through the interviews, felt good about them, and then came the salary conversation. The number they came back with was noticeably short of what I needed. We couldn't agree, and that should have been the end of the story.
+Some friends told me their company was hiring. The pay sounded decent, the stack was steady, and I would get to see my friends every day at the office. I went through the interviews, felt good about them, and then came the salary conversation. Their number came in short of what I needed. We could not agree, and that should have ended the story.
 
 It wasn't.
 
-Because I'm a software engineer, and software engineers, when left unsupervised near a system they're curious about, will inevitably start poking around. That's not a character flaw. It's just how we're wired. We can't help it. We see a door and we wonder what's on the other side — not out of malice, but out of pure, incurable curiosity.
+Because I am a software engineer, and software engineers poke around systems they are curious about. That is not a character flaw. We see a door and wonder what sits on the other side.
 
-So I had a look. And what I found was, to put it gently, a relic.
+So I had a look. I found a relic.
 
 ---
 
 ## The Application
 
-The company runs an internal PHP application that's been serving thousands of employees for over ten years. Ten years is a long time. Think about where PHP was a decade ago. Think about what "best practices" meant back then. Now imagine that application has been maintained — loosely — ever since, by a rotating cast of developers who each left their own little landmines buried in the codebase before moving on.
+The company runs an internal PHP application that has served thousands of employees for over ten years. Ten years is a long time in PHP. The app had been maintained loosely by a rotating cast of developers, with each person leaving a few risky patterns behind before moving on.
 
 Here's what I found:
 
@@ -29,21 +29,21 @@ Here's what I found:
 
 ✗  PHP version: severely outdated (end-of-life, no security patches)
 ✗  phpMyAdmin: publicly exposed, no IP restriction, no 2FA
-✗  Password hashing: MD5 / plain SHA1 — circa 2005
+✗  Password hashing: MD5 / plain SHA1, circa 2005
 ✗  Directory listing: enabled on the public web root
 ✗  Hardcoded DB credentials and API keys in plain .php files
 ✗  Login form: no rate limiting, wide open to brute force
-✗  SQL queries built by string concatenation — textbook injection bait
+✗  SQL queries built by string concatenation, textbook injection bait
 ✗  User uploads stored in a public directory, no file type validation
-⚠  Single server, no redundancy — one crash takes everything down
-⚠  No staging environment — changes go directly to production
+⚠  Single server, no redundancy, one crash takes everything down
+⚠  No staging environment, changes go directly to production
 ⚠  Deployments via FTP, or direct file edits on the live server
 ⚠  No version control. A shared network drive.
 ⚠  Copy-pasted logic repeated across dozens of files
 ✓  Application is running. Technically.
 ```
 
-Let that list sink in for a moment. This isn't a side project on a developer's laptop. This is a live, production system that thousands of people log into every single working day. Their data — credentials, internal records, who knows what else — sits behind security practices the industry abandoned before some of today's junior developers were old enough to have a GitHub account.
+This was not a side project on a developer's laptop. It was a live production system that thousands of people used every workday. Their credentials and internal records sat behind security practices the industry abandoned years ago.
 
 ---
 
@@ -51,11 +51,11 @@ Let that list sink in for a moment. This isn't a side project on a developer's l
 
 ### Credentials in Plain Sight
 
-Somewhere in that codebase, a `.php` file holds the database username and password as plain text strings. Possibly the API key to a third-party service too. These aren't buried deep — they're often at the top of a file, copy-pasted from developer to developer across the years. If anyone with read access to those files ever had bad intentions, the entire database was already theirs to take.
+Somewhere in that codebase, a `.php` file holds the database username and password as plain text strings. It may also hold an API key for a third-party service. These values are often at the top of a file, copied from developer to developer over the years. Anyone with read access and bad intentions could have taken the database.
 
 ### The Login Form Was an Open Invitation
 
-There was no rate limiting on the login form. None. You could sit there and try ten thousand password combinations and the server would dutifully process every single one. Combined with the outdated hashing, a leaked credential dump would be trivially crackable. This isn't a theoretical risk — credential stuffing attacks are automated and indiscriminate. They don't need to know your company exists to find you.
+The login form had no rate limiting. You could try ten thousand password combinations and the server would process every one. Combined with outdated hashing, a leaked credential dump would be easy to crack. Credential stuffing attacks are automated and indiscriminate. They do not need to know your company exists to find you.
 
 ### SQL Injection, the Classic
 
@@ -65,63 +65,63 @@ The queries were built by stitching user input directly into SQL strings. Someth
 $query = "SELECT * FROM users WHERE username = '" . $_POST['username'] . "'";
 ```
 
-This is the kind of code that appears in security tutorials — as the example of what _not_ to do. It was everywhere. A single crafted input could have exposed, modified, or deleted the entire database. This vulnerability has been documented, warned about, and taught against since the late 1990s.
+Security tutorials use this kind of code as the example of what _not_ to do. It was everywhere. A single crafted input could have exposed, modified, or deleted the database. Developers have documented, warned about, and taught against this vulnerability since the late 1990s.
 
 ### Files Uploaded. Validated? Never.
 
-Users could upload files. Those files landed in a publicly accessible directory. There was no check on file type, no check on content, no sanitisation of filenames. In practice this means a user could upload a `.php` file and — depending on server configuration — execute it. That's not a stretch. That's a well-known, well-documented attack vector. The fix is a handful of lines. The oversight had been there for years.
+Users could upload files. Those files landed in a public directory. The app did not check file type, inspect content, or sanitize filenames. In practice, a user could upload a `.php` file and execute it if the server allowed it. That attack vector has been documented for years. The fix is small. The oversight had been there for years.
 
 ### One Server. No Net.
 
-The entire application ran on a single server. No load balancer, no failover, no redundancy. If that machine has a bad day — hardware fault, a botched update, a full disk — every one of those thousands of employees loses access. Instantly. Completely. And because deployments happened via FTP or live file edits on the production server, a developer pushing a change at the wrong moment _was_ the disaster. There was no safety net because nobody had thought to build one.
+The entire application ran on a single server. No load balancer, no failover, no redundancy. A hardware fault, botched update, or full disk could lock every employee out. Because deployments happened through FTP or live edits on the production server, a developer pushing a change at the wrong moment could become the outage. Nobody had built a safety net.
 
 ---
 
 ## The Code Itself
 
-Beyond the security issues, the codebase told the story of a decade of quiet neglect. Logic was copied and pasted — not abstracted, not shared, just duplicated — across dozens of files, each copy drifting slightly from the others as different developers made different small changes over the years. When a bug existed in that shared logic, it existed in twenty places simultaneously, and fixing it meant hunting each one down manually.
+Beyond the security issues, the codebase showed a decade of quiet neglect. Developers had copied and pasted logic across dozens of files. Each copy drifted as people made small changes over the years. When a bug existed in that shared logic, it existed in twenty places, and fixing it meant hunting each one down manually.
 
-There was no version control. Not an outdated Git setup, not an old SVN repository — nothing. Changes were tracked, if at all, by whoever happened to remember making them. The codebase had no history. There was no way to answer the question _"what changed last Tuesday?"_ because nothing had ever recorded the answer.
+There was no version control. Not an outdated Git setup, not an old SVN repository. Nothing. Changes were tracked, if at all, by whoever happened to remember making them. The codebase had no history. There was no way to answer the question _"what changed last Tuesday?"_ because nothing had ever recorded the answer.
 
-> **The scariest part wasn't finding the problems. The scariest part was realising that to the people maintaining it, none of this felt unusual. This was just how the system was.**
+> **The worst part was not finding the problems. The worst part was realizing that the team had learned to treat them as normal.**
 
 ---
 
 ## The Part Where I Told Someone
 
-I wrote up my findings and brought them to the CEO. This felt like the right call — not the IT team directly, because the IT team was, in some ways, part of the story. The CEO was attentive, took it seriously, and asked me to put together a formal proposal for how to address it.
+I wrote up my findings and brought them to the CEO. I chose the CEO instead of the IT team because the IT team was part of the story. The CEO listened, took it seriously, and asked me to prepare a formal proposal.
 
-I outlined a phased modernisation plan: getting everything into version control immediately, containerising the environment, incrementally upgrading PHP, migrating to bcrypt for password hashing, locking down phpMyAdmin behind strict access controls, introducing a staging environment, and establishing a basic security review cycle. Nothing revolutionary — just the fundamentals.
+I outlined a phased modernization plan: move everything into version control, containerize the environment, upgrade PHP incrementally, migrate password hashing to bcrypt, lock down phpMyAdmin, add a staging environment, and start a basic security review cycle. Nothing revolutionary. Just the fundamentals.
 
 The CEO forwarded my proposal to the IT team.
 
 The IT team read it and confirmed they could implement everything in it.
 
-This is where the story gets its punchline.
+Then the story turned.
 
 ---
 
 ## The Proposal Becomes a Negotiation Tactic
 
-Because the IT team could supposedly do all of it, the company felt no urgency to bring in someone new at a higher package. My own proposal had been used as evidence that they didn't need me.
+Because the IT team said they could do all of it, the company felt no urgency to bring in someone new at a higher package. My own proposal became evidence that they did not need me.
 
-The thinking, as best I could reconstruct it: _we already have people who can fix this, so we don't need to pay a premium for someone who identified that it needed fixing._
+The thinking, as best I could reconstruct it: _we already have people who can fix this, so we do not need to pay a premium for someone who identified that it needed fixing._
 
-> A note worth sitting with: the issues I documented had existed, undisturbed, for years. The team capable of fixing them had been there the whole time. The problem was never a lack of ability — it was a complete lack of awareness, prioritisation, and a culture that had simply stopped questioning why things were the way they were.
+> The issues I documented had existed for years. The team capable of fixing them had been there the whole time. The problem was not ability. It was awareness, prioritization, and a culture that had stopped questioning the system.
 
-I left without an offer. Whether any of the fixes ever got implemented — I genuinely don't know.
+I left without an offer. I do not know whether they implemented any of the fixes.
 
 ---
 
 ## What This Story Is Really About
 
-Legacy systems don't rot dramatically. There's no alarm, no warning light. They decay gradually, over years, maintained by people who inherit something they didn't build and learn to work around its edges rather than inside its foundations. Every hack, every workaround, every "we'll fix this later" becomes load-bearing. The technical debt compounds quietly until the codebase isn't a product anymore — it's an ecosystem, one that everyone is afraid to disturb.
+Legacy systems do not rot in one dramatic moment. They decay over years as people inherit code they did not build and learn to work around it. Every hack, workaround, and "we'll fix this later" becomes part of the structure. The technical debt compounds until the codebase stops feeling like a product and starts feeling like something nobody wants to touch.
 
-The real danger isn't even the exposed phpMyAdmin or the SQL injection or the hardcoded credentials, alarming as all of those are. The real danger is the **knowledge gap** — the growing distance between where the industry stands today and what the team maintaining the system believes is normal. When you've been swimming in the same water long enough, you stop noticing the temperature.
+The exposed phpMyAdmin, SQL injection, and hardcoded credentials were serious. The deeper danger was the **knowledge gap**: the distance between current industry practice and what the team maintaining the system believed was normal. When you stare at the same system long enough, you stop noticing what should feel wrong.
 
-And this is, critically, not a technical failure. It's an organisational one.
+That is an organizational failure, not only a technical one.
 
-Tech debt is invisible on a balance sheet. It doesn't show up as a line item. Leadership looks at a system that's "running fine" and sees no cost — because the cost hasn't arrived yet. It arrives in one of two ways: gradually, as the system becomes increasingly difficult and expensive to change, or suddenly, as a breach, an outage, or a compliance failure that nobody saw coming because nobody was looking.
+Tech debt does not show up as a line item. Leadership looks at a system that is "running fine" and sees no cost because the cost has not arrived yet. It arrives gradually as the system becomes harder and more expensive to change, or suddenly as a breach, outage, or compliance failure.
 
 ---
 
@@ -129,7 +129,7 @@ Tech debt is invisible on a balance sheet. It doesn't show up as a line item. Le
 
 **Version control** should have been non-negotiable on day one. Without it, you cannot know what changed, when, or who changed it. Every change to that codebase for ten years happened in the dark.
 
-**A staging environment** is not a luxury. It is the minimum bar for responsible deployment. "We push to production and see what happens" is not a release process — it's gambling with a live system.
+**A staging environment** is not a luxury. It is the minimum bar for responsible deployment. "We push to production and see what happens" is gambling with a live system.
 
 **Credentials belong in environment variables**, not source files. This is not advanced knowledge. It is covered in the first chapter of every modern web framework's documentation.
 
@@ -137,14 +137,14 @@ Tech debt is invisible on a balance sheet. It doesn't show up as a line item. Le
 
 **Rate limiting a login form** is a single middleware configuration. It takes minutes. It closes the door on an entire category of attack.
 
-None of this is exotic knowledge. This is first-year web security curriculum. Which is exactly what makes finding it in a production system — serving thousands of people, every day — so quietly unsettling.
+None of this is exotic knowledge. It is first-year web security curriculum. Finding it in a production system used by thousands of people made the situation unsettling.
 
 ---
 
-The organisation I visited isn't unusual. That's the point. Variations of this system exist inside thousands of companies right now — quietly serving employees, quietly accumulating risk, quietly waiting for the day someone with less benign intentions than a curious engineer decides to have a look.
+The organization I visited is not unusual. That is the point. Variations of this system exist inside thousands of companies right now, serving employees while accumulating risk.
 
 If you're a developer reading this: run the honest audit on your own systems. Not the comfortable one. Check the PHP version. Check how you're hashing credentials. Ask when the dependencies were last updated. Ask if there's a `.git` folder anywhere in the project. Ask what happens if the server goes down tonight.
 
-The most expensive systems to fix are always the ones where nobody ever asked those questions.
+The most expensive systems to fix are the ones where nobody asked those questions early enough.
 
 ---
