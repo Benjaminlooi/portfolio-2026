@@ -1,0 +1,236 @@
+---
+title: "How I Back Up Nextcloud and Immich in My Homelab"
+summary: "I back up my Nextcloud AIO and Immich services with local Borg repositories, then sync those repositories to Backblaze B2 with rclone and systemd timers."
+metaDescription: "How I back up Nextcloud AIO and Immich in my homelab with Borg, rclone, Backblaze B2, database dumps, file exclusions, restore checks, and systemd timers."
+image: "/images/og-default.png"
+author: "Benjamin Looi"
+publishedAt: "2026-05-28"
+tags: ["homelab", "nextcloud", "immich", "backup", "borg", "rclone"]
+---
+
+I self-host Nextcloud and Immich at home. Nextcloud holds files and documents. Immich holds my photo library. If either one disappears, I lose data I care about, so I treat backups as part of the service, not as a future chore.
+
+My setup uses Borg for local encrypted backups and rclone for offsite sync to Backblaze B2. systemd timers run the jobs for me.
+
+The flow looks like this:
+
+```text
+Nextcloud AIO -> local Borg repository -> Backblaze B2
+Immich        -> database dump + local Borg repository -> Backblaze B2
+```
+
+I can restore from the local disk when I need speed. I can restore from B2 if the machine or disk dies.
+
+---
+
+## The Tools
+
+I use three pieces:
+
+- **Borg Backup** for deduplicated, encrypted backup repositories.
+- **rclone** to sync the Borg repositories to Backblaze B2.
+- **systemd timers** to run the sync jobs every day.
+
+Borg matters here because both apps contain data that changes in chunks. A full database dump every day sounds wasteful, but Borg deduplicates the parts that did not change. rclone then sends the repository state to B2.
+
+---
+
+## Nextcloud AIO
+
+Nextcloud AIO includes a Borg backup system. I let Nextcloud create its own local backup repository at:
+
+```text
+/mnt/ncbackup/borg
+```
+
+My part starts after that. I run a root-owned script that checks the repository, makes sure Nextcloud is not running a backup, and syncs the Borg repository to a B2 bucket.
+
+```bash
+#!/bin/bash
+set -x
+
+SOURCE_DIRECTORY="/mnt/ncbackup/borg"
+REMOTE_NAME="b2"
+REMOTE_BUCKET="bencloud-borg-backup"
+
+if [ "$EUID" -ne 0 ] || [ ! -d "$SOURCE_DIRECTORY" ] || [ -z "$(ls -A "$SOURCE_DIRECTORY/")" ]; then
+  exit 1
+fi
+
+if [ -f "$SOURCE_DIRECTORY/lock.roster" ] || [ -f "$SOURCE_DIRECTORY/aio-lockfile" ]; then
+  exit 1
+fi
+
+touch "$SOURCE_DIRECTORY/aio-lockfile"
+
+rclone --config="/home/ben/.config/rclone/rclone.conf" sync \
+  --transfers=4 \
+  --checkers=8 \
+  --delete-excluded \
+  "$SOURCE_DIRECTORY" \
+  "$REMOTE_NAME:$REMOTE_BUCKET"
+
+rm "$SOURCE_DIRECTORY/aio-lockfile"
+
+if docker ps --format "{{.Names}}" | grep "^nextcloud-aio-nextcloud$"; then
+  docker exec nextcloud-aio-nextcloud bash /notify.sh \
+    "Rsync backup successful!" \
+    "Synced the backup repository successfully."
+fi
+```
+
+The lock checks matter. I do not want rclone reading a Borg repository while Nextcloud is writing to it. The script exits if it sees `lock.roster` or `aio-lockfile`, then creates its own temporary lock while the sync runs.
+
+I run this with a system timer at 05:00:
+
+```ini
+[Unit]
+Description=Sync nextcloud backup to B2 Backblaze
+
+[Timer]
+OnCalendar=*-*-* 05:00:00
+
+[Install]
+WantedBy=timers.target
+```
+
+Nextcloud handles the application-level backup. My script handles the second copy.
+
+---
+
+## Immich
+
+Immich needs its own flow. I want the database and photo library to line up, so the script stops the containers that can write data, dumps PostgreSQL, creates a Borg archive, starts Immich again, then syncs the Borg repository to B2.
+
+The local Borg repository lives at:
+
+```text
+/mnt/immich_backup/immich-borg
+```
+
+The photo library lives at:
+
+```text
+/mnt/immich_data/library
+```
+
+Here is the script:
+
+```bash
+#!/bin/sh
+set -x
+
+docker stop immich_machine_learning immich_server immich_redis
+
+UPLOAD_LOCATION="/mnt/immich_data/library"
+BACKUP_PATH="/mnt/immich_backup"
+REMOTE_NAME="b2"
+REMOTE_BUCKET="immich-borg-backup"
+
+docker exec -t immich_postgres pg_dumpall \
+  --clean \
+  --if-exists \
+  --username=postgres > "$UPLOAD_LOCATION/database-backup/immich-database.sql"
+
+export BORG_PASSPHRASE=$(cat ./.borg_passphrase)
+
+borg create -s --progress "$BACKUP_PATH/immich-borg::{now}" "$UPLOAD_LOCATION" \
+  --exclude "$UPLOAD_LOCATION/thumbs/" \
+  --exclude "$UPLOAD_LOCATION/encoded-video/"
+
+borg prune -s --keep-weekly=4 --keep-monthly=3 "$BACKUP_PATH/immich-borg"
+borg compact "$BACKUP_PATH/immich-borg"
+
+unset BORG_PASSPHRASE
+
+docker start immich_redis immich_server immich_machine_learning
+
+rclone sync "$BACKUP_PATH/immich-borg" "$REMOTE_NAME:$REMOTE_BUCKET/" -v
+```
+
+I keep PostgreSQL running so `pg_dumpall` can export the database. I stop the Immich server, Redis, and machine-learning containers because those parts can change app state or generate files while the backup runs.
+
+After Borg finishes creating the archive, the script starts Immich again before running the offsite sync. That keeps the downtime tied to the local backup step instead of the full upload time.
+
+---
+
+## What I Exclude
+
+I exclude two Immich directories:
+
+```bash
+--exclude "$UPLOAD_LOCATION/thumbs/"
+--exclude "$UPLOAD_LOCATION/encoded-video/"
+```
+
+Immich can regenerate thumbnails and encoded videos. Backing them up would cost disk space, upload time, and B2 storage for data I do not need to preserve.
+
+The original assets and database matter. Generated media can come back later.
+
+---
+
+## Retention
+
+For Immich, I keep:
+
+```bash
+borg prune -s --keep-weekly=4 --keep-monthly=3 "$BACKUP_PATH/immich-borg"
+```
+
+That gives me recent weekly restore points and a few monthly snapshots without keeping old archives forever. After pruning, I run:
+
+```bash
+borg compact "$BACKUP_PATH/immich-borg"
+```
+
+Borg can then reclaim space from archives it pruned.
+
+---
+
+## The Immich Timer
+
+I run the Immich job as a user-level systemd timer at 11:00:
+
+```ini
+[Unit]
+Description=Sync immich backup to B2 Backblaze
+
+[Timer]
+OnCalendar=*-*-* 11:00:00
+
+[Install]
+WantedBy=timers.target
+```
+
+Nextcloud runs earlier in the morning. Immich runs later. I keep them separate so both jobs do not fight for disk and network at the same time.
+
+---
+
+## Restore Checks
+
+A backup only counts if I can restore from it. For Borg, I can mount a repository and inspect archives without restoring everything:
+
+```bash
+mkdir /tmp/immich-mountpoint
+borg mount /mnt/immich_backup/immich-borg /tmp/immich-mountpoint
+```
+
+For a real restore, I would test both parts:
+
+- Can I extract the files I need from the Borg archive?
+- Can I restore the database dump into a clean Immich PostgreSQL container?
+
+I care about that second question because photo files alone do not make an Immich instance whole. The database holds albums, users, metadata, and app state.
+
+---
+
+## What I Would Improve Next
+
+This setup works for my homelab, but I want to tighten a few things:
+
+- Send alerts when a timer fails instead of only checking logs.
+- Run scheduled restore tests into a temporary directory.
+- Track backup repository size over time.
+- Move more secrets into systemd environment files or a dedicated secret store.
+
+The current setup gives me the basics I wanted: local snapshots, offsite copies, daily automation, and a restore path I can test. That is enough to sleep better when Nextcloud and Immich hold data I do not want to recreate.
