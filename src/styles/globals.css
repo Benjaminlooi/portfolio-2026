@@ -9,15 +9,6 @@
 
 	/* code */
 
-	--sh-class: #4c97f8;
-	--sh-identifier: white;
-	--sh-keyword: #f47067;
-	--sh-string: #0fa295;
-	--sh-property: #4e8fdf;
-	--sh-entity: #6eafad;
-	--sh-jsxliterals: #bf7db6;
-	--sh-sign: #8996a3;
-	--sh-comment: #a19595;
 }
 
 /* excalidraw font */
@@ -51,6 +42,140 @@ body {
 
 .prose code span {
 	@apply font-medium;
+}
+
+/* ===== Rehype Pretty Code ===== */
+
+figure[data-rehype-pretty-code-figure] {
+	@apply my-6 overflow-hidden rounded-lg bg-white/5;
+}
+
+figure[data-rehype-pretty-code-figure] pre {
+	@apply m-0 overflow-x-auto bg-transparent py-4 text-sm;
+	padding-left: 1.25rem;
+	padding-right: 3rem;
+	line-height: 1.75;
+}
+
+figure[data-rehype-pretty-code-figure] code {
+	@apply bg-transparent p-0 font-normal;
+}
+
+figure[data-rehype-pretty-code-figure] [data-line] {
+	@apply inline-block min-w-full;
+	padding-left: 0.25rem;
+	padding-right: 0.25rem;
+	border-radius: 0.25rem;
+}
+
+/* Line numbers */
+code[data-line-numbers] {
+	counter-reset: line;
+}
+
+code[data-line-numbers] > [data-line]::before {
+	counter-increment: line;
+	content: counter(line);
+	@apply mr-4 inline-block text-right text-sm text-white/30;
+	width: 0.75rem;
+}
+
+code[data-line-numbers-max-digits="2"] > [data-line]::before {
+	width: 1.25rem;
+}
+
+code[data-line-numbers-max-digits="3"] > [data-line]::before {
+	width: 1.75rem;
+}
+
+code[data-line-numbers-max-digits="4"] > [data-line]::before {
+	width: 2.25rem;
+}
+
+/* Highlighted lines */
+[data-highlighted-line] {
+	@apply bg-white/5;
+}
+
+[data-highlighted-line] > span {
+	@apply relative;
+}
+
+[data-highlighted-chars] {
+	@apply rounded bg-white/10 px-1 py-0.5;
+}
+
+/* Title */
+[data-rehype-pretty-code-title] {
+	@apply border-b border-white/10 bg-white/5 px-5 py-2 text-sm font-medium text-white/70;
+}
+
+figure[data-rehype-pretty-code-figure]:has(> [data-rehype-pretty-code-title]) pre {
+	@apply !rounded-t-none;
+}
+
+/* Copy button overrides */
+pre button.rehype-pretty-copy {
+	@apply rounded-md border border-white/10 bg-white/5 text-white/60 backdrop-blur-sm transition-all duration-200;
+}
+pre button.rehype-pretty-copy:hover {
+	@apply bg-white/10 text-white;
+}
+pre button.rehype-pretty-copy.rehype-pretty-copied {
+	@apply text-white;
+}
+
+/* ===== Rehype Pretty Code Enhancements ===== */
+
+/* Language badge on code blocks without a title */
+figure[data-rehype-pretty-code-figure]:not(:has(> [data-rehype-pretty-code-title]))
+	pre[data-language]::after {
+	content: attr(data-language);
+	position: absolute;
+	top: 0.5rem;
+	right: 2.5rem;
+	font-size: 0.75rem;
+	font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+	color: rgba(255, 255, 255, 0.4);
+	pointer-events: none;
+	user-select: none;
+	z-index: 1;
+}
+
+/* Enhanced highlighted line with left border accent */
+[data-highlighted-line],
+.highlighted {
+	@apply bg-white/5;
+	border-left: 2px solid hsl(var(--primary) / 0.5);
+}
+
+/* Diff additions and removals */
+figure[data-rehype-pretty-code-figure] .diff.add {
+	background: rgba(46, 160, 67, 0.15);
+}
+figure[data-rehype-pretty-code-figure] .diff.remove {
+	background: rgba(248, 81, 73, 0.15);
+}
+
+/* Focused lines — dim unfocused, accent focused */
+figure[data-rehype-pretty-code-figure] pre.has-focused [data-line] {
+	opacity: 0.5;
+}
+figure[data-rehype-pretty-code-figure] pre.has-focused [data-line].focused {
+	opacity: 1;
+	box-shadow: inset 0 0 0 1px hsl(var(--primary) / 0.2);
+}
+
+/* Error, warning, and info markers */
+figure[data-rehype-pretty-code-figure] .error {
+	background: rgba(248, 81, 73, 0.1);
+	text-decoration: underline wavy rgba(248, 81, 73, 0.4);
+}
+figure[data-rehype-pretty-code-figure] .warning {
+	background: rgba(210, 153, 34, 0.1);
+}
+figure[data-rehype-pretty-code-figure] .info {
+	background: rgba(56, 139, 253, 0.1);
 }
 
 /* gradients */

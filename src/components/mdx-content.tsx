@@ -1,6 +1,14 @@
 import dynamic from "next/dynamic";
 import { MDXRemote, type MDXRemoteProps } from "next-mdx-remote/rsc";
 import type { JSX } from "react";
+import { transformerCopyButton } from "@rehype-pretty/transformers";
+import {
+	transformerNotationDiff,
+	transformerNotationErrorLevel,
+	transformerNotationFocus,
+	transformerNotationHighlight,
+} from "@shikijs/transformers";
+import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import { HeadingWithAnchor } from "./blog/heading-anchor";
 
@@ -36,8 +44,6 @@ const components = {
 		<HeadingWithAnchor as="h3" {...props} />
 	),
 	img: dynamic(() => import("./blog/image")),
-	// code: dynamic(() => import("./blog/new-code-block")),
-	code: dynamic(() => import("./blog/code-block")),
 	Youtube: dynamic(() => import("./blog/youtube")),
 	CallOut: dynamic(() => import("./blog/call-out")),
 	SimpleFadeInAnimation: dynamic(
@@ -81,7 +87,25 @@ export default function MDXContent(
 			components={components}
 			options={{
 				mdxOptions: {
-					rehypePlugins: [rehypeSlug],
+					rehypePlugins: [
+						rehypeSlug,
+						[
+							rehypePrettyCode,
+							{
+								theme: "github-dark",
+								transformers: [
+									transformerNotationHighlight(),
+									transformerNotationFocus(),
+									transformerNotationDiff(),
+									transformerNotationErrorLevel(),
+									transformerCopyButton({
+										visibility: "hover",
+										feedbackDuration: 2000,
+									}),
+								],
+							},
+						],
+					],
 				},
 			}}
 		/>
