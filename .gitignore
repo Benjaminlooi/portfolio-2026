@@ -43,3 +43,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .worktrees/
+
+# opencode / agent tooling
+.omo/
+.playwright-mcp/
