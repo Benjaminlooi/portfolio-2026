@@ -10,6 +10,7 @@ import {
 } from "@shikijs/transformers";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
+import { CodeBlock } from "./blog/code-block";
 import { HeadingWithAnchor } from "./blog/heading-anchor";
 
 // Dynamic imports using `next/dynamic`
@@ -46,6 +47,7 @@ const components = {
 	img: dynamic(() => import("./blog/image")),
 	Youtube: dynamic(() => import("./blog/youtube")),
 	CallOut: dynamic(() => import("./blog/call-out")),
+	figure: CodeBlock,
 	SimpleFadeInAnimation: dynamic(
 		() => import("./blog/motion-crash-course/simple-fade-in-animation"),
 	),
