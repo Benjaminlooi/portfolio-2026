@@ -53,7 +53,7 @@ figure[data-rehype-pretty-code-figure] {
 figure[data-rehype-pretty-code-figure] pre {
 	@apply m-0 overflow-x-auto bg-transparent py-4 text-sm;
 	padding-left: 1.25rem;
-	padding-right: 3rem;
+	padding-right: 1.25rem;
 	line-height: 1.75;
 }
 
@@ -105,12 +105,12 @@ code[data-line-numbers-max-digits="4"] > [data-line]::before {
 	@apply rounded bg-white/10 px-1 py-0.5;
 }
 
-/* Title */
-[data-rehype-pretty-code-title] {
-	@apply border-b border-white/10 bg-white/5 px-5 py-2 text-sm font-medium text-white/70;
+/* Header bar */
+figure[data-rehype-pretty-code-figure] > div:first-child {
+	@apply flex items-center justify-between border-b border-white/10 bg-white/5 px-4 py-2;
 }
 
-figure[data-rehype-pretty-code-figure]:has(> [data-rehype-pretty-code-title]) pre {
+figure[data-rehype-pretty-code-figure] > div:first-child + pre {
 	@apply !rounded-t-none;
 }
 
@@ -126,21 +126,6 @@ pre button.rehype-pretty-copy.rehype-pretty-copied {
 }
 
 /* ===== Rehype Pretty Code Enhancements ===== */
-
-/* Language badge on code blocks without a title */
-figure[data-rehype-pretty-code-figure]:not(:has(> [data-rehype-pretty-code-title]))
-	pre[data-language]::after {
-	content: attr(data-language);
-	position: absolute;
-	top: 0.5rem;
-	right: 2.5rem;
-	font-size: 0.75rem;
-	font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-	color: rgba(255, 255, 255, 0.4);
-	pointer-events: none;
-	user-select: none;
-	z-index: 1;
-}
 
 /* Enhanced highlighted line with left border accent */
 [data-highlighted-line],
