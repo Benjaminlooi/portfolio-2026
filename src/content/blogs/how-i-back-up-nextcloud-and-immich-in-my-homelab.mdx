@@ -45,7 +45,7 @@ Nextcloud AIO includes a Borg backup system. I let Nextcloud create its own loca
 
 My part starts after that. I run a root-owned script that checks the repository, makes sure Nextcloud is not running a backup, and syncs the Borg repository to a B2 bucket.
 
-```bash
+```bash title="nextcloud-sync.sh"
 #!/bin/bash
 set -x
 
@@ -83,7 +83,7 @@ The lock checks matter. I do not want rclone reading a Borg repository while Nex
 
 I run this with a system timer at 05:00:
 
-```ini
+```ini title="nextcloud-backup.timer"
 [Unit]
 Description=Sync nextcloud backup to B2 Backblaze
 
@@ -116,7 +116,7 @@ The photo library lives at:
 
 Here is the script:
 
-```bash
+```bash title="immich-backup.sh"
 #!/bin/sh
 set -x
 
@@ -191,7 +191,7 @@ Borg can then reclaim space from archives it pruned.
 
 I run the Immich job as a user-level systemd timer at 11:00:
 
-```ini
+```ini title="immich-backup.timer"
 [Unit]
 Description=Sync immich backup to B2 Backblaze
 

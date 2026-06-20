@@ -10,14 +10,14 @@ tags: ["nuxt", "google-fonts", "netlify", "css", "static-site", "web-development
 
 My static Nuxt sites on Netlify were not using the Google Fonts I specified, even though the fonts worked during development.
 
-```css
+```css title="assets/css/main.scss"
 /* assets/css/main.scss */
 @import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;800&display=swap");
 
 /* ... */
 ```
 
-```js
+```js title="nuxt.config.js"
 // nuxt.config.js
 // ...
 css: [
@@ -31,7 +31,7 @@ css: [
 
 Moving the `@import` CSS into a top-level Vue component did not fix it.
 
-```vue
+```vue title="pages/index.vue"
 // pages/index.vue
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900&display=swap");
@@ -48,7 +48,7 @@ Tailwindcss is purging the @import css
 
 I tried disabling Tailwind CSS purging.
 
-```js
+```js title="tailwind.config.js"
 // tailwind.config.js
 module.exports = {
   purge: {
@@ -64,7 +64,7 @@ The font still did not load on the generated static site.
 
 Include the font as a stylesheet link in the HTML head instead of using `@import` CSS.
 
-```js
+```js title="nuxt.config.js"
 // nuxt.config.js
 export default {
   // ...

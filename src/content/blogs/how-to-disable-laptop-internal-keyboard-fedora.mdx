@@ -59,7 +59,7 @@ sudo nano /etc/udev/rules.d/99-disable-internal-keyboard.rules
 
 Paste in this one-liner (adjust the name exactly if yours differs):
 
-```udev
+```udev title="99-disable-internal-keyboard.rules"
 ACTION=="add|change", ATTRS{name}=="AT Translated Set 2 keyboard", ENV{ID_INPUT_KEYBOARD}=="1", ENV{LIBINPUT_IGNORE_DEVICE}="1"
 ```
 
