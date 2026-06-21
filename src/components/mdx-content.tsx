@@ -93,6 +93,7 @@ export default function MDXContent(
 						[
 							rehypePrettyCode,
 							{
+								defaultLang: { block: "text" },
 								theme: "github-dark",
 								transformers: [
 									transformerNotationHighlight(),
