@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import { MDXRemote, type MDXRemoteProps } from "next-mdx-remote/rsc";
 import type { JSX } from "react";
-import { transformerCopyButton } from "@rehype-pretty/transformers";
 import {
 	transformerNotationDiff,
 	transformerNotationErrorLevel,
@@ -100,10 +99,6 @@ export default function MDXContent(
 									transformerNotationFocus(),
 									transformerNotationDiff(),
 									transformerNotationErrorLevel(),
-									transformerCopyButton({
-										visibility: "hover",
-										feedbackDuration: 2000,
-									}),
 								],
 							},
 						],
