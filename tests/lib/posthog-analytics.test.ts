@@ -55,7 +55,10 @@ describe("PostHog recruiter intent helpers", () => {
 			url: "https://linkedin.com/in/benjaminlooi/",
 			location: "links_page",
 		});
-		trackResumeDownload({ location: "links_page", url: "/resume_2026.pdf" });
+		trackResumeDownload({
+      location: "links_page",
+      url: "/Benjamin Looi resume 2026-9.pdf",
+    });
 
 		expect(posthog.capture).toHaveBeenNthCalledWith(1, "profile_link_click", {
 			platform: "linkedin",
@@ -63,13 +66,16 @@ describe("PostHog recruiter intent helpers", () => {
 			location: "links_page",
 		});
 		expect(posthog.capture).toHaveBeenNthCalledWith(2, "resume_download", {
-			location: "links_page",
-			url: "/resume_2026.pdf",
-		});
+      location: "links_page",
+      url: "/Benjamin Looi resume 2026-9.pdf",
+    });
 	});
 
 	it("captures a hire intent signal when anonymous behavior crosses the threshold", () => {
-		trackResumeDownload({ location: "hero_section", url: "/resume_2026.pdf" });
+		trackResumeDownload({
+      location: "hero_section",
+      url: "/Benjamin Looi resume 2026-9.pdf",
+    });
 		trackProfileLinkClick({
 			platform: "github",
 			url: "https://github.com/benjaminlooi",

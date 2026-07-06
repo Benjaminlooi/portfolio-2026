@@ -18,7 +18,7 @@ const Hero = () => {
 		trackCTAClick("download_resume", "hero_section");
 		trackResumeDownload({
 			location: "hero_section",
-			url: "/resume_2026.pdf",
+			url: "/Benjamin Looi resume 2026-9.pdf",
 		});
 	};
 
@@ -57,7 +57,7 @@ const Hero = () => {
 						Contact Me
 					</Link>
 					<a
-						href="resume_2026.pdf"
+						href="Benjamin Looi resume 2026-9.pdf"
 						download
 						target="_blank"
 						rel="noopener noreferrer"
