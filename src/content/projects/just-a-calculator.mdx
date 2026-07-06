@@ -1,0 +1,59 @@
+---
+title: "Just a Calculator"
+description: "A satirical browser extension built with WXT and React 19 that rewrites AI hype back to reality, one text node at a time."
+date: "2026-07-06"
+type: "extension"
+stack: ["wxt", "react", "typescript", "vanilla css"]
+slug: "just-a-calculator"
+image: "/images/projects/just-a-calculator-hero.jpg"
+featured: true
+link: ""
+github: "https://github.com/Benjaminlooi/calculator2"
+---
+
+## Overview
+
+In 2026, every application is "AI-powered," every SaaS startup is an "AI company," and every basic database search or text template is branded as "artificial intelligence." 
+
+**Just a Calculator** is a satirical browser extension designed to restore sanity to the web. It replaces every instance of the word "AI" (and its associated buzzwords) with "Calculator" (or other deflating alternatives) on the websites you visit. Because, when you strip away the marketing, that is exactly what they are: calculators.
+
+## Under the Hood: DOM walking with TreeWalker
+
+To perform text replacement without breaking the web pages you visit, the content script targets text nodes exclusively. Instead of parsing the entire HTML string, the extension walks the page's DOM using `document.createTreeWalker` with `NodeFilter.SHOW_TEXT`.
+
+It explicitly filters out elements whose text should never be edited:
+- **Inputs and editable content**: `INPUT`, `TEXTAREA`, and anything with `isContentEditable` set to true. Swapping text inside these would break forms.
+- **Scripts and styles**: `SCRIPT`, `STYLE`, `TEMPLATE`, and `SVG` to avoid breaking page behavior or styling.
+- **Code blocks**: `CODE`, `PRE`, and `KBD` to ensure development code examples are left untouched.
+
+```typescript
+const SKIP_TAGS = new Set([
+  'SCRIPT', 'STYLE', 'NOSCRIPT', 'IFRAME', 'OBJECT', 
+  'TEXTAREA', 'INPUT', 'SELECT', 'OPTION', 'TEMPLATE', 
+  'SVG', 'CODE', 'PRE', 'KBD', 'TITLE', 'META'
+]);
+```
+
+For each matching text node, a casing-aware helper applies regex replacement rules to swap terms like `ChatGPT` for `Chat Calc` or `machine learning` for `memorizing`, preserving lowercase, uppercase, and title-case matching.
+
+## Handling Dynamic Content with MutationObserver
+
+Modern single-page applications (SPAs) and infinite-scrolling pages (like Twitter/X, Gmail, or Slack) render content dynamically long after the initial page load. 
+
+To handle this without constantly re-scanning the page, the extension registers a `MutationObserver`. The observer watches for added or modified nodes, running only those newly updated tree segments through the DOM-walking replacer, maintaining near-zero CPU overhead.
+
+## Optimization: Storage Throttling & Reactive Popup
+
+Synchronizing data dynamically between a content script and the extension's popup UI can quickly degrade performance if done naively. 
+
+To prevent blocking the browser's main thread:
+1. **Throttled Local Sync**: The extension keeps a running tally of "hype terms removed" in memory. Instead of saving to `chrome.storage.local` on every match, updates are batched and written every 1.5 seconds, or immediately when navigating away from the page using the `pagehide` event listener.
+2. **Reactive UI State**: The popup is built using **React 19** and **WXT's Storage API**. It watches the extension storage reactively using `storage.watch`, updating the popup counter in real-time as you browse.
+3. **Feature Toggle**: A toggle switch lets users temporarily disable the extension, which immediately stops content script execution on subsequent page loads and dims the popup UI dynamically.
+
+## Project Summary
+
+- **Satirical Premise**: Replaces the term "AI" with "Calculator" and other hype terms with humorous alternatives (e.g., `neural network` &rarr; `tangled wire`).
+- **WXT Extension Framework**: Built on a modern web extension framework enabling cross-browser builds (Chrome, Firefox).
+- **High Performance**: Optimized with low-overhead TreeWalking, MutationObserver targeting, and batched storage writes.
+- **Modern UI**: A responsive, toggleable popup built with React 19 and vanilla CSS.
