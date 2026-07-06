@@ -21,6 +21,7 @@ export interface ProjectMetadata {
 	image: string;
 	link: string;
 	github: string;
+	featured?: boolean;
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
@@ -40,6 +41,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
 				image: data.image ?? "",
 				title: data.title ?? "",
 				type: data.type ?? "",
+				featured: data.featured ?? false,
 			},
 			content,
 		};
@@ -85,6 +87,7 @@ export function getProjectMetadata(filepath: string): ProjectMetadata {
 		image: data.image ?? "",
 		title: data.title ?? "",
 		type: data.type ?? "",
+		featured: data.featured ?? false,
 	};
 }
 
