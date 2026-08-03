@@ -16,6 +16,7 @@ import {
 	getProjectBySlug,
 	getProjects,
 	getRelatedProjects,
+	isSoftwareProjectType,
 } from "@/lib/project";
 import {
 	buildBreadcrumbListSchema,
@@ -127,8 +128,7 @@ const Project = async ({ params }: Props) => {
 		creativeWorkSchema,
 	];
 
-	// If the project type is 'web', it's a software application
-	if (type === "web" || type === "mobile" || type === "extension") {
+	if (isSoftwareProjectType(type)) {
 		const softwareAppSchema = buildSoftwareApplicationSchema({
 			name: title as string,
 			description: description as string,

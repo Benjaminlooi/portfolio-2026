@@ -9,7 +9,12 @@ export type Project = {
 	content: string;
 };
 
-export type ProjectType = "web" | "mobile" | "extension" | "package";
+export type ProjectType =
+	| "web"
+	| "mobile"
+	| "extension"
+	| "desktop"
+	| "package";
 
 export interface ProjectMetadata {
 	type: ProjectType;
@@ -22,6 +27,10 @@ export interface ProjectMetadata {
 	link: string;
 	github: string;
 	featured?: boolean;
+}
+
+export function isSoftwareProjectType(type: ProjectType): boolean {
+	return ["web", "mobile", "extension", "desktop"].includes(type);
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
