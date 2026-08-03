@@ -1,0 +1,50 @@
+---
+title: "Window Switcher"
+description: "A Rust and Win32 utility I extended with a responsive visual grid for switching between windows of the same app with Alt+Backtick."
+date: "2026-08-03"
+type: "desktop"
+stack: ["rust", "win32 api", "gdi+", "windows"]
+slug: "window-switcher"
+image: "/images/projects/window-switcher-hero.webp"
+featured: true
+link: ""
+github: "https://github.com/Benjaminlooi/window-switcher"
+---
+
+## Overview
+
+Windows makes it easy to move between applications with `Alt+Tab`, but moving among several windows from the same application is less direct. If I had multiple editor windows open, finding the right one meant cycling through everything or reaching for the taskbar.
+
+[Window Switcher](https://github.com/Benjaminlooi/window-switcher) is an open-source Rust utility that adds customizable switching shortcuts to Windows. I extended the [original project](https://github.com/sigoden/window-switcher) with a responsive visual grid for its `Alt+Backtick` workflow, turning a basic same-app switcher into a preview-driven interface that remains usable as the window count grows.
+
+## Designing the Interaction
+
+The interaction stays keyboard-first. Hold Alt and press Backtick repeatedly to move through windows from the foreground application. Add Shift to move backward, release Alt to activate the selected window, or press Escape to cancel without changing focus.
+
+The overlay also supports pointer actions. Clicking a card activates it, while a selected or hovered card exposes a close action. After a window closes, the remaining cards rebalance and selection moves to the nearest valid item.
+
+![Window Switcher cycling between Visual Studio Code windows in its responsive preview grid](/images/projects/window-switcher-demo.gif)
+
+## A Grid That Scales
+
+A horizontal thumbnail strip works for two or three windows, but titles and previews quickly become unreadable. The new layout uses one row for small sets and two independently centered rows for larger sets, keeping card dimensions stable for up to ten windows.
+
+When there are more than ten windows, the selection moves through pages of ten. The header still reports the position in the full list, so `11 of 14` remains meaningful even when only the current page is visible. The overlay is calculated against the active monitor's work area and DPI scale, keeping it inside the usable desktop at common display scales.
+
+## Capturing Once, Repainting Fast
+
+Each overlay session builds a model containing the window handle, title, source dimensions, and a cached preview. Selection changes repaint from that model instead of capturing every window again. This keeps rapid keyboard cycling separate from the more expensive capture step.
+
+Preview rectangles are calculated with aspect-fit math, so portrait, square, and ultrawide windows are letterboxed rather than stretched. If a capture fails, the card falls back to a neutral frame with the shared app icon instead of aborting the switcher.
+
+## Native Windows Edge Cases
+
+The interface sits on top of several pieces of native Windows behavior: a low-level keyboard hook, foreground-window tracking, per-monitor work areas, DWM thumbnail capture, and GDI/GDI+ painting. Windows can be minimized, close externally while the overlay is open, or belong to a process running with different privileges.
+
+The implementation treats those cases as ordinary state changes. Invalid handles are pruned before repaint or activation, minimized windows are restored when selected, and Escape retains the original foreground window. Cached bitmaps and icons are owned by the overlay session and released when that session ends, making native resource lifetimes explicit.
+
+## What I Learned
+
+The most useful boundary was separating pure layout math from platform state. Grid distribution, paging, traversal, hit testing, and aspect fitting can be reasoned about without a live desktop; enumeration, focus changes, captures, and GDI ownership stay in the Windows-facing layer.
+
+I also learned that cancellation deserves the same attention as activation. Remembering the original foreground window and making Escape deterministic turned the overlay from a drawing exercise into an interaction that feels safe to use quickly.
