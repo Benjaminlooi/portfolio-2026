@@ -1,6 +1,15 @@
 "use client";
 
-import { Braces, Brackets, Check, Copy, Database, FileCode, Settings, TerminalSquare } from "lucide-react";
+import {
+	Braces,
+	Brackets,
+	Check,
+	Copy,
+	Database,
+	FileCode,
+	Settings,
+	TerminalSquare,
+} from "lucide-react";
 import React, { useRef, useState } from "react";
 
 import type { LucideIcon } from "lucide-react";
@@ -41,12 +50,17 @@ function prettifyLabel(lang: string): string {
 }
 
 function extractTextContent(children: React.ReactNode): string {
-	return React.Children.toArray(children).map((child) => {
-		if (typeof child === "string") return child;
-		if (typeof child === "number") return String(child);
-		if (React.isValidElement(child)) return extractTextContent((child.props as Record<string, unknown>).children as React.ReactNode);
-		return "";
-	}).join("");
+	return React.Children.toArray(children)
+		.map((child) => {
+			if (typeof child === "string") return child;
+			if (typeof child === "number") return String(child);
+			if (React.isValidElement(child))
+				return extractTextContent(
+					(child.props as Record<string, unknown>).children as React.ReactNode,
+				);
+			return "";
+		})
+		.join("");
 }
 
 function copyWithTextarea(text: string): void {
@@ -75,7 +89,10 @@ export function CodeBlock(props: React.HTMLAttributes<HTMLElement>) {
 		const childProps = child.props as Record<string, unknown>;
 		if (childProps["data-rehype-pretty-code-title"] !== undefined) {
 			titleElement = child as React.ReactElement;
-		} else if ((child.type as string) === "pre" || childProps["data-language"] !== undefined) {
+		} else if (
+			(child.type as string) === "pre" ||
+			childProps["data-language"] !== undefined
+		) {
 			preElement = child as React.ReactElement;
 			const lang = childProps["data-language"];
 			if (typeof lang === "string" && lang.length > 0) {
@@ -87,16 +104,27 @@ export function CodeBlock(props: React.HTMLAttributes<HTMLElement>) {
 	});
 
 	if (!language && preElement !== null) {
-		const preProps = (preElement as React.ReactElement).props as Record<string, unknown>;
+		const preProps = (preElement as React.ReactElement).props as Record<
+			string,
+			unknown
+		>;
 		const lang = preProps["data-language"];
 		if (typeof lang === "string" && lang.length > 0) {
 			language = lang;
 		}
 	}
 
-	const titleText = titleElement !== null
-		? extractTextContent(((titleElement as React.ReactElement).props as Record<string, unknown>).children as React.ReactNode)
-		: "";
+	const titleText =
+		titleElement !== null
+			? extractTextContent(
+					(
+						(titleElement as React.ReactElement).props as Record<
+							string,
+							unknown
+						>
+					).children as React.ReactNode,
+				)
+			: "";
 
 	const Icon = language ? (ICON_MAP[language] ?? Brackets) : Brackets;
 	const label = titleText || (language ? prettifyLabel(language) : "");

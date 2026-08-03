@@ -26,7 +26,13 @@ function makeChildren(opts: {
 	code?: string;
 	caption?: string;
 }) {
-	const { language = "ts", title, titleTag = "figcaption", code = "console.log('hi')", caption } = opts;
+	const {
+		language = "ts",
+		title,
+		titleTag = "figcaption",
+		code = "console.log('hi')",
+		caption,
+	} = opts;
 
 	const children: React.ReactNode[] = [];
 
@@ -69,7 +75,9 @@ describe("CodeBlock", () => {
 		);
 
 		expect(screen.getByText("Ts")).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: /copy code/i })).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: /copy code/i }),
+		).toBeInTheDocument();
 	});
 
 	it("renders 'Terminal' label for bash language", () => {
@@ -105,7 +113,11 @@ describe("CodeBlock", () => {
 	it("renders title text as header label instead of language label (figcaption shape)", () => {
 		render(
 			<CodeBlock data-rehype-pretty-code-figure="">
-				{makeChildren({ language: "ts", title: "app.ts", titleTag: "figcaption" })}
+				{makeChildren({
+					language: "ts",
+					title: "app.ts",
+					titleTag: "figcaption",
+				})}
 			</CodeBlock>,
 		);
 
@@ -134,7 +146,9 @@ describe("CodeBlock", () => {
 		);
 
 		expect(screen.queryByText(/^[A-Z]/)).not.toBeInTheDocument();
-		expect(screen.getByRole("button", { name: /copy code/i })).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: /copy code/i }),
+		).toBeInTheDocument();
 	});
 
 	it("renders only Brackets icon and copy button for empty-string language", () => {
@@ -145,13 +159,19 @@ describe("CodeBlock", () => {
 		);
 
 		expect(screen.queryByText(/^[A-Z]/)).not.toBeInTheDocument();
-		expect(screen.getByRole("button", { name: /copy code/i })).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: /copy code/i }),
+		).toBeInTheDocument();
 	});
 
 	it("passes through caption figcaption as an additional child", () => {
 		render(
 			<CodeBlock data-rehype-pretty-code-figure="">
-				{makeChildren({ language: "ts", title: "app.ts", caption: "Output of the script" })}
+				{makeChildren({
+					language: "ts",
+					title: "app.ts",
+					caption: "Output of the script",
+				})}
 			</CodeBlock>,
 		);
 
@@ -165,7 +185,9 @@ describe("CodeBlock", () => {
 			</CodeBlock>,
 		);
 
-		const standaloneTitle = container.querySelector("[data-rehype-pretty-code-title]");
+		const standaloneTitle = container.querySelector(
+			"[data-rehype-pretty-code-title]",
+		);
 		expect(standaloneTitle).not.toBeInTheDocument();
 	});
 
@@ -202,7 +224,9 @@ describe("CodeBlock", () => {
 			jest.advanceTimersByTime(2000);
 		});
 
-		expect(screen.getByRole("button", { name: /copy code/i })).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: /copy code/i }),
+		).toBeInTheDocument();
 	});
 
 	it("falls back to textarea copy when navigator.clipboard is undefined", async () => {
@@ -260,13 +284,19 @@ describe("CodeBlock", () => {
 			</CodeBlock>,
 		);
 
-		const figure = container.querySelector("figure[data-rehype-pretty-code-figure]");
+		const figure = container.querySelector(
+			"figure[data-rehype-pretty-code-figure]",
+		);
 		expect(figure).toBeInTheDocument();
 	});
 
 	it("passes through className and other figure props", () => {
 		const { container } = render(
-			<CodeBlock data-rehype-pretty-code-figure="" className="my-class" id="test-id">
+			<CodeBlock
+				data-rehype-pretty-code-figure=""
+				className="my-class"
+				id="test-id"
+			>
 				{makeChildren({ language: "ts" })}
 			</CodeBlock>,
 		);
