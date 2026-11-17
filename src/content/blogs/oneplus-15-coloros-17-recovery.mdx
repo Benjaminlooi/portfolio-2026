@@ -1,0 +1,33 @@
+---
+title: "How I recovered my OnePlus 15 after the ColorOS 17 update without a factory reset"
+summary: "How I got my OnePlus 15 booting on ColorOS 17 and accepting my original PIN again without wiping user data."
+metaDescription: "How I recovered my OnePlus 15 after a ColorOS 17 update caused boot failures and a PIN hang, using OTA metadata repair, stock init_boot, and a firmware sync."
+image: "/images/og-default.png"
+author: "Benjamin Looi"
+publishedAt: "2026-11-17"
+tags: ["oneplus", "coloros", "android", "recovery", "kernelsu"]
+---
+
+My OnePlus 15 went from a black screen to a boot loop to a lock screen that hung when I entered the correct PIN. By the end, it was running ColorOS 17 and accepting my original PIN again. The recovery involved three separate problems, and each one became visible only after I got past the previous one.
+
+This was a Global OnePlus 15 (`CPH2747`) with Canoe 7.0.11 and KernelSU Next. I went from OxygenOS `16.0.10.500` on slot B to the full ColorOS `17.0.0.102(EX01)` OTA on slot A. I used Canoe’s inactive-slot install and patched the new slot with KernelSU Next before rebooting. When the new slot failed to boot, the old OxygenOS slot could still reach its lock screen. The PIN hung there too. The sequence below is specific to this phone and the state of its partitions. [OnePlus’s rollout announcement](https://community.oneplus.com/thread/2241561632796835845)
+
+## The black screen was an early Android boot failure
+
+One black-screen boot appeared on the Mac as Qualcomm crash-dump mode (`05c6:900e`). The kernel console from the dump showed that ColorOS 17 had already started. About 0.59 seconds in, `dm-verity` reported a corrupted metadata block, the filesystem drivers couldn’t read the superblock, and PID 1 exited. The kernel panicked with `Attempted to kill init!`.
+
+Android’s Virtual A/B updater stages changes to logical partitions in copy-on-write snapshots. On my phone, the ColorOS 17 snapshots were present, but the update metadata still said `Initiated`. After backing up `/metadata` and checking the staged snapshots against the OTA, I repaired the OTA metadata to reflect a completed staging step. That moved the update to `Unverified` and restored the `snapshot-boot` marker for `_b`, the **source slot** of this update. I checked the repaired F2FS image and verified the flash with a byte-for-byte readback. On the next slot A boot, Android mounted the snapshots and reached the OnePlus logo. [Android’s Virtual A/B overview](https://source.android.com/docs/core/ota/virtual_ab) · [AOSP snapshot manager](https://android.googlesource.com/platform/system/core/+/refs/heads/main/fs_mgr/libsnapshot/snapshot.cpp)
+
+## Stock `init_boot` got me past the logo
+
+The phone now got far enough to start loading my old root modules. The logs showed ReSuSFS and Zygisk Next active around the later crashes. Those modules had carried over from the OxygenOS setup, and the kernel had changed from `6.12.23` to `6.12.69`. Restoring the exact stock ColorOS 17 `init_boot` on slot A stopped the modules from loading and got me to the lock screen. I also tested KernelSU Safe Mode during troubleshooting. The logs point to the old root setup as a factor, but I didn’t isolate a single module as the cause. [KernelSU’s boot-loop recovery documentation](https://kernelsu.org/guide/rescue-from-bootloop.html)
+
+While the phone sat at the lock screen, Android finished merging all 15 snapshots into `super`. I verified that slot A was marked successful, the bootloader reported no pending snapshot merge, and Android had cleared the snapshot entries. I saved a fresh `/metadata` backup at that point. The phone could now boot ColorOS 17 from the merged partitions, but entering the PIN still hung and sometimes led to a userspace restart.
+
+## The PIN came back after I synced slot B’s firmware
+
+I tried a full shutdown with USB unplugged and tested Canoe Mode 2 with a verified matching signing profile. The PIN still hung in both tests. Canoe 7.0.11 suppresses the same TrustZone A/B rollback call in both managed modes, so the Mode 2 test couldn’t tell me whether that call mattered. The logs showed the NXP Weaver service starting, but they never captured a trace that tied the PIN hang to a particular secure-element operation. [Canoe 7.0.11’s TrustZone hook](https://github.com/1vivy/gbl_root_canoe/blob/release-7.0.11/submodules/uefi/edk2/QcomModulePkg/Application/LinuxLoader/Hook/ScmHook.c)
+
+The live partition audit showed that slot A had ColorOS 17 firmware while much of slot B still had the older firmware. I compared 41 physical firmware partitions against the full OTA for my exact model. Two already matched on both slots. The splash image differed on both slots, so I left it alone. For the other 38, slot A matched the OTA and slot B differed. I backed up all 38 slot B partitions in full, then flashed their verified ColorOS 17 images to the explicit `_b` targets. These included TrustZone, Keymaster, UEFI, XBL, modem and DSP firmware. After every flash, I read back the written range and checked its SHA-256 against the OTA. Slot A stayed active, both `16.0.5.703` ABL copies were preserved, and the recovery never formatted `userdata`.
+
+The slot B firmware sync is the last change I remember before my original PIN started working. I was running ColorOS 17 when I confirmed the recovery. The write log shows exactly what changed, but I don’t have a log of the first successful unlock or evidence that isolates one partition or secure-element operation. A similar XDA report recovered the original credential after a full OTA to the other slot and an Android crash into `900E`. That sequence involved more than a firmware sync, so it leaves open which step brought the PIN back on that device. [XDA no-wipe recovery report](https://xdaforums.com/t/oneplus-15-cn-converted-to-global-cph2747-lock-screen-pattern-rejected-after-coloros-17-0-0-102-ota-recovered-without-wiping-data.4808339/#post-90816016) · [Related Canoe issue](https://github.com/1vivy/gbl_root_canoe/issues/23)
