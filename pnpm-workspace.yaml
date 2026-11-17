@@ -1,9 +1,5 @@
 allowBuilds:
+  '@parcel/watcher': true
   core-js: true
-  protobufjs: set this to true or false
   sharp: true
   unrs-resolver: true
-onlyBuiltDependencies:
-  - core-js
-  - sharp
-  - unrs-resolver
