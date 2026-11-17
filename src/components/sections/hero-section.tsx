@@ -32,23 +32,24 @@ const Hero = () => {
 				</div>
 
 				<div className="py-2 lg:py-3">
-					<h1 className=" text-xl font-bold text-white sm:text-5xl lg:text-6xl">
+					<h1 className=" text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
 						Benjamin Looi
 					</h1>
 
 					<p className="text-sm text-white/80">雷廷铮</p>
 				</div>
 				<p className="text-base text-center lg:text-start lg:text-lg text-white/80 leading-relaxed">
-					<span className="font-medium text-white">Software engineer</span> with
-					5+ years of experience shipping enterprise SaaS products. Currently
-					based in Cambodia, building tools for local businesses and working on
-					independent projects.
+					<span className="font-medium text-white">
+						Software engineer building practical business software.
+					</span>{" "}
+					5+ years across enterprise HR and POS systems, now building products
+					for businesses and communities in Cambodia.
 				</p>
 				<p className="text-sm text-center lg:text-start text-white/60">
 					From Malaysia 🇲🇾 · Based in{" "}
 					<span className="font-medium text-white/80">Cambodia 🇰🇭</span>
 				</p>
-				<div className="flex items-center gap-2 py-4">
+				<div className="flex flex-wrap justify-center lg:justify-start items-center gap-2 py-4">
 					<Link
 						href="/contact"
 						className={cn(buttonVariants(), "rounded-full")}
@@ -57,7 +58,7 @@ const Hero = () => {
 						Contact Me
 					</Link>
 					<a
-						href="Benjamin Looi resume 2026-9.pdf"
+						href="/Benjamin Looi resume 2026-9.pdf"
 						download
 						target="_blank"
 						rel="noopener noreferrer"
@@ -72,7 +73,7 @@ const Hero = () => {
 				</div>
 			</AnimationContainer>
 
-			<div className="mb-8 relative lg:mb-0">
+			<div className="mb-6 relative w-40 sm:w-56 lg:w-auto lg:mb-0">
 				<MyPhoto />
 				<div className="absolute block w-44 h-44 rounded-full md:hidden top-0 left-0 right-1/2 -z-10 bg-violet-500/40 blur-[5rem]"></div>
 			</div>

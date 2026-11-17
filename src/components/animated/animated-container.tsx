@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 
 interface AnimationContainerProps {
 	children: React.ReactNode;
@@ -15,15 +15,17 @@ const AnimationContainer = ({
 	customDelay = 0.3,
 	invert = false,
 }: AnimationContainerProps) => {
+	const reduceMotion = useReducedMotion();
+
 	return (
 		<motion.div
 			className={className}
-			initial={{ opacity: 0, y: invert ? -20 : 20 }}
+			initial={reduceMotion ? false : { opacity: 0, y: invert ? -20 : 20 }}
 			whileInView={{ opacity: 1, y: 0 }}
-			viewport={{ once: false }}
+			viewport={{ once: true }}
 			transition={{
-				delay: customDelay,
-				duration: 0.2,
+				delay: reduceMotion ? 0 : customDelay,
+				duration: reduceMotion ? 0 : 0.2,
 				ease: "easeInOut",
 				type: "spring",
 				stiffness: 260,

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import AboutMe from "@/components/sections/about-me";
-// import BlogSection from "@/components/sections/blog-section";
+import ContactSection from "@/components/sections/contact-section";
+import ExperienceSection from "@/components/sections/experience-section";
 import Hero from "@/components/sections/hero-section";
 import ProjectsSection from "@/components/sections/project-sections";
-import SkillsSection from "@/components/sections/skill-section";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { generatePageMetadata } from "@/lib/seo/metadata";
 import { buildPersonSchema } from "@/lib/seo/structured-data";
@@ -39,10 +39,10 @@ const Home = () => {
 			<StructuredData schema={personSchema} />
 
 			<Hero />
-			<AboutMe />
-			<SkillsSection />
 			<ProjectsSection />
-			{/* <BlogSection /> */}
+			<ExperienceSection />
+			<AboutMe />
+			<ContactSection />
 		</div>
 	);
 };

@@ -1,31 +1,32 @@
+import Link from "next/link";
 import AnimationContainer from "../animated/animated-container";
 
 const AboutMe = () => {
 	return (
 		<AnimationContainer className="w-full py-12 lg:py-16">
-			<h2 className="mb-8 text-2xl font-bold tracking-tight text-center md:text-left text-white lg:text-start">
-				About me
+			<h2 className="mb-6 text-2xl font-bold tracking-tight text-white">
+				A little about me
 			</h2>
-
-			<div className="w-full space-y-4 text-base font-normal leading-7 text-neutral-200">
+			<div className="max-w-3xl space-y-4 text-base leading-7 text-neutral-200">
 				<p>
-					I&apos;m a software engineer with 5+ years of experience building
-					enterprise HR and POS systems. I spent my early career in Malaysia
-					working across React, Vue, Node.js, and Laravel, where I recently led
-					a major frontend migration to a Nuxt.js monorepo and built out complex
-					shift management engines.
+					I’m from Malaysia and moved to Cambodia in 2025. Building
+					independently here has brought me closer to the people using my
+					software — from restaurant staff handling mixed-currency payments to
+					neighbours caring for a colony of stray cats.
 				</p>
 				<p>
-					I recently relocated to Cambodia and have been building independently
-					to solve local problems. I&apos;m currently developing a dual-currency
-					POS system for the local restaurant market, alongside a bilingual
-					community cat welfare platform integrated with KHQR donations.
+					My day-to-day stack is TypeScript, React, and Next.js, with a
+					professional background in Vue, Nuxt, Node.js, and Laravel.
 				</p>
-
-				<p>
-					My current day-to-day stack is primarily TypeScript, React, and
-					Next.js.
-				</p>
+				<Link
+					href="/about"
+					className="inline-flex rounded font-medium text-primary underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+				>
+					More about my background{" "}
+					<span className="ml-2" aria-hidden="true">
+						→
+					</span>
+				</Link>
 			</div>
 		</AnimationContainer>
 	);

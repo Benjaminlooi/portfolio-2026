@@ -37,17 +37,18 @@ interface Props {
 
 const ProjectCard: React.FC<Props> = ({ project }) => {
 	return (
-		<AnimationContainer>
-			<div className="w-full h-auto group border backdrop-blur border-white/10 space-y-2 md:space-y-4 rounded-2xl p-4">
-				<div className="relative rounded-2xl overflow-hidden">
+		<AnimationContainer className="h-full">
+			<div className="flex h-full w-full flex-col gap-2 md:gap-4 group border backdrop-blur border-white/10 rounded-2xl p-4">
+				<div className="relative shrink-0 rounded-2xl overflow-hidden">
 					<Badge className="absolute bottom-2 left-2 uppercase">
 						{project.type}
 					</Badge>
-					<div className="absolute flex items-center gap-2 top-2 right-2 ">
+					<div className="absolute flex items-center gap-2 top-2 right-2 z-10 ">
 						{/* <ProjectIcon type={project.type} /> */}
 						{project.link && (
 							<a
 								href={project.link}
+								aria-label={`Visit ${project.title} (opens in a new tab)`}
 								target="_blank"
 								rel="noreferrer"
 								className="p-4 bg-black/10 rounded-full backdrop-blur hover:bg-black/30 transition-all"
@@ -58,6 +59,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
 						{project.github && (
 							<a
 								href={project.github}
+								aria-label={`View ${project.title} on GitHub (opens in a new tab)`}
 								target="_blank"
 								rel="noreferrer"
 								className="p-4 bg-black/10 rounded-full backdrop-blur hover:bg-black/30 transition-all"
@@ -89,8 +91,8 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
 					</Link>
 					<time className="font-sans text-xs">{formatDate(project.date)}</time>
 					<div className="hidden font-sans text-xs underline print:visible" />
-					<div className="prose max-w-full text-pretty font-sans text-xs text-muted-foreground prose-invert">
-						<p className="line-clamp-2">{project.description}</p>
+					<div className="prose max-w-full text-pretty font-sans text-sm leading-relaxed text-neutral-300 prose-invert">
+						<p>{project.description}</p>
 					</div>
 				</div>
 				<div className=" flex flex-wrap gap-2">
@@ -103,6 +105,13 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
 						</Badge>
 					))}
 				</div>
+				<Link
+					href={`/projects/${project.slug}`}
+					className="mt-auto inline-flex self-start items-center gap-2 rounded text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+					aria-label={`Read case study: ${project.title}`}
+				>
+					Read case study <span aria-hidden="true">→</span>
+				</Link>
 			</div>
 		</AnimationContainer>
 	);
