@@ -6,6 +6,8 @@ if (typeof window !== "undefined") {
 	const initPostHog = () => {
 		posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY as string, {
 			api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+			// Keep PostHog scripts from preceding server-rendered JSON-LD during hydration.
+			external_scripts_inject_target: "head",
 			person_profiles: "identified_only",
 			capture_pageview: false, // We'll handle this manually for Next.js App Router
 			capture_pageleave: true,
