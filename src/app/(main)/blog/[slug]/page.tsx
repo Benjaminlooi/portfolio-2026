@@ -141,6 +141,14 @@ const Blog = async ({ params }: Props) => {
 					<h1 className="text-3xl font-bold">{metadata.title}</h1>
 					<p className="mt-3 text-xs text-muted-foreground">
 						{metadata.author} / {formatDate(metadata.publishedAt ?? "")}
+						{metadata.lastModified && (
+							<>
+								{" · Updated "}
+								<time dateTime={metadata.lastModified}>
+									{formatDate(metadata.lastModified)}
+								</time>
+							</>
+						)}
 					</p>
 				</div>
 

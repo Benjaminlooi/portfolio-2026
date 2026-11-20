@@ -1,90 +1,182 @@
 ---
-title: "How to get the dpi of MX Master 3"
+title: "MX Master 3 DPI Settings: Percentage Table and 3S Guide"
 summary: "Find the DPI value behind the MX Master 3 pointer-speed percentage in Logi Options+."
-metaDescription: "Find the exact DPI of your Logitech MX Master 3 mouse when Logi Options+ only shows percentages. Includes a full DPI-to-percentage conversion table."
+metaDescription: "Find your MX Master 3 DPI with a pointer-speed percentage table, check legacy Windows settings, and set MX Master 3S DPI using the Logi Options+ 8K toggle."
 image: "/images/blogs/mx-master-3-dpi/mx_master_3s_logi_options+.webp"
 author: "Benjamin Looi"
 publishedAt: "2022-11-04"
+lastModified: "2026-11-20"
 tags: ["logitech", "mx-master-3", "dpi", "mouse", "peripherals", "hardware"]
 ---
 
-Logi Options+ shows MX Master 3 pointer speed as a percentage instead of an exact DPI value.
+If Logi Options+ shows your **MX Master 3** pointer speed as a percentage, use the conversion table below as an approximate reference. In the community-reported table, **50% corresponds to about 1,000 DPI** and **75% to about 2,000 DPI**.
 
-Note: For the newer MX Master 3S, you can set the pointer speed with the exact dpi by toggling "Extend sensor range to 8k DPI in Logi Options+
-![Logi Options+ for MX Master 3s](/images/blogs/mx-master-3-dpi/mx_master_3s_logi_options+.webp)
-> Credit: [Cole Caccamise on Youtube: Logitech Made The MX Master 3S PERFECT](https://www.youtube.com/watch?v=hIYyjRAsCoA)
+The **MX Master 3S** has a separate option: enable its 8K sensor range in Logi Options+ to expose numeric DPI settings. Check which mouse you have before following either method.
 
-<hr />
+## MX Master 3 vs. MX Master 3S DPI Settings
 
-Upon further research by r/Nathraichean on [Reddit](https://www.reddit.com/r/LogitechG/comments/joshln/mx_master_3_how_to_change_dpi/).
->After a bit of further testing, every percentage of Pointer Speed is about 2.8121% faster/slower than its previous percentage.
-So if you take 1000 and then start multiplying it by 1.1486984 or 0.8513016, you get the 5% increments in the Logi Options+ software. Please note that there is most probably a fairly easy function that can be calculated for this but I am not smart enough to figure that out.
-Below are the DPI values in 5% increments. If you'd like a more precise DPI setting, get the closest setting from below, if yours is higher than the closest, add 2.8121% to the DPI number and if it is still higher, add another 2.8121% to the new DPI number that you got and so on. If its lower than the closest setting from below, just subtract 2.8121% instead of add. Please note that DPI differences of less than 50 are very hard/impossible to notice.
-0% - 200 DPI
-5% - 235 DPI
-10% - 276 DPI
-15% - 324 DPI
-20% - 381 DPI
-25% - 447 DPI
-30% - 525 DPI
-35% - 617 DPI
-40% - 725 DPI
-45% - 851 DPI
-50% - 1000 DPI
-55% - 1149 DPI
-60% - 1320 DPI
-65% - 1516 DPI
-70% - 1741 DPI
-75% - 2000 DPI
-80% - 2297 DPI
-85% - 2639 DPI
-90% - 3031 DPI
-95% - 3482 DPI
-100% - 4000 DPI
+<div className="overflow-x-auto">
+<table>
+<thead>
+<tr>
+<th scope="col">Mouse</th>
+<th scope="col">Where to start</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MX Master 3</td>
+<td>If pointer speed appears as a percentage, use the reference table below. Logitech lists a 200–4,000 DPI sensor range for the MX Master 3 for Business.</td>
+</tr>
+<tr>
+<td>MX Master 3S</td>
+<td>Open Pointer speed in Logi Options+ and enable the 8K sensor range option.</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-<hr />
+Sources: [Logitech MX Master 3 specifications](https://hub.sync.logitech.com/mx-master-3/post/specifications---mx-master-3-MD4Qfqsmr2wvjTX) and [Logitech's MX Master 3S setup instructions](https://hub.sync.logitech.com/mx-master-3s/post/how-do-i-enable-the-8k-dpi-sensor-on-my-mx-master-3s-DTGpPpuUyjHecHq).
 
-Another user r/210000Nmm-2 also commented:
+## MX Master 3 Pointer-Speed Percentage to DPI Table
 
-I had a similar problem since I wanted to know the currently set DPI value which is not available in Logitech Options, unfortunately.
+These values come from [community testing shared by u/Nathraichean](https://www.reddit.com/r/LogitechG/comments/joshln/mx_master_3_how_to_change_dpi/). They are approximate reference values, not an official Logitech conversion or measurements I independently verified. Software versions and settings may differ.
 
-Luckily, I noticed the option to backup the settings into the cloud which implies that the slider value among the other options are saved somewhere on the disk.
+<div className="overflow-x-auto">
+<table>
+<thead>
+<tr>
+<th scope="col">Pointer speed</th>
+<th scope="col">Approximate DPI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0%</td>
+<td>200</td>
+</tr>
+<tr>
+<td>5%</td>
+<td>235</td>
+</tr>
+<tr>
+<td>10%</td>
+<td>276</td>
+</tr>
+<tr>
+<td>15%</td>
+<td>324</td>
+</tr>
+<tr>
+<td>20%</td>
+<td>381</td>
+</tr>
+<tr>
+<td>25%</td>
+<td>447</td>
+</tr>
+<tr>
+<td>30%</td>
+<td>525</td>
+</tr>
+<tr>
+<td>35%</td>
+<td>617</td>
+</tr>
+<tr>
+<td>40%</td>
+<td>725</td>
+</tr>
+<tr>
+<td>45%</td>
+<td>851</td>
+</tr>
+<tr>
+<td>50%</td>
+<td>1,000</td>
+</tr>
+<tr>
+<td>55%</td>
+<td>1,149</td>
+</tr>
+<tr>
+<td>60%</td>
+<td>1,320</td>
+</tr>
+<tr>
+<td>65%</td>
+<td>1,516</td>
+</tr>
+<tr>
+<td>70%</td>
+<td>1,741</td>
+</tr>
+<tr>
+<td>75%</td>
+<td>2,000</td>
+</tr>
+<tr>
+<td>80%</td>
+<td>2,297</td>
+</tr>
+<tr>
+<td>85%</td>
+<td>2,639</td>
+</tr>
+<tr>
+<td>90%</td>
+<td>3,031</td>
+</tr>
+<tr>
+<td>95%</td>
+<td>3,482</td>
+</tr>
+<tr>
+<td>100%</td>
+<td>4,000</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-In *%appdata%/Logishrd/LogiOptions* I found a few settings files that are human-readable (XML):
+For example, if you want roughly 1,000 DPI, start at 50%. The table is useful for choosing a starting point, but it does not turn a percentage slider into a precise sensor measurement.
 
-At first, you need to get the UUID of the profile you are using. In the directory aforementioned, open *apptable.xml* in an editor with XML-support (I recommend VS Code) or in notepad.exe.
+## How to Set DPI on the MX Master 3S
 
-Find the profile for the application you want to look up. In my case it looks like this for CS:GO:
+1. Open **Logi Options+** and select your **MX Master 3S**.
+2. Open **Pointer speed**.
+3. Enable **Extend sensor range to 8K DPI**.
+4. Choose your DPI using the numeric setting shown by the app.
 
-```
-<profile>
-  <name>csgo.exe</name>
-  <id>2313a307-6976-4ab8-87d4-b0d07bed022f</id>
-  <exe>csgo.exe</exe>
-  <altfullpath />
-  <fullpath>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\csgo.exe</fullpath>
-  <iconpath>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\csgo.exe</iconpath>
-  <iconindex>0</iconindex>
-</profile>
-```
+[Logitech documents this toggle for the MX Master 3S](https://hub.sync.logitech.com/mx-master-3s/post/how-do-i-enable-the-8k-dpi-sensor-on-my-mx-master-3s-DTGpPpuUyjHecHq). The 3S option is separate from the original MX Master 3 percentage table.
 
-Note the ID somewhere.
+![MX Master 3S pointer-speed settings in Logi Options+ with the 8K DPI option](/images/blogs/mx-master-3-dpi/mx_master_3s_logi_options+.webp)
 
-Now, go into *devices/*. There you should find at least one folder. If you're using more Logitech products than the MX Master 3, there might be some more folders, one for each device. I guess, the MX 3 folder is named *6b023* (which is the name on my computer). Go into it.
+Screenshot credit: [Cole Caccamise's MX Master 3S video](https://www.youtube.com/watch?v=hIYyjRAsCoA).
 
-Open *Profiles/*.
+## Checking Older Logitech Options Settings on Windows
 
-Load the file which has the name of the profile's UUID you wrote down in an editor. In my case, this is *2313a307-6976-4ab8-87d4-b0d07bed022f.xml*.
+For the older **Logitech Options** application, u/210000Nmm-2 described another method in the [same community discussion](https://www.reddit.com/r/LogitechG/comments/joshln/mx_master_3_how_to_change_dpi/): inspecting its saved XML profile. This is a historical Windows workaround; the paths below are not verified for current Logi Options+ releases.
 
-Press Crtl+F and search for `dpi`.
+1. Open `%appdata%/Logishrd/LogiOptions` in File Explorer.
+2. Open `apptable.xml` in a text editor and find the application profile you want to inspect.
+3. Copy that profile's `<id>` value.
+4. Look under `devices/` for the mouse's directory, then open its `Profiles/` directory.
+5. Open the XML file whose name matches the profile ID and search for `defaultDPI` or `name="sensor"`.
 
-You should find something like this:
+The original example contained this sensor entry:
 
-```
+```xml
 <params>
   <param name="sensorCount" value="1" />
   <param cur="1150" defaultDPI="1000" minDPI="200" maxDPI="4000" stepDPI="50" name="sensor" value="0" />
 </params>
 ```
 
-The value `cur="1150"` should be your sensitivity in DPI.
+In that example, `cur="1150"` identifies the saved sensor setting. Read the file without editing it. If the directory or fields are missing, do not assume this workaround applies to your installation.
+
+## Why Does the Same DPI Feel Different?
+
+[DPI is only one part of pointer behavior](https://secure.logitech.com/en-au/discover/a/change-mouse-sensitivity). When comparing settings, also check the operating system's pointer-speed and acceleration settings and whether you selected a different application profile. Use the table as a starting point, then compare with the same software settings.
+
+For another hardware setup fix, see [how I disable a laptop's built-in keyboard on Fedora](/blog/how-to-disable-laptop-internal-keyboard-fedora).

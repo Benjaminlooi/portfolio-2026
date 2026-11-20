@@ -1,17 +1,21 @@
 ---
-title: "How to disable laptop internal keyboard on Fedora 41"
+title: "Disable the Built-In Laptop Keyboard on Fedora 41/42"
 summary: "Disable a laptop's built-in keyboard on Fedora 41 or 42 with a udev rule, so an external keyboard can sit on top without triggering random keypresses."
 metaDescription: "Step-by-step guide to disable your laptop's built-in keyboard on Fedora 41/42 using udev rules so you can use an external keyboard on top of it."
 image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=1200&h=630&fit=crop"
 author: "Benjamin Looi"
 publishedAt: "2025-04-27"
+lastModified: "2026-11-20"
 tags: ["fedora", "linux", "keyboard", "udev", "wayland", "hardware"]
 ---
 
 My laptop keyboard has degraded over the years. Heat made the keys harder to press, and some key clips broke. I wanted to place my mechanical keyboard on top of the laptop, but the built-in keyboard kept firing random keypresses. I tested this fix on Fedora 41 and 42 running Wayland.
 
+This method sets `LIBINPUT_IGNORE_DEVICE=1` for the selected keyboard. [Libinput documents this property](https://wayland.freedesktop.org/libinput/doc/latest/ignoring-devices.html) as a way to exclude a device from libinput; it does not disable the keyboard in firmware or every other input stack.
+
 ## What You'll Need
 
+- A working external keyboard, connected before applying the rule
 - **Terminal access** with `sudo` privileges
 - The commands: `libinput`, `udevadm`, and a text editor (e.g. `nano` or `vim`)
 
@@ -20,7 +24,7 @@ My laptop keyboard has degraded over the years. Heat made the keys harder to pre
 Open a terminal and type:
 
 ```bash
-libinput list-devices
+sudo libinput list-devices
 ```
 
 Scroll until you see something like:
@@ -30,7 +34,7 @@ Device:           AT Translated Set 2 keyboard
 Kernel:           /dev/input/event3
 ```
 
-That "AT Translated Set 2 keyboard" is your laptop's built-in keyboard. Note the exact name and the `eventX` number. You will need both in the next steps.
+On my laptop, the built-in keyboard is named "AT Translated Set 2 keyboard". Yours may differ. Identify your internal keyboard and note its exact name and `eventX` number; do not copy the example blindly. Event numbers can change after a reboot.
 
 ## Step 2: Double-Check with `udevadm`
 
@@ -47,7 +51,13 @@ E: NAME="AT Translated Set 2 keyboard"
 E: ID_INPUT_KEYBOARD=1
 ```
 
-If you don't, swap in the right `eventX` and try again.
+If you do not see the expected keyboard properties, check the device again. To inspect the parent attributes used by `ATTRS{name}` in the rule below, run:
+
+```bash
+udevadm info --attribute-walk --name=/dev/input/event3
+```
+
+Look for the matching `ATTRS{name}` value. The [udevadm manual](https://www.freedesktop.org/software/systemd/man/latest/udevadm.html) explains the property query and attribute walk.
 
 ## Step 3: Write the udev Rule
 
@@ -65,27 +75,48 @@ ACTION=="add|change", ATTRS{name}=="AT Translated Set 2 keyboard", ENV{ID_INPUT_
 
 This tells libinput to ignore that device.
 
-## Step 4: Reload Rules & Test
+## Step 4: Reload the Rule and Verify It
 
-Apply without rebooting:
+Reload the rules and trigger a change for the keyboard you identified:
 
 ```bash
 sudo udevadm control --reload-rules
-sudo udevadm trigger
+sudo udevadm trigger --action=change /sys/class/input/event3
+udevadm settle
+udevadm info --query=property --name=/dev/input/event3
 ```
 
-If it doesn't work, try rebooting
+Replace `event3` with your keyboard's current event number. Look for:
+
+```text
+LIBINPUT_IGNORE_DEVICE=1
+```
+
+Reloading rules alone does not apply them to existing devices; triggering an event lets udev process the device again. See the [udevadm manual](https://www.freedesktop.org/software/systemd/man/latest/udevadm.html).
+
+**The property appearing does not guarantee an immediate change in your desktop session.** Libinput reads these properties when it adds a device, according to its [configuration documentation](https://wayland.freedesktop.org/libinput/doc/latest/device-configuration-via-udev.html). Save your work and reboot if the keyboard still types, then test both keyboards.
+
+## If the Built-In Keyboard Still Works
+
+- **The property is missing:** check the keyboard name, event number, and rule filename. Inspect rule processing with `sudo udevadm test /sys/class/input/event3` and look for errors.
+- **The property is present but typing still works:** reboot so the desktop initializes its input devices again.
+- **Your laptop uses a different keyboard name:** use its actual parent attribute from Step 2. Do not broaden the rule to match every keyboard.
+
+I tested this on Fedora 41 and 42 with Wayland. I have not verified it on Ubuntu or other distributions.
 
 ## Re-enable Your Laptop Keyboard
 
-When you want it back:
+Remove the rule and reload udev:
 
 ```bash
 sudo rm /etc/udev/rules.d/99-disable-internal-keyboard.rules
 sudo udevadm control --reload-rules
-sudo udevadm trigger
+sudo udevadm trigger --action=change /sys/class/input/event3
+udevadm settle
 ```
 
-## Final Thoughts
+Use the keyboard's current event number. Save your work and reboot if it remains ignored by the desktop session. Removing the rule reverses this guide's configuration; keep your external keyboard connected until the built-in keyboard works again.
 
 Now I can place my external keyboard on top of the laptop and type without random input from the built-in keyboard.
+
+If you are also adjusting your mouse setup, see the [MX Master 3 DPI percentage table and MX Master 3S settings guide](/blog/how-to-get-the-dpi-of-mx-master-3).
