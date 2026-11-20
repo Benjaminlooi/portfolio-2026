@@ -93,16 +93,22 @@ const nextConfig = {
 	},
 
 	async redirects() {
+		const legacyBlogHost = [
+			{ type: "host" as const, value: "blog.benjaminlooi.dev" },
+		];
+
 		return [
+			// Preserve already-prefixed article paths without adding /blog twice.
+			{
+				source: "/blog/:path*",
+				has: legacyBlogHost,
+				destination: "https://www.benjaminlooi.dev/blog/:path*",
+				permanent: true,
+			},
 			{
 				source: "/:path*",
-				has: [
-					{
-						type: "host",
-						value: "blog.benjaminlooi.dev",
-					},
-				],
-				destination: "https://www.benjaminlooi.dev/blog",
+				has: legacyBlogHost,
+				destination: "https://www.benjaminlooi.dev/blog/:path*",
 				permanent: true,
 			},
 		];

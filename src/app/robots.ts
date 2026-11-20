@@ -12,7 +12,8 @@ export default function robots(): MetadataRoute.Robots {
 			{
 				userAgent: "*",
 				allow: "/",
-				disallow: ["/api/", "/_next/"],
+				// Keep page scripts, styles, and images crawlable for rendering.
+				disallow: ["/api/"],
 			},
 			{
 				userAgent: "GPTBot",
