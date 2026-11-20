@@ -9,6 +9,37 @@ const AUTHOR_NAME = "Benjamin Looi";
 const AUTHOR_EMAIL = "benjamin@benjaminlooi.dev";
 const BLOG_DIR = path.join(process.cwd(), "src/content/blogs");
 
+function imageEnclosure(image: string) {
+	const url = new URL(image, SITE_URL);
+	const format = (
+		url.searchParams.get("fm") || path.extname(url.pathname).slice(1)
+	).toLowerCase();
+	const imageTypes: Record<string, string> = {
+		jpg: "image/jpeg",
+		jpeg: "image/jpeg",
+		png: "image/png",
+		gif: "image/gif",
+		webp: "image/webp",
+		avif: "image/avif",
+		svg: "image/svg+xml",
+	};
+	const type =
+		imageTypes[format] ||
+		(url.hostname === "images.unsplash.com"
+			? "image/jpeg"
+			: "application/octet-stream");
+
+	// feed writes enclosure attributes verbatim, so escape XML metacharacters.
+	const escapedUrl = url.href
+		.replace(/&/g, "&amp;")
+		.replace(/"/g, "&quot;")
+		.replace(/'/g, "&apos;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;");
+
+	return { url: escapedUrl, type, length: 0 };
+}
+
 /**
  * Sanitize HTML content for RSS feed
  * Removes potentially harmful scripts and attributes
@@ -123,7 +154,7 @@ export async function generateRSSFeed(): Promise<string> {
 					],
 					date: post.date,
 					category: post.tags.map((tag) => ({ name: tag })),
-					image: post.image ? `${SITE_URL}${post.image}` : undefined,
+					image: post.image ? imageEnclosure(post.image) : undefined,
 				});
 			});
 		}
