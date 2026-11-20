@@ -21,6 +21,7 @@ export type BlogMetadata = {
 	image?: string;
 	author?: string;
 	publishedAt?: string;
+	lastModified?: string;
 	slug: string;
 	keywords?: string[];
 	tags?: string[];

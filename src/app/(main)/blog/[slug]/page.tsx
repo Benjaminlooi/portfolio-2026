@@ -44,6 +44,7 @@ export const generateMetadata = async ({ params }: Props) => {
 			description: metadata.summary || metadata.description || "",
 			metaDescription: metadata.metaDescription,
 			date: metadata.publishedAt || "",
+			lastModified: metadata.lastModified,
 			tags: metadata.tags || metadata.keywords || [],
 			ogImage: metadata.image,
 		},
@@ -79,6 +80,7 @@ const Blog = async ({ params }: Props) => {
 		description: metadata.summary || metadata.description || "",
 		author: metadata.author || "Benjamin Looi",
 		datePublished: metadata.publishedAt || new Date().toISOString(),
+		dateModified: metadata.lastModified,
 		url: `https://www.benjaminlooi.dev/blog/${slug}`,
 		image: metadata.image,
 	});

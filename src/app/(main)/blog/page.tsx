@@ -26,7 +26,7 @@ const Blog = async () => {
 	return (
 		<div>
 			<StructuredData schema={breadcrumbSchema} />
-			<AnimatedTitle title="Blogs" />
+			<AnimatedTitle as="h1" title="Software Engineering Blog" />
 			<p className="w-full text-base font-normal leading-7 text-justify text-neutral-200 mb-8">
 				Welcome to my blog, a place where creativity and technology come to
 				life. Here, I share my journey through coding, problem-solving, and the

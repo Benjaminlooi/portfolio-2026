@@ -69,9 +69,9 @@ const About = () => {
 			<div className="flex gap-6 flex-col md:flex-row items-center">
 				<MyPhoto />
 				<AnimationContainer className="w-full py-12 lg:py-16">
-					<h2 className="mb-8 text-2xl font-bold tracking-tight text-center md:text-left text-white lg:text-start">
-						About me
-					</h2>
+					<h1 className="mb-8 text-2xl font-bold tracking-tight text-center md:text-left text-white lg:text-start">
+						About Benjamin Looi
+					</h1>
 
 					<div className="w-full space-y-4 text-base font-normal leading-7 text-neutral-200">
 						<p>
@@ -126,8 +126,8 @@ const About = () => {
 					Frequently Asked Questions
 				</h2>
 				<div className="space-y-6">
-					{faqData.map((faq, index) => (
-						<div key={index} className="space-y-2">
+					{faqData.map((faq) => (
+						<div key={faq.question} className="space-y-2">
 							<h3 className="text-lg font-medium text-white">{faq.question}</h3>
 							<p className="text-base text-neutral-300 leading-relaxed">
 								{faq.answer}

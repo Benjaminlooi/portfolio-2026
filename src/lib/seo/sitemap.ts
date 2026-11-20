@@ -12,31 +12,26 @@ const STATIC_PAGES = [
 		path: "/",
 		priority: 1.0,
 		changeFrequency: "weekly" as const,
-		lastModified: "2026-03-05",
 	},
 	{
 		path: "/about",
 		priority: 0.9,
 		changeFrequency: "monthly" as const,
-		lastModified: "2026-03-05",
 	},
 	{
 		path: "/projects",
 		priority: 0.9,
 		changeFrequency: "weekly" as const,
-		lastModified: "2026-03-05",
 	},
 	{
 		path: "/blog",
 		priority: 0.9,
 		changeFrequency: "weekly" as const,
-		lastModified: "2026-05-05",
 	},
 	{
 		path: "/contact",
 		priority: 0.9,
 		changeFrequency: "monthly" as const,
-		lastModified: "2026-03-05",
 	},
 ];
 
@@ -137,9 +132,9 @@ export async function generateSitemap(): Promise<MetadataRoute.Sitemap> {
 	const sitemap: MetadataRoute.Sitemap = [];
 
 	STATIC_PAGES.forEach((page) => {
+		// Omit lastModified when the last significant content update is unknown.
 		sitemap.push({
 			url: `${SITE_URL}${page.path}`,
-			lastModified: new Date(page.lastModified),
 			changeFrequency: page.changeFrequency,
 			priority: page.priority,
 		});
@@ -167,7 +162,7 @@ export async function generateSitemap(): Promise<MetadataRoute.Sitemap> {
 							: undefined;
 					const lastModified = data.lastModified
 						? new Date(data.lastModified)
-						: publishDate || new Date();
+						: publishDate;
 
 					sitemap.push({
 						url: `${SITE_URL}${pathname}`,
@@ -207,7 +202,7 @@ export async function generateSitemap(): Promise<MetadataRoute.Sitemap> {
 					const publishDate = data.date ? new Date(data.date) : undefined;
 					const lastModified = data.lastModified
 						? new Date(data.lastModified)
-						: publishDate || new Date();
+						: publishDate;
 
 					sitemap.push({
 						url: `${SITE_URL}${pathname}`,

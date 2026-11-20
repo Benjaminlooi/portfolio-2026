@@ -14,7 +14,7 @@ export function absoluteUrl(pathOrUrl?: string): string | undefined {
 
 /**
  * Generate Next.js Metadata from page data
- * @param pageData - Page title and description
+ * @param pageData - Full page title (including branding) and description
  * @param path - Page path (e.g., '/about')
  * @returns Next.js Metadata object
  */
@@ -25,7 +25,7 @@ export function generatePageMetadata(
 	const canonicalUrl = `${SITE_URL}${path}`;
 
 	return {
-		title: pageData.title,
+		title: { absolute: pageData.title },
 		description: pageData.description,
 		alternates: {
 			canonical: canonicalUrl,

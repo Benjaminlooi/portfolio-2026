@@ -29,7 +29,7 @@ const Projects = async () => {
 	return (
 		<div>
 			<StructuredData schema={breadcrumbSchema} />
-			<AnimatedTitle title="Projects" />
+			<AnimatedTitle as="h1" title="Software Engineering Projects" />
 			<AnimationContainer>
 				<p className="w-full text-base font-normal leading-7 text-justify text-neutral-200">
 					Projects I&apos;ve designed and shipped — from enterprise POS systems

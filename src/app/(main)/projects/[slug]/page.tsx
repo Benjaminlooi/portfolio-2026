@@ -49,7 +49,7 @@ export const generateMetadata = async ({
 		: `https://www.benjaminlooi.dev${image}`;
 
 	return {
-		title: `${title} - Benjamin Looi`,
+		title: { absolute: `${title} - Benjamin Looi` },
 		description,
 		openGraph: {
 			title: `${title} - Benjamin Looi`,

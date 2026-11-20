@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 
 interface Props {
 	title: string;
+	as?: "h1" | "h2";
 }
 
 const variants = {
@@ -11,7 +12,7 @@ const variants = {
 	visible: { opacity: 1, y: 0 },
 };
 
-const AnimatedTitle = ({ title }: Props) => {
+const AnimatedTitle = ({ title, as: Heading = "h2" }: Props) => {
 	return (
 		<motion.div
 			initial="hidden"
@@ -24,9 +25,9 @@ const AnimatedTitle = ({ title }: Props) => {
 			}}
 			className="w-full mb-8"
 		>
-			<h2 className="mb-8 text-4xl tracking-wide text-white !leading-[1.5] font-semibold capitalize">
+			<Heading className="mb-8 text-4xl tracking-wide text-white !leading-[1.5] font-semibold capitalize">
 				{title}
-			</h2>
+			</Heading>
 		</motion.div>
 	);
 };
