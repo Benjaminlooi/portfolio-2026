@@ -106,13 +106,19 @@ export async function generateRSSFeed(): Promise<string> {
 						const { data, content } = matter(fileContent);
 
 						const slug = file.replace(/\.mdx$/, "");
+						const date = new Date(data.publishedAt ?? data.date ?? "");
+						if (Number.isNaN(date.getTime())) {
+							throw new Error(
+								`Missing or invalid publication date for ${slug}`,
+							);
+						}
 
 						return {
 							slug,
 							title: data.title || slug,
 							description: data.description || data.summary || "",
 							content: content,
-							date: data.date ? new Date(data.date) : new Date(),
+							date,
 							tags: data.tags || data.keywords || [],
 							image: data.image,
 						};
